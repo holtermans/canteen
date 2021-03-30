@@ -1,0 +1,12 @@
+<!--pages/ucenter/authInfo/authInfo.wxml-->
+
+<view>
+  <van-cell title="头像" border="{{ false }}">
+    <van-image round fit="cover" width="12vw" height="12vw" src="{{ bcUserInfo.avatar }}" />
+  </van-cell>
+  <van-cell title="姓名" value="{{bcUserInfo.name}}" is-link />
+  <van-cell title="手机号码" value="{{bcUserInfo.mobile}}" is-link />
+  <van-cell title="管理员" value="{{bcUserInfo.admin?'是':'否'}}" is-link />
+  <van-cell title="已激活" value="{{bcUserInfo.status ==1 ?'是':'否'}}" is-link />
+
+</view>

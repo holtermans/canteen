@@ -1,0 +1,117 @@
+<wxs src="./index.wxs" module="computed"></wxs>
+<!--pages/ordering/ordering.wxml-->
+<view class="container">
+  <view class="header">
+    <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
+      <swiper-item wx:for="{{banner}}" wx:key="id">
+        <block>
+          <navigator url="{{item.url}}" style="height:100%">
+            <image src="{{item.url}}" style="height:100%;width:100%" mode="widthFix"></image>
+          </navigator>
+        </block>
+
+      </swiper-item>
+    </swiper>
+    <!-- 选择订餐日期 -->
+    <view>
+      <van-cell value-class="value" is-link title="订餐日期" data-type="single" data-id="selectSingle"
+      value="{{ computed.formatFullDate(date.selectSingle) }}" bind:click="selectDate" />
+    </view>
+
+  </view>
+  <!-- 时段分类 -->
+  <view class="catalog">
+    <!--start 左侧时间段分类-->
+    <scroll-view class="nav" scroll-y="true">
+      <view class="item {{ currentTiming.id == item.id ? 'active' : ''}}" wx:for="{{timingList}}" wx:key="id"
+        data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">
+        <view>
+          {{item.name}}
+        </view>
+        <view class="notes">
+          截止时间:{{item.stopTime}}
+        </view>
+        <view class="notes" style="color:#fb6c59"
+          hidden="{{ computed.isInArr(item.id,hasOrderTimingIdArr) == -1 ? true:false }}">
+          已报
+        </view>
+      </view>
+    </scroll-view>
+    <!-- 左侧时间段分类 end-->
+    <!--start 右侧对应时间段菜品 -->
+
+    <scroll-view class="cate" scroll-y="true">
+      <view class="hd" style="">
+        <text class="line"></text>
+        <text class="txt">{{currentTiming.name}}介绍</text>
+        <text class="line"></text>
+      </view>
+      <view style="display:{{hideEmpty?'none':'block'}}">
+        <van-empty custom-class="custom-image" image="../../../static/images/custom-empty-image.png"
+          description="未上架" />
+      </view>
+
+      <view class="bd">
+        <!-- start 菜品卡片 -->
+        <view class="item" wx:key="id" wx:for="{{dailyMenuList}}" wx:if="{{item.timingId == currentTiming.id}}">
+          <view style="flex:2;height:200rpx;width:autp;padding:15rpx">
+            <image src="{{dish.picUrl}}" style="height:100%;width:100%" wx:for="{{dishesList}}" wx:for-item="dish"
+              wx:if="{{dish.id == item.dishesId}}"></image>
+          </view>
+          <view style="display:flex;  flex-direction: column; flex:3;padding:10px">
+            <view style="font-size:36px">
+              <text class="txt">{{item.dishesName}}</text>
+            </view>
+            <view class="brief">
+              <text>{{item.dishesBrief}}</text>
+            </view>
+            <view class="price-stepper">
+              <view class="cai_price" data-index="{{index}}">
+                ￥<text wx:for="{{dishesList}}" wx:for-item="dish"
+                  wx:if="{{dish.id == item.dishesId}}">{{dish.price}}</text>
+              </view>
+              <view class="stepper">
+                <!-- 减号 -->
+                <view class="iconfont icon-minus2 fontP" hidden="{{item.quantity<=0}}" bindtap="minusCount"
+                  data-id="{{item.dishesId}}" data-index="{{index}}"></view>
+                <!-- 数量 -->
+                <view class="value" hidden="{{item.quantity<=0}}" data-id="{{item.dishesId}}"
+                  data-num="{{item.quantity}}">
+                  {{item.quantity}}</view>
+                <!-- 加号 -->
+                <view class="iconfont icon-plus1 fontP" data-id="{{item.dishesId}}" data-index="{{index}}"
+                  bindtap="addCount">
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 菜品卡片 end -->
+  </view>
+  <!-- 右侧对应时间段菜品 end -->
+  <view class="cart-bottom">
+    <!-- start 购物车栏 -->
+    <van-submit-bar price="{{sum * 100}}"
+      button-text="{{computed.isInArr(currentTiming.id,hasOrderTimingIdArr) == -1 ? '报餐' : '取消报餐'}}"
+      bind:submit="{{ computed.isInArr(currentTiming.id,hasOrderTimingIdArr) == -1 ? 'onSubmitOrder' : 'cancelOrder'}}"
+      custom-class="van-submit-bar" tip="{{ true }}" safe-area-inset-bottom="{{ false }}">
+      <view wx:for="{{cartList}}">
+        <van-tag type="primary" custom-class="submit-tag">{{item.name}}</van-tag>
+      </view>
+    </van-submit-bar>
+    <!-- 购物车栏 end -->
+  </view>
+
+  <!-- start 日历组件 -->
+  <van-calendar show="{{ showCalendar }}" type="{{ type }}" color="{{ color }}" round="{{ round }}"
+    position="{{ position }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" max-range="{{ maxRange }}"
+    formatter="{{ formatter }}" show-confirm="{{ showConfirm }}" confirm-text="{{ confirmText }}"
+    confirm-disabled-text="{{ confirmDisabledText }}" bind:confirm="onConfirm" bind:select="onSelect"
+    show-title="{{false}}"  row-height="42" 
+    bind:unselect="onUnselect" bind:open="onOpen" bind:opened="onOpened" bind:close="onClose" bind:closed="onClosed">
+  </van-calendar>
+  <!-- 日历组件 end -->
+</view>

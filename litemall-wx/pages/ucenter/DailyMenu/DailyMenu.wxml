@@ -1,0 +1,71 @@
+<!--pages/ucenter/DailyMenu/DailyMenu.wxml-->
+<wxs src="./index.wxs" module="computed"></wxs>
+<view class="container">
+  <view class="header">
+    <van-cell is-link title="选择日期" data-type="single" data-id="selectSingle"
+      value="{{ computed.formatFullDate(date.selectSingle) }}" bind:click="selectDate" />
+  </view>
+
+  <view class="body">
+    <van-tabs type="card" tab-class="special-tab" sticky bind:click="onTabClick">
+      <van-tab wx:for="{{ timingList }}" wx:key="id" wx:for-item="timing" title="{{ timing.name }}"
+        data-id="{{timing.id}}">
+        <view class="content" wx:for="{{dailyMenuList}}" wx:if="{{timing.id == item.timingId}}">
+
+          <van-swipe-cell right-width="{{ 65 }}" >
+            <van-cell-group>
+              <van-cell center title="{{item.dishesName}}"  label=" {{item.dishesBrief}}"/>
+            </van-cell-group>
+            <view slot="right" class="van-swipe-cell__right"  data-id="{{item.id}}" bindtap="DeleteDish">删除</view>
+          </van-swipe-cell>
+
+          <!-- <view>
+            {{item.dishesName}}
+          </view>
+          <view style="font-size:20rpx">
+            {{item.dishesBrief}}
+          </view>
+          <button data-id="{{item.id}}" bindtap="DeleteDish">删除</button> -->
+        </view>
+
+      </van-tab>
+    </van-tabs>
+
+  </view>
+
+  <view class="footer">
+    <van-button type="primary" round bindtap="showAddDish">添加菜品</van-button>
+  </view>
+
+
+  <van-calendar show="{{ showCalendar }}" type="{{ type }}" color="{{ color }}" round="{{ round }}"
+    position="{{ position }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" max-range="{{ maxRange }}"
+    formatter="{{ formatter }}" show-confirm="{{ showConfirm }}" confirm-text="{{ confirmText }}"
+    confirm-disabled-text="{{ confirmDisabledText }}" bind:confirm="onConfirm" bind:select="onSelect"
+    bind:unselect="onUnselect" bind:open="onOpen" bind:opened="onOpened" bind:close="onClose" bind:closed="onClosed">
+  </van-calendar>
+
+  <!-- 添加菜品弹出层组件 -->
+
+  <van-popup show="{{ show.addDish }}" closeable round duration="300" position="bottom" custom-style="height: 80%"
+    bind:close="onPopClose">
+    <view style="padding-top:10%">
+      <van-search value="{{ keyword }}" label="菜品名" shape="round" placeholder="请输入搜索关键词" use-action-slot
+        bind:search="onSearch">
+      </van-search>
+      <van-checkbox-group value="{{ result }}" data-key="result" bind:change="onChange">
+        <van-cell-group>
+          <van-cell wx:for="{{ dishesList }}" wx:if="{{!item.hasAdd}}" wx:key="id" title="{{ item.name }}"
+            value-class="value-class" clickable data-index="{{ index }}" bind:click="checkBoxToggle"
+            label="{{item.brief}}">
+            <van-checkbox catch:tap="noop" class="checkboxes-{{ index }}" name="{{ item.id }}" />
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+    </view>
+    <view style="position:fixed;bottom:0px;width:100%">
+      <van-button type="primary" size="large" block custom-class="demo-margin-bottom" bindtap="saveConfirm">添加
+      </van-button>
+    </view>
+  </van-popup>
+</view>

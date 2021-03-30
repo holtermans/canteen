@@ -1,0 +1,47 @@
+<view class="page">
+  <view class="container">
+    <form class="publish-form " catchsubmit="formSubmit">
+      <view class="form-block">
+        <label class="form-block-title" for="publish_title">名称</label>
+        <input class="form-block-input" id="publish_title" type="text" name="name" maxlength="10" />
+      </view>
+      <view class="form-block">
+        <label class="form-block-title" for="publish_title">价格</label>
+        <input class="form-block-input" id="publish_price" type="digit" name="price" maxlength="10" />
+      </view>
+
+      <view class="form-block">
+        <label class="form-block-title" for="publish_desc">简介</label>
+        <textarea class="form-block-input" id="publish_desc" type="text" name="brief" maxlength="200"></textarea>
+      </view>
+      <view class="form-block">
+        <view class="form-block-title">菜品图片</view>
+        <view class="choose-image-area">
+          <view class="choose-image-block" data-choose-image="A" bindtap="chooseImage">
+
+            <view class="choose-image-view" wx:if="{{chooseImageA.isUploaded}}" style="background: url('{{chooseImageA.sourceObj.path}}') center center no-repeat;background-size:cover"></view>
+            <view wx:else class="choose-controller"></view>
+          </view>
+          <!-- <view class="choose-image-block" data-choose-image="B" bindtap="chooseImage">
+            <view class="choose-image-view" wx:if="{{chooseImageB.isUploaded}}" style="background: url('{{chooseImageB.sourceObj.path}}') center center no-repeat;background-size:cover"></view>
+            <view wx:else class="choose-controller"></view>
+          </view>
+          <view class="choose-image-block" data-choose-image="C" bindtap="chooseImage">
+
+            <view class="choose-image-view" wx:if="{{chooseImageC.isUploaded}}" style="background: url('{{chooseImageC.sourceObj.path}}') center center no-repeat;background-size:cover"></view>
+            <view wx:else class="choose-controller"></view>
+          </view>
+          <view class="choose-image-block" data-choose-image="D" bindtap="chooseImage">
+
+            <view class="choose-image-view" wx:if="{{chooseImageD.isUploaded}}" style="background: url('{{chooseImageD.sourceObj.path}}') center center no-repeat;background-size:cover"></view>
+            <view wx:else class="choose-controller"></view>
+          </view> -->
+        </view>
+      </view>
+      <view class="form-block">
+        <text class="form-statement">{{statementText}}</text>
+      </view>
+      <button class="form-submit-btn" form-type="submit" >添加</button>
+    </form>
+  </view>
+</view>

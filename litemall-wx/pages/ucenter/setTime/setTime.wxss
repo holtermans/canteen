@@ -1,0 +1,31 @@
+/* pages/ucenter/setTime/setTime.wxss */
+page {
+  height: 100%;
+  width: 100%;
+  background: #f4f4f4;
+}
+
+.container {
+  background: #f4f4f4;
+  height: auto;
+  overflow: hidden;
+  width: 100%;
+}
+.cards {
+  width: 100%;
+  overflow: hidden;
+  display: block;
+}
+.cards .cardItem{
+  width: 90%;
+  background: #fff;
+  margin: 0 auto;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+.cell{
+  height: 50px;
+}
+.cardItem_hd{
+  height: 50px;
+}

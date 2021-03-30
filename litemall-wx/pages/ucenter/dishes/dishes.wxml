@@ -1,0 +1,17 @@
+<!--pages/ucenter/dishes/dished.wxml-->
+<view class="container">
+  <scroll-view>
+    <van-card  price="{{item.price}}"  desc="{{item.brief}}" title="{{item.name}}"
+      thumb="{{ item.picUrl }}"  custom-class="custom-card" thumb-class="custom-thumb" wx:for="{{dishesList}}">
+      <view slot="footer" class="van-card__footer" >
+        <van-button size="mini" round custom-class="button">编辑</van-button>
+        <van-button size="mini" round custom-class="button" bindtap="delete" data-id="{{item.id}}">删除</van-button>
+      </view>
+    </van-card>
+  </scroll-view>
+
+  <view class="publish-button" bindtap="navigateToPublish">
+    <image class="publish-button-icon" src="../../../static/images/publish-icon.svg" />
+  </view>
+
+</view>

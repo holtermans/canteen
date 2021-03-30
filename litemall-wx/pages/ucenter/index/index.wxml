@@ -1,0 +1,110 @@
+<view class="container">
+  <view class="profile-info" bindtap="goLogin">
+    <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+    <view class="info">
+      <text class="name">{{userInfo.nickName}}</text>
+    </view>
+  </view>
+
+  <view class='separate'></view>
+
+  <view class='user_area'>
+    <view class='user_row' bindtap='goOrder'>
+      <view class='user_row_left'>我的订单</view>
+      <van-icon class='user_row_right' name="arrow" />
+    </view>
+    <view class='user_column'>
+      <view class='user_column_item' bindtap='goOrderIndex' data-index='1' data-route='/pages/ucenter/authInfo/authInfo'>
+        <text class="user_column_item_badge" wx:if="{{order.unship != 0}}">{{order.unship}}</text>
+        <image class='user_column_item_image' src='/static/images/send.png'></image>
+        <view class='user_column_item_text'>我的信息</view>
+      </view>
+      <view class='user_column_item' bindtap='goOrderIndex' data-index='2' data-route='/pages/ucenter/record/record'>
+        <text class="user_column_item_badge" wx:if="{{order.unpaid != 0}}">{{order.unpaid}}</text>
+        <image class='user_column_item_image' src='/static/images/pendpay.png'>
+        </image>
+        <view class='user_column_item_text'>我的报餐记录</view>
+      </view>
+      <!-- <view class='user_column_item' bindtap='goOrderIndex' data-index='3' data-route='/pages/ucenter/order/order'>
+        <text class="user_column_item_badge" wx:if="{{order.unship != 0}}">{{order.unship}}</text>
+        <image class='user_column_item_image' src='/static/images/send.png'></image>
+        <view class='user_column_item_text'>用餐核销</view>
+      </view> -->
+
+      <view class='user_column_item' bindtap='goOrderIndex' data-index='3' data-route='/pages/ucenter/order/order'>
+        <text class="user_column_item_badge" wx:if="{{order.unship != 0}}">{{order.unship}}</text>
+        <image class='user_column_item_image' src='/static/images/send.png'></image>
+        <view class='user_column_item_text'>菜品评价</view>
+      </view>
+      
+    </view>
+  </view>
+
+  <view class='separate'></view>
+
+
+  <!-- <view class='user_row'>
+    <view class='user_row_left'>人员管理</view>
+  </view>
+  <view class='user_column'>
+
+    <view class='user_column_item' bindtap='goCoupon'>
+      <image class='user_column_item_image' src='/static/images/coupon.png'></image>
+      <view class='user_column_item_text'>人员信息管理</view>
+    </view>
+    <view class='user_column_item' bindtap='goCollect'>
+      <image class='user_column_item_image' src='/static/images/collect.png'></image>
+      <view class='user_column_item_text'>免审核名单</view>
+    </view>
+    <view class='user_column_item' bindtap='goFootprint'>
+      <image class='user_column_item_image' src='/static/images/footprint.png'></image>
+      <view class='user_column_item_text'>添加用餐人员</view>
+    </view>
+
+  </view>
+  <view class='separate'></view> -->
+
+  <!-- <view class='user_row'>
+    <view class='user_row_left'>后台管理</view>
+  </view>
+  <view class='user_column'>
+
+    <button class="user_column_item_phone" bindtap="goSetTime">
+      <image class='user_column_item_image' src='/static/images/mobile.png'></image>
+      <view class='user_column_item_text'>用餐时段</view>
+    </button>
+    <view class='user_column_item' bindtap='goDishes'>
+      <image class='user_column_item_image' src='/static/images/help.png'></image>
+      <view class='user_column_item_text'>菜品库</view>
+    </view>
+    <view class='user_column_item' bindtap='goDailyMenu'>
+      <image class='user_column_item_image' src='/static/images/feedback.png'></image>
+      <view class='user_column_item_text'>每日菜谱</view>
+    </view>
+    <view class='user_column_item' bindtap='goStatistics'>
+      <image class='user_column_item_image' src='/static/images/customer.png'></image>
+      <view class='user_column_item_text'>报餐数据统计</view>
+    </view>
+    <view class='user_column_item' bindtap='aboutUs'>
+      <image class='user_column_item_image' src='/static/images/about.png'></image>
+      <view class='user_column_item_text'>关于我们</view>
+    </view>
+  </view> -->
+  <view class='separate'></view>
+  <!-- 
+  <view class="logout" wx:if="{{hasLogin}}" bindtap="exitLogin">退出登录</view> -->
+
+  <view class="logout" wx:if="{{hasLogin}}" bindtap="goAdmin">我是管理员</view>
+
+</view>
+
+<view style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,0.7);top:0" hidden="{{!isShowAuthorizon}}">
+  <view class="ep-content popup-box ">
+    <view class="ep-tit t-center">需要您的授权</view>
+    <text class="ep-subtit t-center">为了提供更好的服务\n请在稍后的提示框中点击“允许”</text>
+    <image class="ep-img" src="http://img.rblcmall.com/wxapp/images/empower.png"></image>
+    <button class="btn btn-primary btn-confirm" open-type="getUserInfo" lang="zh_CN"
+      bindgetuserinfo="clickEmpower">我知道了</button>
+  </view>
+
+</view>

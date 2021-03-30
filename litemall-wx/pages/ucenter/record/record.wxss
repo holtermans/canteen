@@ -1,0 +1,56 @@
+/* pages/ucenter/record/record.wxss */
+page {
+  background: #f4f4f4;
+  color: #000;
+}
+
+.date {
+  text-align: center;
+}
+
+
+
+.record-card {
+  border-radius: 10rpx;
+  padding: 10px;
+  width: 90%;
+  margin: 5%;
+  background: #fff;
+}
+
+.record-card .content-wrap .subtile {
+  flex: 1;
+}
+
+.record-card .content-wrap .time>view {
+  display: none;
+}
+
+.record-card .content-wrap .time>view:first-child {
+  display: block;
+  font-size: 20rpx;
+  line-height: 20px;
+
+  color: #666666;
+  flex: 1;
+}
+
+.record-card .content-wrap {
+  width: 100%;
+  padding: 10px;
+}
+
+.record-card .content-wrap .content {
+  width: 100%;
+  height: 50px;
+  margin: 1%;
+  display: inline-block;
+  display: flex;
+  border-radius: 10px;
+  vertical-align: middle;
+
+}
+.footer{
+  display: flex;
+  flex-direction: row;
+}

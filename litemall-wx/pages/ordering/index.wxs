@@ -1,0 +1,38 @@
+/* eslint-disable */
+function formatDate(date) {
+var weekday=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+  if (date) {
+    date = getDate(date);
+    return date.getMonth() + 1 + '/' + date.getDate() + '  ' +weekday[date.getDay()];
+  }
+}
+
+function formatFullDate(date) {
+  if (date) {
+    date = getDate(date);
+    return date.getFullYear() + '/' + formatDate(date);
+  }
+}
+
+function formatMultiple(dates) {
+  if (dates.length) {
+    return '选择了 ' + dates.length + '个日期';
+  }
+}
+
+function formatRange(dateRange) {
+  if (dateRange.length) {
+    return formatDate(dateRange[0]) + ' - ' + formatDate(dateRange[1]);
+  }
+}
+//判断是否在数组中
+function isInArr(value,array) {
+  return array.indexOf(value); //不存在返回-1
+}
+module.exports = {
+  formatDate: formatDate,
+  formatFullDate: formatFullDate,
+  formatMultiple: formatMultiple,
+  formatRange: formatRange,
+  isInArr: isInArr
+};

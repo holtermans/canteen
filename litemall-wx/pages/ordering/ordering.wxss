@@ -1,0 +1,255 @@
+@import '../../wxss/weui.wxss';
+@import '../../wxss/common.wxss';
+
+page{
+  height: 100%;
+}
+/* pages/ordering/ordering.wxss */
+.tiled-calendar {
+  --calendar-height: 200px;
+}
+
+.container {
+  background: #fff;
+  height: 98%;
+  width: 100%;
+  display: block;
+
+}
+.header{
+  width: 100%;
+  height: auto;
+}
+
+.header .value{
+  color: #FF5722;
+}
+.catalog {
+  height: 60%;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  border-top: 1px solid #fafafa;
+}
+
+.catalog .nav {
+  width: 162rpx;
+  height: 100%;
+}
+
+.catalog .nav .item {
+  text-align: center;
+  line-height: 90rpx;
+  width: 162rpx;
+  height: 165rpx;
+  color: #333;
+  font-size: 28rpx;
+  border-left: 6rpx solid #fff;
+}
+
+.catalog .nav .item .notes {
+  font-size: 22rpx;
+  line-height: 24rpx;
+}
+
+.catalog .nav .item.active {
+  color: #ab956d;
+  font-size: 36rpx;
+  border-left: 6rpx solid #ab956d;
+}
+
+.catalog .cate {
+  border-left: 1px solid #fafafa;
+  flex: 1;
+  height: 100%;
+  padding: 0 30rpx 0 30rpx;
+  background: #f7f7f7;
+}
+
+.banner {
+  display: block;
+  height: 222rpx;
+  width: 100%;
+  position: relative;
+}
+
+.banner .image {
+  position: absolute;
+  top: 30rpx;
+  left: 0;
+  border-radius: 4rpx;
+  height: 192rpx;
+  width: 100%;
+}
+
+.banner .txt {
+  position: absolute;
+  top: 30rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 28rpx;
+  left: 0;
+  height: 192rpx;
+  line-height: 192rpx;
+  width: 100%;
+}
+
+.catalog .hd {
+  height: 108rpx;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.catalog .hd .txt {
+  font-size: 24rpx;
+
+  color: #333;
+  padding: 0 10rpx;
+  width: auto;
+}
+
+.catalog .hd .line {
+  width: 40rpx;
+  height: 1px;
+  background: #d9d9d9;
+}
+
+.catalog .bd {
+  height: auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+.catalog .bd .item {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  width: 100%;
+  margin-right: 34rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.catalog .bd .item>view {
+  flex: 1;
+}
+
+.catalog .bd .item.last {
+  margin-right: 0;
+}
+
+.catalog .bd .item .icon {
+  height: 144rpx;
+  width: 144rpx;
+  float: left;
+}
+
+.catalog .bd .item .txt {
+  display: block;
+  font-weight: bold;
+  font-size: 24rpx;
+  color: #333;
+  height: 60rpx;
+  width: 144rpx;
+  float: left;
+  padding-top: 10rpx;
+}
+
+.catalog .bd .item .brief {
+  font-size: 36rpx;
+  color: rgb(134, 134, 134);
+  height: 100%;
+  width: auto;
+}
+
+.catalog .bd .item .brief text {
+  font-size: 24rpx;
+  color: rgb(134, 134, 134);
+  width: auto;
+}
+
+.cart-bottom {
+  height: 100rpx;
+  width: 100%;
+  background: #fff;
+  flex: 1;
+}
+
+.cart-bottom .van-checkbox {
+  float: left;
+  margin: 33rpx 18rpx 33rpx 26rpx;
+  font-size: 29rpx;
+}
+
+.cart-bottom .van-checkbox .van-icon {
+  color: #fff;
+}
+
+.cart-bottom .total {
+  height: 34rpx;
+  flex: 1;
+  margin: 33rpx 10rpx;
+  font-size: 29rpx;
+}
+
+.cart-bottom .delete {
+  text-align: center;
+  width: 180rpx;
+  height: 80rpx;
+  line-height: 82rpx;
+  padding: 0;
+  margin: 0;
+  margin-left: -5rpx;
+  padding-right: 25rpx;
+  font-size: 25rpx;
+  color: #f4f4f4;
+  /* text-align: center; */
+  border-top-left-radius: 0rpx;
+  border-bottom-left-radius: 0rpx;
+  border-top-right-radius: 50rpx;
+  border-bottom-right-radius: 50rpx;
+  letter-spacing: 3rpx;
+  background-image: linear-gradient(to right, #9a9ba1 0%, #ae8b9c 100%);
+}
+
+.cart-bottom .checkout {
+  height: 100rpx;
+  width: 210rpx;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 29rpx;
+  background: #b4282d;
+  color: #fff;
+}
+
+.price-stepper {
+  display: flex;
+  flex-direction: row;
+}
+
+.price-stepper .stepper {
+  flex: 1;
+  display: flex;
+}
+
+.price-stepper .stepper .value {
+  text-align: center;
+  background-color: #fff;
+  height: 45rpx;
+margin-left: 5px;
+margin-right: 5px;
+
+}
+
+.price-stepper .stepper>view {
+  flex: 1;
+}
+
+.price-stepper .cai_price {
+  flex: 4;
+  color: #b4282d;
+  padding-right: 24rpx;
+}

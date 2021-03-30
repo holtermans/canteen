@@ -1,0 +1,103 @@
+<!--pages/ucenter/statistics/statistics.wxml-->
+<wxs src="./index.wxs" module="computed"></wxs>
+<view class="container">
+
+  <view>
+    <van-cell is-link title="统计日期" data-type="single" data-id="selectSingle"
+      value="{{ computed.formatFullDate(date.selectSingle) }}" bind:click="selectDate" />
+  </view>
+
+  <view wx:for="{{timingList}}" wx:for-item="timing" data-id="{{timing.id}}" wx:key="id" class="card"
+    bindtap="goDetail">
+    <van-divider content-position="left" custom-style="color:#000;font-weight:bold">{{timing.name}}</van-divider>
+    <view>
+      <van-row>
+        <van-col span="8">报餐：<text style="color:#000;font-size:50rpx">{{userList[timing.id].length}} </text></van-col>
+        <van-col span="8">已取：<text style="color:#2cb300;font-size:50rpx">{{checkedRecord[timing.id].checked}} </text>
+        </van-col>
+        <van-col span="8">未取：<text style="color:#e23;font-size:50rpx">{{checkedRecord[timing.id].not_checked}} </text>
+        </van-col>
+      </van-row>
+    </view>
+    统计：
+    <view style="display:flex">
+      <view wx:for="{{dishesCount[timing.id]}}" wx:key="el" wx:for-item="count">
+        <view style="padding:10rpx" wx:for="{{dishesList}}" wx:key="id" wx:if="{{item.id == count.el}}">
+          <text>{{item.name}}</text> <text style="color:#e23;font-size:50rpx"> {{count.count}}</text>份
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+
+  <van-calendar show="{{ showCalendar }}" type="{{ type }}" color="{{ color }}" round="{{ round }}"
+    position="{{ position }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" max-range="{{ maxRange }}"
+    formatter="{{ formatter }}" show-confirm="{{ showConfirm }}" confirm-text="{{ confirmText }}"
+    confirm-disabled-text="{{ confirmDisabledText }}" bind:confirm="onConfirm" bind:select="onSelect"
+    bind:unselect="onUnselect" bind:open="onOpen" bind:opened="onOpened" bind:close="onClose" bind:closed="onClosed">
+  </van-calendar>
+
+  <van-popup show="{{ show.closeIcon }}" position="bottom" custom-style="height: 80%;width:100%"
+    bind:close="hideCloseIcon">
+    <view style="width:100%;padding-top:20px;">
+      <van-tabs animated type="card" tab-class="special-tab">
+        <van-tab wx:for="{{ tabs }}" wx:key="index" title="{{item.name}}"
+          info="{{ checkedRecord[checkTimingId][item.id] }}">
+          <scroll-view class="content" scroll-y="true" scroll-x="false" style="height:100%">
+            <view wx:for="{{checkUserList[checkTimingId][item.id]}}" wx:for-item="order">
+              <view class="user-info" wx:for="{{currentBcUserList}}" wx:key="id" wx:for-item="bcUser"
+                wx:if="{{order.userId == bcUser.id}}">
+                <view class="item">
+                  <van-image style="margin:auto 0" round fit="cover" width="10vw" height="10vw"
+                    src="{{bcUser.avatar}}" />
+                </view>
+                <view class="item">
+                  <view class="">
+                    <text class="name">{{bcUser.name}}</text>
+                    <text class="mobile">{{bcUser.mobile}}</text>
+                  </view>
+                  <view class="record">
+                    <view class="item" style="color:#e23">￥{{order.orderPrice}}</view>
+                    <view class="item" wx:for="{{result}}" wx:key="id" wx:for-item="mealorder"
+                      wx:if="{{bcUser.id == mealorder.userId &&  checkTimingId == mealorder.timingId}}">
+                      {{mealorder.dishesName}} {{mealorder.quantity}}份
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+          </scroll-view>
+        </van-tab>
+      </van-tabs>
+    </view>
+    <!-- <scroll-view scroll-y="true" style="height:89%;margin-top:10%;padding:10px">
+      <view class="popup-title" wx:for="{{timingList}}" wx:if="{{checkTimingId == item.id}}" wx:key="id">
+        {{item.name}}
+      </view>
+      <view class="popup-card" wx:for="{{userList[checkTimingId]}}" wx:for-item="userId" wx:key="id" data-id="userId">
+
+        <view class="user-info" wx:for="{{currentBcUserList}}" wx:key="id" wx:for-item="bcUser"
+          wx:if="{{bcUser.id == userId}}" >  
+          <view class="item">
+            <van-image round fit="cover" width="10vw" height="10vw" src="{{bcUser.avatar}}" />
+          </view>
+          <view class="item name">
+            <text class="name">{{bcUser.name}}</text>
+            <text class="mobile">{{bcUser.mobile}}</text>
+            <text wx:if="{{computed.isInArr(bcUser.id,checkUserList[checkTimingId]['checked']) == -1}}"> 未核销</text>
+          
+          </view>
+        </view>
+
+        <view class="record" wx:for="{{result}}" wx:key="id">
+          <view wx:if="{{userId == item.userId &&  checkTimingId == item.timingId}}">
+            {{item.dishesName}} {{item.quantity}}份
+          </view>
+        </view>
+      </view>
+    </scroll-view> -->
+  </van-popup>
+
+</view>

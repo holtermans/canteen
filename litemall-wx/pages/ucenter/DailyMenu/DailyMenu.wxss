@@ -1,0 +1,54 @@
+/* pages/ucenter/DailyMenu/DailyMenu.wxss */
+page {
+  height: 100%;
+  width: 100%;
+}
+.demo-swipe-cell {
+  user-select: none;
+}
+
+.van-swipe-cell__left,
+.van-swipe-cell__right {
+  display: inline-block;
+  width: 65px;
+  height: 44px;
+  font-size: 15px;
+  line-height: 44px;
+  color: #fff;
+  text-align: center;
+  background-color: #ee0a24;
+}
+
+.container {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.header {
+  padding: 10px;
+  height: 10%;
+}
+
+.body {
+  height: 90%;
+}
+
+.footer {
+  position: fixed;
+  bottom: 45px;
+  right: 20px;
+}
+.content{
+
+  background-color: #fff;
+}
+.checkbox{
+  height: 10%;
+  padding:10px;
+  background: rgb(255, 236, 70);
+}
+.value-class {
+  flex: none !important;
+}
+

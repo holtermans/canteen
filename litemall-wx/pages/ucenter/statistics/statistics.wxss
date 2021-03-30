@@ -1,0 +1,63 @@
+/* pages/ucenter/statistics/statistics.wxss */
+page {
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+}
+
+.card {
+  background: #fff;
+  margin-bottom: 10px;
+  margin: 10px 10px 10px 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.popup-card {
+
+  padding: 20rpx;
+  display: flex;
+  flex-direction: row;
+  background: rgb(245, 245, 245);
+}
+
+.popup-title {
+  text-align: center;
+  font-size: 20px
+}
+
+.user-info {
+  display: flex;
+}
+
+.user-info .item {
+  padding: 10rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info .item .name {
+  font-weight: bold;
+}
+
+.user-info .item .mobile {
+  padding-left: 30rpx;
+  font-size: 30rpx
+}
+
+.user-info .record {
+  display: flex;
+}
+
+.user-info .record .item {
+  margin-right: 20rpx;
+}
+.special-tab{
+  transition: all 0.25s ease-in-out;
+}
+.content{
+  padding:20rpx;
+  width: 90%;
+}

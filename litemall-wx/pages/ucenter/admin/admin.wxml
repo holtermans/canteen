@@ -1,0 +1,15 @@
+<!--pages/ucenter/admin/admin.wxml-->
+
+<view wx:if="{{bcUserInfo.admin}}" >
+  <van-divider content-position="center" custom-style="color: #1989fa;border-color: #1989fa;font-size: 18px;">
+    管理员
+  </van-divider>
+
+  <van-cell title="用餐时段管理" is-link bindtap="goSetTime"/>
+  <van-cell title="菜品管理" is-link  bindtap="goDishes"/>
+  <van-cell title="每日菜谱" is-link bindtap="goDailyMenu"/>
+  <van-cell title="用餐统计" is-link bindtap="goStatistics"/>
+</view>
+<view wx:else style="text-align:center">
+  非管理员
+</view>
