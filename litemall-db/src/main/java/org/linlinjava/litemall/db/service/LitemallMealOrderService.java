@@ -82,7 +82,7 @@ public class LitemallMealOrderService {
 
         example.setOrderByClause("id desc");
         example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        PageHelper.startPage(1, 10);//分页查询
+        PageHelper.startPage(1, 10);//在查询之前设置分页参数
         List<LitemallMealOrder> mealOrders = mealOrderMapper.selectByExample(example);
         PageInfo<LitemallMealOrder> result = new PageInfo<>(mealOrders);
         return result;

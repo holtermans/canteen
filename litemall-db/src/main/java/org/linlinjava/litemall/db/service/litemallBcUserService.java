@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.db.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.linlinjava.litemall.db.dao.LitemallBcUserMapper;
 import org.linlinjava.litemall.db.domain.LitemallBcUser;
 import org.linlinjava.litemall.db.domain.LitemallBcUserExample;
@@ -57,11 +59,15 @@ public class litemallBcUserService {
         bcUserMapper.updateByPrimaryKeySelective(bcUser);
     }
 
-    public List<LitemallBcUser> queryByStatus(LitemallBcUser bcUser) {
+    public  PageInfo<LitemallBcUser> queryByStatus(LitemallBcUser bcUser,Integer pageNum, Integer pageSize ) {
         LitemallBcUserExample example = new LitemallBcUserExample();
-        example.or().andStatusEqualTo(bcUser.getStatus());
+        if(bcUser.getStatus() != null){
+            example.or().andStatusEqualTo(bcUser.getStatus());
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<LitemallBcUser> litemallBcUsers = bcUserMapper.selectByExample(example);
-        return litemallBcUsers;
+        PageInfo<LitemallBcUser> pageInfo = new PageInfo<>(litemallBcUsers);
+        return pageInfo;
     }
 
     public List<LitemallBcUser> queryAll() {

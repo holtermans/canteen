@@ -1,8 +1,10 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallBcUser;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
@@ -12,6 +14,7 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -39,21 +42,40 @@ public class WxBcUserController {
      * @return
      */
     @RequestMapping("queryAll")
-    public Object queryAll() {
-        LitemallBcUser bcUser = new LitemallBcUser();
-        //查找没有通过审核的名单
-        bcUser.setStatus(BcUserConstant.NOT_ACTIVE);
-        List<LitemallBcUser> BcUsersNotActived = bcUserService.queryByStatus(bcUser);
-        //查找通过审核的名单
-        bcUser.setStatus(BcUserConstant.ACTIVE);
-        List<LitemallBcUser> BcUsersActived = bcUserService.queryByStatus(bcUser);
-        HashMap<Object, Object> result = new HashMap<>();
+    public Object queryAll(@RequestParam("type") String type,
+                           @RequestParam(value = "pageNum", required = false) Integer pageNum,
+                           @RequestParam(value = "pageSize", required = false) Integer pageSize
+                           ) {
+        //设置默认的页码
+        pageNum =  pageNum == null ? 1 : pageNum;
+        pageSize =  pageSize == null ? 10 : pageSize;
 
-        //分离出哪些没通过审核，哪些通过审核
-        result.put("BcUsersNotActived", BcUsersNotActived);
-        result.put("BcUsersActived", BcUsersActived);
-        return result;
+        LitemallBcUser bcUser = new LitemallBcUser();
+        switch (type){
+            case "actived":
+                bcUser.setStatus(BcUserConstant.ACTIVE);
+                break;
+            case "notActived":
+                bcUser.setStatus(BcUserConstant.NOT_ACTIVE);
+                break;
+            default:
+                break;
+        }
+
+        //
+        PageInfo<LitemallBcUser> bcUsersList = bcUserService.queryByStatus(bcUser,pageNum,pageSize);
+
+        HashMap<Object, Object> result = new HashMap<>();
+        result.put("bcUserList", bcUsersList);
+        return ResponseUtil.ok(result);
     }
 
+    /**
+     *
+     * @param operatorUserId 操作者UserId，需要进行记录
+     * @param userId
+     */
+    public void updateStatus(@LoginUser Integer operatorUserId, Integer userId){
+    }
 
 }

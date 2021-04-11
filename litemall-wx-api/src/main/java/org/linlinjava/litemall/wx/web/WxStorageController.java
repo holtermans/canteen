@@ -52,6 +52,9 @@ public class WxStorageController {
 
     @PostMapping("/upload")
     public Object upload(@RequestParam("file") MultipartFile file) throws IOException {
+        if(file == null){
+            return ResponseUtil.badArgument();
+        }
         String originalFilename = file.getOriginalFilename();
         LitemallStorage litemallStorage = storageService.store(file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
         HashMap<Object, Object> result = new HashMap<>();
