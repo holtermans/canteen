@@ -74,7 +74,17 @@ Page({
       });
     };
   },
-
+  goUserManagement: function () {
+    if (this.data.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/ucenter/userManagement/userManagement"
+      });
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    };
+  },
   goDishes: function () {
     if (this.data.hasLogin) {
       wx.navigateTo({

@@ -9,6 +9,8 @@
   <van-cell title="菜品管理" is-link  bindtap="goDishes"/>
   <van-cell title="每日菜谱" is-link bindtap="goDailyMenu"/>
   <van-cell title="用餐统计" is-link bindtap="goStatistics"/>
+  <van-cell title="用户管理" is-link bindtap="goUserManagement"/>
+
 </view>
 <view wx:else style="text-align:center">
   非管理员

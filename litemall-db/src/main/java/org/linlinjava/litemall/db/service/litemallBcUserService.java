@@ -59,6 +59,13 @@ public class litemallBcUserService {
         bcUserMapper.updateByPrimaryKeySelective(bcUser);
     }
 
+    /**
+     * 根据状态查询用户，状态分为 actived   notActived 默认为空，查询所有的状态下的用户
+     * @param bcUser
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     public  PageInfo<LitemallBcUser> queryByStatus(LitemallBcUser bcUser,Integer pageNum, Integer pageSize ) {
         LitemallBcUserExample example = new LitemallBcUserExample();
         if(bcUser.getStatus() != null){
@@ -70,6 +77,10 @@ public class litemallBcUserService {
         return pageInfo;
     }
 
+    /**
+     * 查询所有用户
+     * @return
+     */
     public List<LitemallBcUser> queryAll() {
         LitemallBcUserExample example = new LitemallBcUserExample();
         example.or();

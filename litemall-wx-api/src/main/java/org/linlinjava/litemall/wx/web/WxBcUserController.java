@@ -76,6 +76,7 @@ public class WxBcUserController {
      * @param userId
      */
     public void updateStatus(@LoginUser Integer operatorUserId, Integer userId){
+
     }
 
 }

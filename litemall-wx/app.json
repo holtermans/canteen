@@ -14,7 +14,8 @@
     "pages/ucenter/admin/admin",
     "pages/ucenter/addDish/addDish",
     "pages/ucenter/authInfo/authInfo",
-    "pages/ucenter/QRCode/QRCode"
+    "pages/ucenter/QRCode/QRCode",
+    "pages/ucenter/userManagement/userManagement"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
@@ -23,8 +24,6 @@
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FFFFFF",
     "backgroundTextStyle": "dark"
-
-
   },
   "tabBar": {
     "backgroundColor": "#fafafa",

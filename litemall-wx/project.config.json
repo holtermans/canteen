@@ -362,6 +362,12 @@
         {
           "name": "统计",
           "pathName": "pages/ucenter/statistics/statistics",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "用户管理",
+          "pathName": "pages/ucenter/userManagement/userManagement",
           "scene": null
         }
       ]

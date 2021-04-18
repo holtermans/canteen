@@ -1,8 +1,8 @@
 // 以下是业务服务器API地址
 // 本机开发时使用
-// var WxApiRoot = 'http://localhost:8080/wx/';
+var WxApiRoot = 'http://localhost:8080/wx/';
 // 局域网测试使用
-var WxApiRoot = 'https://www.joyfey.xyz/wx/';
+// var WxApiRoot = 'https://www.joyfey.xyz/wx/';
 // 云平台部署时使用
 // var WxApiRoot = 'http://122.51.199.160:8080/wx/';
 // 云平台上线时使用
@@ -124,6 +124,9 @@ module.exports = {
 
   GetBcUserInfoByUserId: WxApiRoot + 'user/getBcUserInfoByUserId', //传入ID数组，返回用户,
   GetSingleBcUserByUserId: WxApiRoot + 'user/getSingleBcUserByUserId', //查询当前用户的bc用户信息
+  GetBcUserList: WxApiRoot + 'bcuser/queryAll', //查询当前用户的bc用户信息
+  updateBcUser: WxApiRoot + 'bcuser/queryAll', //更新用户信息
+  
   UserIndex: WxApiRoot + 'user/index', //个人页面用户相关信息
   IssueList: WxApiRoot + 'issue/list', //帮助信息
 
