@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallBcUser;
+import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.service.litemallBcUserService;
@@ -13,6 +14,7 @@ import org.linlinjava.litemall.db.util.BcUserConstant;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,13 +72,34 @@ public class WxBcUserController {
         return ResponseUtil.ok(result);
     }
 
-    /**
-     *
-     * @param operatorUserId 操作者UserId，需要进行记录
-     * @param userId
-     */
-    public void updateStatus(@LoginUser Integer operatorUserId, Integer userId){
 
+    @RequestMapping("updateBcUser")
+    public Object updateUser(@LoginUser Integer operatorUserId, @RequestBody LitemallBcUser bcUserInfo){
+        if (operatorUserId != null) { //token过期，提示一下
+            //根据userId查询用户状态是否验证
+            LitemallUser user = userService.findById(operatorUserId);
+            if (user != null) {
+                Integer bcUserId = user.getBcUserId();
+                if (bcUserId == null) {
+                    return ResponseUtil.unlogin();
+                }
+                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
+                if (bcUser.getStatus() == 0) { //未激活
+                    return ResponseUtil.notActive();
+                }
+            }
+        } else {
+            return ResponseUtil.unlogin();
+        }
+
+        if(bcUserInfo.getId() == null){
+            return ResponseUtil.badArgument();
+        }
+        int feedback = bcUserService.update(operatorUserId,bcUserInfo);
+        if(feedback == 0){
+            return ResponseUtil.updatedDataFailed();cx 
+        }
+        return ResponseUtil.ok();
     }
 
 }

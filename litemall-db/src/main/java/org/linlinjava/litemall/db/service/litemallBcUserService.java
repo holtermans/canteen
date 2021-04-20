@@ -53,10 +53,10 @@ public class litemallBcUserService {
      * @param userId
      * @param bcUser
      */
-    public void update(Integer userId,LitemallBcUser bcUser){
+    public Integer update(Integer userId,LitemallBcUser bcUser){
         bcUser.setCommitUserId(userId);
         bcUser.setUpdateTime(LocalDateTime.now());
-        bcUserMapper.updateByPrimaryKeySelective(bcUser);
+        return bcUserMapper.updateByPrimaryKeySelective(bcUser);
     }
 
     /**
