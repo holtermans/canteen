@@ -97,7 +97,7 @@ public class WxBcUserController {
         }
         int feedback = bcUserService.update(operatorUserId,bcUserInfo);
         if(feedback == 0){
-            return ResponseUtil.updatedDataFailed();cx 
+            return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok();
     }
