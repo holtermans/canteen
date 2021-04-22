@@ -118,7 +118,7 @@ litemall.wx.notify-url=
 原因：
 
 1. 首先，需要明白这是前后端分离项目，前端会向后端发送请求；
-2. 其次，需要明白报错的地方，是litemall-admin/src/utils/request.js文件中;
+2. 其次，需要明白报错的地方，是litemall-admin/src/org.linlinjava.canteen.redis.utils/request.js文件中;
 3. 最后，连接超时是说发送给后端的请求长时间未反应。这里存在两个可能性：
     * 真连接超时，目前request.js文件中设置请求超时时间是5s，因此真的可能5s后端
     未及时返回数据；

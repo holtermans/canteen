@@ -90,11 +90,17 @@ public class CanteenOrderController {
         } else {
             return ResponseUtil.unlogin();
         }
+        //获取二维码信息
         Config config = configService.queryByName("checkCode");
         String checkCode = config.getValue();
+        //判断二维码是否正确
         if(!checkCode.equals(code)){
             return ResponseUtil.badArgument();
         }
+        //这里要增加排队功能，还要判断前面是否有人在排队。在此之前已经做了时间和二维码的验证，所以只需要进行队列的验证
+        //先做加入队列的功能
+
+        //todo 之前设计的不合理，所以导致这里需要两边的订单都要做核销，待改进
         int num1 = canteenOrderService.check(userId, orderId);
         int num2 = mealOrderService.check(userId, orderId);
         return ResponseUtil.ok();

@@ -1,4 +1,4 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 <wxs src="./index.wxs" module="computed" />
 
 <van-overlay
@@ -11,7 +11,7 @@
 />
 <view
   wx:if="{{ inited }}"
-  class="custom-class {{ classes }} {{ utils.bem('popup', [position, { round, safe: safeAreaInsetBottom, safeTop: safeAreaInsetTop }]) }}"
+  class="custom-class {{ classes }} {{ org.linlinjava.canteen.redis.utils.bem('popup', [position, { round, safe: safeAreaInsetBottom, safeTop: safeAreaInsetTop }]) }}"
   style="{{ computed.popupStyle({ zIndex, currentDuration, display, customStyle }) }}"
   bind:transitionend="onTransitionEnd"
 >

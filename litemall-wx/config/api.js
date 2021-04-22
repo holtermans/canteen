@@ -120,12 +120,12 @@ module.exports = {
   DailyMenuAdd: WxApiRoot + 'dailyMenu/add', //添加菜品
   DailyMenuDel: WxApiRoot + 'dailyMenu/deleteById', //删除菜品
   StorageUpload: WxApiRoot + 'storage/upload', //图片上传,
-  OrderCheck: WxApiRoot + 'canteenOrder/check', //图片上传,
+  OrderCheck: WxApiRoot + 'canteenOrder/check', //订单核销,
 
   GetBcUserInfoByUserId: WxApiRoot + 'user/getBcUserInfoByUserId', //传入ID数组，返回用户,
   GetSingleBcUserByUserId: WxApiRoot + 'user/getSingleBcUserByUserId', //查询当前用户的bc用户信息
   GetBcUserList: WxApiRoot + 'bcuser/queryAll', //查询当前用户的bc用户信息
-  updateBcUser: WxApiRoot + 'bcuser/queryAll', //更新用户信息
+  UpdateBcUser: WxApiRoot + 'bcuser/updateBcUser', //更新用户信息
   
   UserIndex: WxApiRoot + 'user/index', //个人页面用户相关信息
   IssueList: WxApiRoot + 'issue/list', //帮助信息

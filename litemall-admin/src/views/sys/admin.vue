@@ -110,7 +110,7 @@
 import { listAdmin, createAdmin, updateAdmin, deleteAdmin } from '@/api/admin'
 import { roleOptions } from '@/api/role'
 import { uploadPath } from '@/api/storage'
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/org.linlinjava.canteen.redis.utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {

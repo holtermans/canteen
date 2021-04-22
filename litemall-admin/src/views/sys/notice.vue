@@ -74,7 +74,7 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 import _ from 'lodash'
 import Editor from '@tinymce/tinymce-vue'
 import { createStorage } from '@/api/storage'
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/org.linlinjava.canteen.redis.utils/auth'
 
 export default {
   name: 'Notice',

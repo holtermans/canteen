@@ -1,7 +1,7 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 <wxs src="./options.wxs" module="computed" />
 
-<view class="{{ utils.bem('share-sheet__options', { border: showBorder }) }}">
+<view class="{{ org.linlinjava.canteen.redis.utils.bem('share-sheet__options', { border: showBorder }) }}">
   <view
     wx:for="{{ options }}"
     wx:key="index"

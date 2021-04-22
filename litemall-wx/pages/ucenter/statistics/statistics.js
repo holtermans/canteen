@@ -9,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    activeNames:['1'],
     tabs:[
       {id:"checked",name:"已核销"},
       {id:"not_checked",name:"未核销"}
@@ -52,6 +53,11 @@ Page({
     confirmDisabledText: undefined,
   },
 
+  collapse(event){
+    this.setData({
+      activeNames: event.detail,
+    });
+  },
   toggle(type, show) {
     this.setData({
       [`show.${type}`]: show

@@ -155,7 +155,78 @@ Page({
     })
   },
   pass: function(e){
+    var that = this;
+    wx.showLoading({
+      title: '加载中',
+    });
     //获取在数据库中的id
     console.log(e.currentTarget.dataset.id)
+    var data = {
+      "id": e.currentTarget.dataset.id,
+      "status": 1
+    }
+    util.request(api.UpdateBcUser, data,"POST").then((res) => {
+      if (res.errno == 0) {
+        console.log("res");
+        that.setData({
+          
+          pageNum: 1,
+          pageSize: 10,
+          pages: 0,
+        });
+        that.getBcUserList().then(res => {
+          that.setData({
+            bcUserList: res.data.bcUserList,
+            pages: res.data.bcUserList.pages,
+          })
+          console.log(res);
+        }).catch(() => {
+          util.showErrorModal("数据请求出错");
+        });
+      } else {
+        console.log(res)
+        
+      }
+      wx.hideLoading({
+        success: (res) => {},
+      })
+    })
+  },
+  unpass: function(e){
+    var that = this;
+    wx.showLoading({
+      title: '加载中',
+    });
+    //获取在数据库中的id
+    console.log(e.currentTarget.dataset.id)
+    var data = {
+      "id": e.currentTarget.dataset.id,
+      "status": 0
+    }
+    util.request(api.UpdateBcUser, data,"POST").then((res) => {
+      if (res.errno == 0) {
+        console.log("res")
+        that.setData({
+          pageNum: 1,
+          pageSize: 10,
+          pages: 0,
+        });
+        that.getBcUserList().then(res => {
+          that.setData({
+            bcUserList: res.data.bcUserList,
+            pages: res.data.bcUserList.pages,
+          })
+          console.log(res);
+        }).catch(() => {
+          util.showErrorModal("数据请求出错");
+        });
+      } else {
+        console.log(res)
+        
+      }
+      wx.hideLoading({
+        success: (res) => {},
+      })
+    })
   }
 })

@@ -32,7 +32,11 @@
             <groupId>org.linlinjava</groupId>
             <artifactId>litemall-db</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.linlinjava</groupId>
+            <artifactId>canteen-redis</artifactId>
+            <version>0.1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.github.binarywang</groupId>

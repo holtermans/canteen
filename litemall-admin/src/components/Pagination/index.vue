@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { scrollTo } from '@/utils/scrollTo'
+import { scrollTo } from '@/org.linlinjava.canteen.redis.utils/scrollTo'
 
 export default {
   name: 'Pagination',

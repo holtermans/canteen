@@ -6,29 +6,45 @@
     <van-cell is-link title="统计日期" data-type="single" data-id="selectSingle"
       value="{{ computed.formatFullDate(date.selectSingle) }}" bind:click="selectDate" />
   </view>
+  <view>
+    <van-collapse value="{{activeNames}}" bind:change="collapse">
 
-  <view wx:for="{{timingList}}" wx:for-item="timing" data-id="{{timing.id}}" wx:key="id" class="card"
-    bindtap="goDetail">
-    <van-divider content-position="left" custom-style="color:#000;font-weight:bold">{{timing.name}}</van-divider>
-    <view>
-      <van-row>
-        <van-col span="8">报餐：<text style="color:#000;font-size:50rpx">{{userList[timing.id].length}} </text></van-col>
-        <van-col span="8">已取：<text style="color:#2cb300;font-size:50rpx">{{checkedRecord[timing.id].checked}} </text>
-        </van-col>
-        <van-col span="8">未取：<text style="color:#e23;font-size:50rpx">{{checkedRecord[timing.id].not_checked}} </text>
-        </van-col>
-      </van-row>
-    </view>
-    统计：
-    <view style="display:flex">
-      <view wx:for="{{dishesCount[timing.id]}}" wx:key="el" wx:for-item="count">
-        <view style="padding:10rpx" wx:for="{{dishesList}}" wx:key="id" wx:if="{{item.id == count.el}}">
-          <text>{{item.name}}</text> <text style="color:#e23;font-size:50rpx"> {{count.count}}</text>份
-        </view>
+      <view wx:for="{{timingList}}" wx:for-item="timing" wx:key="id" class="card">
+        <van-collapse-item title="{{timing.name}}" name="{{timing.id}}">
+          <view data-id="{{timing.id}}" bindtap="goDetail">
+            <!-- <van-divider content-position="left" custom-style="color:#000;font-weight:bold">{{timing.name}}</van-divider> -->
+            <view>
+              <van-row>
+                <van-col span="8">报餐：<text style="color:#000;font-size:50rpx">{{userList[timing.id].length}} </text>
+                </van-col>
+                <van-col span="8">已取：<text style="color:#2cb300;font-size:50rpx">{{checkedRecord[timing.id].checked}}
+                  </text>
+                </van-col>
+                <van-col span="8">未取：<text style="color:#e23;font-size:50rpx">{{checkedRecord[timing.id].not_checked}}
+                  </text>
+                </van-col>
+              </van-row>
+            </view>
+            统计：
+            <view style="display:flex">
+              <view wx:for="{{dishesCount[timing.id]}}" wx:key="el" wx:for-item="count">
+                <view style="padding:10rpx" wx:for="{{dishesList}}" wx:key="id" wx:if="{{item.id == count.el}}">
+                  <text>{{item.name}}</text> <text style="color:#e23;font-size:50rpx"> {{count.count}}</text>份
+                </view>
+              </view>
+            </view>
+          </view>
+        </van-collapse-item>
       </view>
-    </view>
 
+
+    </van-collapse>
   </view>
+  <view class="card queue">
+    排队窗口
+  </view>
+
+
 
 
   <van-calendar show="{{ showCalendar }}" type="{{ type }}" color="{{ color }}" round="{{ round }}"

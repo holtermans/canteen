@@ -1,4 +1,4 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 <wxs src="./index.wxs" module="computed" />
 
 <view

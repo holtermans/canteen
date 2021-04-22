@@ -1,13 +1,13 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 
-<view class="custom-class {{ utils.bem('steps', [direction]) }}">
+<view class="custom-class {{ org.linlinjava.canteen.redis.utils.bem('steps', [direction]) }}">
   <view class="van-step__wrapper">
     <view
       wx:for="{{ steps }}"
       wx:key="index"
       bindtap="onClick"
       data-index="{{ index }}"
-      class="{{ utils.bem('step', [direction, status(index, active)]) }} van-hairline"
+      class="{{ org.linlinjava.canteen.redis.utils.bem('step', [direction, status(index, active)]) }} van-hairline"
       style="{{ status(index, active) === 'inactive' ? 'color: ' + inactiveColor: '' }}"
     >
       <view class="van-step__title" style="{{ index === active ? 'color: ' + activeColor : '' }}">

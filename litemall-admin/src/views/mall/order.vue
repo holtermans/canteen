@@ -287,7 +287,7 @@
 <script>
 import { detailOrder, listOrder, listChannel, refundOrder, payOrder, deleteOrder, shipOrder } from '@/api/order'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import checkPermission from '@/utils/permission' // 权限判断函数
+import checkPermission from '@/org.linlinjava.canteen.redis.utils/permission' // 权限判断函数
 
 const statusMap = {
   101: '未付款',

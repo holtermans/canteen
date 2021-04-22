@@ -120,7 +120,7 @@ import { createStorage, uploadPath } from '@/api/storage'
 import BackToTop from '@/components/BackToTop'
 import Editor from '@tinymce/tinymce-vue'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/org.linlinjava.canteen.redis.utils/auth'
 
 export default {
   name: 'TopicEdit',

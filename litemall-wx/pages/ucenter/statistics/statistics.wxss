@@ -10,8 +10,8 @@ page {
 .card {
   background: #fff;
   margin-bottom: 10px;
-  margin: 10px 10px 10px 10px;
-  padding: 10px;
+  margin: 2px 10px 2px 10px;
+  padding: 1px;
   border-radius: 5px;
 }
 

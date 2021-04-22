@@ -69,8 +69,10 @@ public class litemallBcUserService {
     public  PageInfo<LitemallBcUser> queryByStatus(LitemallBcUser bcUser,Integer pageNum, Integer pageSize ) {
         LitemallBcUserExample example = new LitemallBcUserExample();
         if(bcUser.getStatus() != null){
-            example.or().andStatusEqualTo(bcUser.getStatus());
+            example.or().andStatusEqualTo(bcUser.getStatus()).andIsAdminEqualTo(false);
         }
+
+        System.out.println("ceshi");
         PageHelper.startPage(pageNum, pageSize);
         List<LitemallBcUser> litemallBcUsers = bcUserMapper.selectByExample(example);
         PageInfo<LitemallBcUser> pageInfo = new PageInfo<>(litemallBcUsers);
@@ -83,7 +85,6 @@ public class litemallBcUserService {
      */
     public List<LitemallBcUser> queryAll() {
         LitemallBcUserExample example = new LitemallBcUserExample();
-        example.or();
         List<LitemallBcUser> litemallBcUsers = bcUserMapper.selectByExample(example);
         return litemallBcUsers;
     }

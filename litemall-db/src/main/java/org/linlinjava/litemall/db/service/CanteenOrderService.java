@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import org.linlinjava.litemall.db.dao.CanteenOrderMapper;
 import org.linlinjava.litemall.db.domain.CanteenOrder;
 import org.linlinjava.litemall.db.domain.CanteenOrderExample;
+import org.linlinjava.litemall.db.util.CanteenOrderConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
@@ -103,11 +104,17 @@ public class CanteenOrderService {
         return result;
     }
 
+    /**
+     * 核销订单
+     * @param userId
+     * @param orderId
+     * @return
+     */
     public int check(Integer userId, Integer orderId) {
         CanteenOrderExample example = new CanteenOrderExample();
         example.or().andUserIdEqualTo(userId).andIdEqualTo(orderId).andDeletedEqualTo(false);
         CanteenOrder order = new CanteenOrder();
-        order.setOrderStatus(CHECKED);
+        order.setOrderStatus(CanteenOrderConstant.CHECKED);
         order.setUpdateTime(LocalDateTime.now());
         return canteenOrderMapper.updateByExampleSelective(order, example);
     }

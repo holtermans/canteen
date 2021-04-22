@@ -1,27 +1,27 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 
-<view class="{{ utils.bem('radio', [direction]) }} custom-class">
+<view class="{{ org.linlinjava.canteen.redis.utils.bem('radio', [direction]) }} custom-class">
   <view
     wx:if="{{ labelPosition === 'left' }}"
-    class="label-class {{ utils.bem('radio__label', [labelPosition, { disabled }]) }}"
+    class="label-class {{ org.linlinjava.canteen.redis.utils.bem('radio__label', [labelPosition, { disabled }]) }}"
     bindtap="onClickLabel"
   >
     <slot />
   </view>
-  <view class="van-radio__icon-wrap" style="font-size: {{ utils.addUnit(iconSize) }};" bindtap="onChange">
+  <view class="van-radio__icon-wrap" style="font-size: {{ org.linlinjava.canteen.redis.utils.addUnit(iconSize) }};" bindtap="onChange">
     <slot wx:if="{{ useIconSlot }}" name="icon" />
     <van-icon
       wx:else
       name="success"
-      class="{{ utils.bem('radio__icon', [shape, { disabled, checked: value === name }]) }}"
-      style="font-size: {{ utils.addUnit(iconSize) }};{{ checkedColor && !disabled && value === name ? 'border-color:' + checkedColor + '; background-color:' + checkedColor + ';' : '' }}"
+      class="{{ org.linlinjava.canteen.redis.utils.bem('radio__icon', [shape, { disabled, checked: value === name }]) }}"
+      style="font-size: {{ org.linlinjava.canteen.redis.utils.addUnit(iconSize) }};{{ checkedColor && !disabled && value === name ? 'border-color:' + checkedColor + '; background-color:' + checkedColor + ';' : '' }}"
       custom-class="icon-class"
-      custom-style="line-height: {{ utils.addUnit(iconSize) }};font-size: .8em;display: block;"
+      custom-style="line-height: {{ org.linlinjava.canteen.redis.utils.addUnit(iconSize) }};font-size: .8em;display: block;"
     />
   </view>
   <view
     wx:if="{{ labelPosition === 'right' }}"
-    class="label-class {{ utils.bem('radio__label', [labelPosition, { disabled }]) }}"
+    class="label-class {{ org.linlinjava.canteen.redis.utils.bem('radio__label', [labelPosition, { disabled }]) }}"
     bindtap="onClickLabel"
   >
     <slot />

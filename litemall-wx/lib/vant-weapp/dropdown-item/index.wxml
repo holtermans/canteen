@@ -1,8 +1,8 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 
 <view
   wx:if="{{ showWrapper }}"
-  class="{{ utils.bem('dropdown-item', direction) }}"
+  class="{{ org.linlinjava.canteen.redis.utils.bem('dropdown-item', direction) }}"
   style="{{ wrapperStyle }}"
 >
   <van-popup
@@ -23,7 +23,7 @@
       wx:for="{{ options }}"
       wx:key="value"
       data-option="{{ item }}"
-      class="{{ utils.bem('dropdown-item__option', { active: item.value === value } ) }}"
+      class="{{ org.linlinjava.canteen.redis.utils.bem('dropdown-item__option', { active: item.value === value } ) }}"
       clickable
       icon="{{ item.icon }}"
       bind:tap="onOptionTap"

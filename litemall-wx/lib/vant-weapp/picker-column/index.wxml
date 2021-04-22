@@ -1,4 +1,4 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 <wxs src="./index.wxs" module="computed" />
 
 <view
@@ -16,7 +16,7 @@
       wx:key="index"
       data-index="{{ index }}"
       style="height: {{ itemHeight }}px"
-      class="van-ellipsis {{ utils.bem('picker-column__item', { disabled: option && option.disabled, selected: index === currentIndex }) }} {{ index === currentIndex ? 'active-class' : '' }}"
+      class="van-ellipsis {{ org.linlinjava.canteen.redis.utils.bem('picker-column__item', { disabled: option && option.disabled, selected: index === currentIndex }) }} {{ index === currentIndex ? 'active-class' : '' }}"
       bindtap="onClickItem"
     >{{ computed.optionText(option, valueKey) }}</view>
   </view>

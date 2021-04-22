@@ -1,7 +1,7 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 
 <view
-  class="{{ utils.bem('tabbar-item', { active }) }} custom-class"
+  class="{{ org.linlinjava.canteen.redis.utils.bem('tabbar-item', { active }) }} custom-class"
   style="color: {{ active ? activeColor : inactiveColor }}"
   bindtap="onClick"
 >

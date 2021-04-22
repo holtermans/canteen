@@ -133,7 +133,7 @@
 <script>
 import { listCategory, listCatL1, createCategory, updateCategory, deleteCategory } from '@/api/category'
 import { uploadPath } from '@/api/storage'
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/org.linlinjava.canteen.redis.utils/auth'
 
 export default {
   name: 'Category',

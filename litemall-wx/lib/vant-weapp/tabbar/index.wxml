@@ -1,7 +1,7 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 
 <view
-  class="{{ border ? 'van-hairline--top-bottom' : '' }} {{ utils.bem('tabbar', { fixed, safe: safeAreaInsetBottom }) }} custom-class"
+  class="{{ border ? 'van-hairline--top-bottom' : '' }} {{ org.linlinjava.canteen.redis.utils.bem('tabbar', { fixed, safe: safeAreaInsetBottom }) }} custom-class"
   style="{{ zIndex ? 'z-index: ' + zIndex : '' }}"
 >
   <slot />

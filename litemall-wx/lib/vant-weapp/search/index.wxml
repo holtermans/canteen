@@ -1,10 +1,10 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 
 <view
-  class="{{ utils.bem('search', { withaction: showAction || useActionSlot }) }} custom-class"
+  class="{{ org.linlinjava.canteen.redis.utils.bem('search', { withaction: showAction || useActionSlot }) }} custom-class"
   style="background: {{ background }}"
 >
-  <view class="{{ utils.bem('search__content', [shape]) }}">
+  <view class="{{ org.linlinjava.canteen.redis.utils.bem('search__content', [shape]) }}">
     <view class="van-search__label" wx:if="{{ label }}">{{ label }}</view>
     <slot wx:else name="label" />
 

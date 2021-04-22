@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication(scanBasePackages = {"org.linlinjava.litemall"})
+@SpringBootApplication(scanBasePackages = {"org.linlinjava.litemall","org.linlinjava.canteen"})
 @MapperScan({"org.linlinjava.litemall.db.dao"})
 @EnableTransactionManagement
 @EnableScheduling

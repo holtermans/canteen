@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { isExternal } from '@/utils/validate'
+import { isExternal } from '@/org.linlinjava.canteen.redis.utils/validate'
 export default {
   props: {
     to: {

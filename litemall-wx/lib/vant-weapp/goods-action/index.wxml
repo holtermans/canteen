@@ -1,5 +1,5 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 
-<view class="custom-class {{ utils.bem('goods-action', { safe: safeAreaInsetBottom }) }}">
+<view class="custom-class {{ org.linlinjava.canteen.redis.utils.bem('goods-action', { safe: safeAreaInsetBottom }) }}">
   <slot />
 </view>

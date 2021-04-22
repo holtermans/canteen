@@ -341,7 +341,7 @@ import { publishGoods, listCatAndBrand } from '@/api/goods'
 import { createStorage, uploadPath } from '@/api/storage'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/org.linlinjava.canteen.redis.utils/auth'
 
 export default {
   name: 'GoodsCreate',

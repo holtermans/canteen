@@ -1,9 +1,9 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 <wxs src="./index.wxs" module="computed" />
 
 <view
   wx:if="{{ show }}"
-  class="custom-class {{ utils.bem('notice-bar', { withicon: mode, wrapable }) }}"
+  class="custom-class {{ org.linlinjava.canteen.redis.utils.bem('notice-bar', { withicon: mode, wrapable }) }}"
   style="{{ computed.rootStyle({ color, backgroundColor, background }) }}"
   bind:tap="onClick"
 >

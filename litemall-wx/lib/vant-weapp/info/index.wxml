@@ -1,7 +1,7 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
 
 <view
   wx:if="{{ info !== null && info !== '' || dot }}"
-  class="van-info {{ utils.bem('info', { dot }) }} custom-class"
+  class="van-info {{ org.linlinjava.canteen.redis.utils.bem('info', { dot }) }} custom-class"
   style="{{ customStyle }}"
 >{{ dot ? '' : info }}</view>
