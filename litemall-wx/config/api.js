@@ -127,7 +127,7 @@ module.exports = {
   GetBcUserList: WxApiRoot + 'bcuser/queryAll', //查询当前用户的bc用户信息
   UpdateBcUser: WxApiRoot + 'bcuser/updateBcUser', //更新用户信息
   Socket: "ws://127.0.0.1:8080/" + 'websocket/12',
-  
+  QueueQuery: WxApiRoot + 'myredis/all',
   UserIndex: WxApiRoot + 'user/index', //个人页面用户相关信息
   IssueList: WxApiRoot + 'issue/list', //帮助信息
 

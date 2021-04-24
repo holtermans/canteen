@@ -3,7 +3,7 @@ var api = require('../../../config/api.js');
 var user = require('../../../utils/user.js');
 var app = getApp();
 // pages/ucenter/statistics/statistics.js
-var i = undefined;//全局计时器
+var i = undefined; //全局计时器
 Page({
 
   /**
@@ -61,6 +61,15 @@ Page({
     connected: false,
     message: ""
   },
+  initqueue() {
+    var that = this;
+    util.request(api.QueueQuery).then((res) => {
+      console.log(res);
+      that.setData({
+        message: res.data.orderInfo
+      })
+    })
+  },
   //监听任务
   startTask() {
     var time = 0;
@@ -69,7 +78,7 @@ Page({
       that.setData({
         queue: time++
       })
-    },1000);
+    }, 1000);
     wx.connectSocket({
       url: api.Socket,
 
@@ -100,10 +109,10 @@ Page({
     wx.onSocketClose((result) => {
       this.setData({
         connected: false,
-        message:null
+        message: null
       });
       clearInterval(i);
-      
+
     })
 
   },
@@ -134,7 +143,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.initqueue();
     this.startTask();
+
   },
 
   /**

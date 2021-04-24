@@ -25,7 +25,7 @@ import javax.annotation.Resource;
 import java.util.*;
 
 @RestController
-@RequestMapping("/wx/myredis")
+    @RequestMapping("/wx/myredis")
 @Validated
 public class RedisController {
     @Autowired
@@ -140,7 +140,9 @@ public class RedisController {
                 JSONObject jsonObject = JSON.parseObject(s);
                 objects.add(jsonObject);
             }
-            return ResponseUtil.ok(objects);
+            HashMap<Object, Object> resultMap = new HashMap<>();
+            resultMap.put("orderInfo",objects);
+            return ResponseUtil.ok(resultMap);
         }
     }
 }
