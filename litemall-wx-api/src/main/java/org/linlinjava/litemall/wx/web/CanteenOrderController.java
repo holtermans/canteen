@@ -106,7 +106,7 @@ public class CanteenOrderController {
         return ResponseUtil.ok();
     }
     /**
-     * 订单核销
+     * 订单查询
      *
      * @return
      */

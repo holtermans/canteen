@@ -1,4 +1,4 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 <wxs src="./index.wxs" module="computed" />
 
 <van-cell
@@ -16,12 +16,12 @@
   custom-class="van-field"
 >
   <slot name="left-icon" slot="icon" />
-  <view wx:if="{{ label }}" class="label-class {{ org.linlinjava.canteen.redis.utils.bem('field__label', { disabled }) }}" slot="title">
+  <view wx:if="{{ label }}" class="label-class {{ utils.bem('field__label', { disabled }) }}" slot="title">
     {{ label }}
   </view>
   <slot wx:else name="label" slot="title" />
-  <view class="{{ org.linlinjava.canteen.redis.utils.bem('field__body', [type]) }}">
-    <view class="{{ org.linlinjava.canteen.redis.utils.bem('field__control', [inputAlign, 'custom']) }}" bindtap="onClickInput">
+  <view class="{{ utils.bem('field__body', [type]) }}">
+    <view class="{{ utils.bem('field__control', [inputAlign, 'custom']) }}" bindtap="onClickInput">
       <slot name="input" />
     </view>
     <include wx:if="{{ type === 'textarea' }}" src="textarea.wxml" />
@@ -48,9 +48,9 @@
     </view>
   </view>
   <view wx:if="{{ showWordLimit && maxlength }}" class="van-field__word-limit">
-    <view class="{{ org.linlinjava.canteen.redis.utils.bem('field__word-num', { full: value.length >= maxlength }) }}">{{ value.length >= maxlength ? maxlength : value.length }}</view>/{{ maxlength }}
+    <view class="{{ utils.bem('field__word-num', { full: value.length >= maxlength }) }}">{{ value.length >= maxlength ? maxlength : value.length }}</view>/{{ maxlength }}
   </view>
-  <view wx:if="{{ errorMessage }}" class="{{ org.linlinjava.canteen.redis.utils.bem('field__error-message', [errorMessageAlign, { disabled, error }]) }}">
+  <view wx:if="{{ errorMessage }}" class="{{ utils.bem('field__error-message', [errorMessageAlign, { disabled, error }]) }}">
     {{ errorMessage }}
   </view>
 </van-cell>

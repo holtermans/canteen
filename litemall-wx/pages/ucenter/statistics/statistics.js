@@ -3,26 +3,33 @@ var api = require('../../../config/api.js');
 var user = require('../../../utils/user.js');
 var app = getApp();
 // pages/ucenter/statistics/statistics.js
+var i = undefined;//全局计时器
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    activeNames:['1'],
-    tabs:[
-      {id:"checked",name:"已核销"},
-      {id:"not_checked",name:"未核销"}
+    queue: 0,
+    activeNames: ['1'],
+    tabs: [{
+        id: "checked",
+        name: "已核销"
+      },
+      {
+        id: "not_checked",
+        name: "未核销"
+      }
     ],
     result: null,
     checkTimingId: null,
     timingList: [],
     dishesList: [],
     userList: {}, //储存
-    checkUserList:{},  //储存核销与为核销用户id列表
+    checkUserList: {}, //储存核销与为核销用户id列表
     orderDishesList: {},
     dishesCount: {},
-    checkedRecord: {},  //统计核销和未核销用户个数
+    checkedRecord: {}, //统计核销和未核销用户个数
     //弹窗显示
     show: {
       closeIcon: false,
@@ -51,9 +58,58 @@ Page({
     tiledMaxDate: new Date(2012, 2, 20).getTime(),
     confirmText: undefined,
     confirmDisabledText: undefined,
+    connected: false,
+    message: ""
+  },
+  //监听任务
+  startTask() {
+    var time = 0;
+    var that = this;
+    i = setInterval(() => {
+      that.setData({
+        queue: time++
+      })
+    },1000);
+    wx.connectSocket({
+      url: api.Socket,
+
+      success: function (res) {
+        console.log(res);
+      },
+      fail: function (res) {
+        console.log(res);
+      }
+    });
+    wx.onSocketOpen((result) => {
+      this.setData({
+        connected: true
+      })
+    })
+    wx.onSocketMessage((result) => {
+      console.log(result);
+      var message = JSON.parse(result.data);
+      console.log(message)
+      var temp = [];
+      message.forEach(item => {
+        temp.push(JSON.parse(item));
+      })
+      this.setData({
+        message: temp
+      })
+    })
+    wx.onSocketClose((result) => {
+      this.setData({
+        connected: false,
+        message:null
+      });
+      clearInterval(i);
+      
+    })
+
   },
 
-  collapse(event){
+  //折叠菜单
+  collapse(event) {
     this.setData({
       activeNames: event.detail,
     });
@@ -78,7 +134,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.startTask();
   },
 
   /**
@@ -185,8 +241,8 @@ Page({
           orderGroup[item.timingId].push(item);
         });
         var check = {};
-        var checkUserList = {}; 
-        for (let key in orderGroup) {  //统计取餐人数和未取餐人数
+        var checkUserList = {};
+        for (let key in orderGroup) { //统计取餐人数和未取餐人数
           if (orderGroup.hasOwnProperty(key)) {
             checkUserList[key] = {};
             checkUserList[key]["checked"] = [];
@@ -195,7 +251,7 @@ Page({
             check[key]["checked"] = 0;
             check[key]["not_checked"] = 0;
             orderGroup[key].forEach(item => {
-              if (item.orderStatus == 103) {  //未核销
+              if (item.orderStatus == 103) { //未核销
                 check[key]["not_checked"]++;
                 checkUserList[key]["not_checked"].push(item);
               } else { //已核销
@@ -205,11 +261,11 @@ Page({
             })
           }
         }
-      that.setData({
-        checkedRecord:check,
-        checkUserList: checkUserList,
-      })
-      console.log(checkUserList);
+        that.setData({
+          checkedRecord: check,
+          checkUserList: checkUserList,
+        })
+        console.log(checkUserList);
       }
     });
 
@@ -268,11 +324,12 @@ Page({
     console.log(event);
   },
 
-  onClose() {
+  CloseClender() {
     console.log(this.data.date);
     this.setData({
       showCalendar: false
     });
+
   },
 
   onOpen() {
@@ -283,8 +340,9 @@ Page({
     console.log('opened');
   },
 
-  onClosed() {
+  ClosedClender() {
     console.log('closed');
+
   },
   //获取用餐时段列表
   getTimingList: function () {
@@ -346,7 +404,8 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    wx.closeSocket();
+    clearInterval(i);
   },
 
   /**
@@ -370,5 +429,7 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+
 })

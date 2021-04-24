@@ -1,7 +1,7 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 
 <view class="van-circle">
-  <canvas class="van-circle__canvas" type="{{ type }}" style="width: {{ org.linlinjava.canteen.redis.utils.addUnit(size) }};height:{{ org.linlinjava.canteen.redis.utils.addUnit(size) }}" id="van-circle" canvas-id="van-circle"></canvas>
+  <canvas class="van-circle__canvas" type="{{ type }}" style="width: {{ utils.addUnit(size) }};height:{{ utils.addUnit(size) }}" id="van-circle" canvas-id="van-circle"></canvas>
   <view wx:if="{{ !text }}" class="van-circle__text">
     <slot></slot>
   </view>

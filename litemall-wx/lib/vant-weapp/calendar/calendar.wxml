@@ -36,13 +36,13 @@
   </scroll-view>
 
   <view
-    class="{{ org.linlinjava.canteen.redis.utils.bem('calendar__footer', { safeAreaInsetBottom }) }}"
+    class="{{ utils.bem('calendar__footer', { safeAreaInsetBottom }) }}"
   >
     <slot name="footer"></slot>
   </view>
 
   <view
-    class="{{ org.linlinjava.canteen.redis.utils.bem('calendar__footer', { safeAreaInsetBottom }) }}"
+    class="{{ utils.bem('calendar__footer', { safeAreaInsetBottom }) }}"
   >
     <van-button
       wx:if="{{ showConfirm }}"

@@ -1,5 +1,5 @@
 /* eslint-disable */
-var org.linlinjava.canteen.redis.utils = require('./org.linlinjava.canteen.redis.utils.wxs');
+var utils = require('./utils.wxs');
 
 function getMonths(minDate, maxDate) {
   var months = [];
@@ -10,7 +10,7 @@ function getMonths(minDate, maxDate) {
   do {
     months.push(cursor.getTime());
     cursor.setMonth(cursor.getMonth() + 1);
-  } while (org.linlinjava.canteen.redis.utils.compareMonth(cursor, getDate(maxDate)) !== 1);
+  } while (utils.compareMonth(cursor, getDate(maxDate)) !== 1);
 
   return months;
 }

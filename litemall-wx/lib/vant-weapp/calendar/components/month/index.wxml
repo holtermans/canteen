@@ -1,5 +1,5 @@
 <wxs src="./index.wxs" module="computed"></wxs>
-<wxs src="../../../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../../../wxs/utils.wxs" module="utils" />
 
 <view class="van-calendar__month" style="{{ computed.getMonthStyle(visible, date, rowHeight) }}">
   <view wx:if="{{ showMonthTitle }}" class="van-calendar__month-title">
@@ -15,7 +15,7 @@
       wx:for="{{ days }}"
       wx:key="index"
       style="{{ computed.getDayStyle(item.type, index, date, rowHeight, color) }}"
-      class="{{ org.linlinjava.canteen.redis.utils.bem('calendar__day', [item.type]) }} {{ item.className }}"
+      class="{{ utils.bem('calendar__day', [item.type]) }} {{ item.className }}"
       data-index="{{ index }}"
       bindtap="onClick"
     >

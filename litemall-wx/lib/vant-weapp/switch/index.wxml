@@ -1,8 +1,8 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 <wxs src="./index.wxs" module="computed" />
 
 <view
-  class="{{ org.linlinjava.canteen.redis.utils.bem('switch', { on: checked === activeValue, disabled }) }} custom-class"
+  class="{{ utils.bem('switch', { on: checked === activeValue, disabled }) }} custom-class"
   style="{{ computed.rootStyle({ size, checked, activeColor, inactiveColor }) }}"
   bind:tap="onClick"
 >

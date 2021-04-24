@@ -119,11 +119,20 @@ public class CanteenOrderService {
         return canteenOrderMapper.updateByExampleSelective(order, example);
     }
 
+    /**
+     * 根据日期查询
+     * @param date
+     * @return
+     */
     public List<CanteenOrder> queryByDate(String date) {
         CanteenOrderExample example = new CanteenOrderExample();
         example.setOrderByClause("id desc");
         example.or().andDateEqualTo(LocalDate.parse(date)).andDeletedEqualTo(false);
         List<CanteenOrder> canteenOrders = canteenOrderMapper.selectByExample(example);
         return canteenOrders;
+    }
+    public CanteenOrder queryByKey(Integer orderId){
+        CanteenOrder order = canteenOrderMapper.selectByPrimaryKey(orderId);
+        return order;
     }
 }

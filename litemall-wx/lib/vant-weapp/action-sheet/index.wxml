@@ -1,4 +1,4 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 
 <van-popup
   show="{{ show }}"
@@ -29,7 +29,7 @@
       wx:key="index"
       open-type="{{ item.openType }}"
       style="{{ item.color ? 'color: ' + item.color : '' }}"
-      class="{{ org.linlinjava.canteen.redis.utils.bem('action-sheet__item', { disabled: item.disabled || item.loading }) }} {{ item.className || '' }}"
+      class="{{ utils.bem('action-sheet__item', { disabled: item.disabled || item.loading }) }} {{ item.className || '' }}"
       hover-class="van-action-sheet__item--hover"
       data-index="{{ index }}"
       bind:tap="onSelect"

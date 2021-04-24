@@ -41,7 +41,19 @@
     </van-collapse>
   </view>
   <view class="card queue">
-    排队窗口
+    <view wx:if="{{connected}}" style="color:green">
+      socket已连接
+    </view>
+    <view wx:else style="color:gray">
+      socket未连接
+      <button size="small" bindtap="startTask">重连</button>
+    </view>
+    
+    排队窗口:已开启时间 {{queue}} 秒
+    <view wx:for="{{message}}">
+        {{item.orderSn}} 
+    </view>
+    
   </view>
 
 
@@ -51,7 +63,8 @@
     position="{{ position }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" max-range="{{ maxRange }}"
     formatter="{{ formatter }}" show-confirm="{{ showConfirm }}" confirm-text="{{ confirmText }}"
     confirm-disabled-text="{{ confirmDisabledText }}" bind:confirm="onConfirm" bind:select="onSelect"
-    bind:unselect="onUnselect" bind:open="onOpen" bind:opened="onOpened" bind:close="onClose" bind:closed="onClosed">
+    bind:unselect="onUnselect" bind:open="onOpen" bind:opened="onOpened" bind:close="CloseClender"
+    bind:closed="ClosedClender">
   </van-calendar>
 
   <van-popup show="{{ show.closeIcon }}" position="bottom" custom-style="height: 80%;width:100%"

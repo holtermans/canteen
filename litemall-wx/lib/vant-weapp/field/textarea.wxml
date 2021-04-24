@@ -1,5 +1,5 @@
 <textarea
-  class="{{ org.linlinjava.canteen.redis.utils.bem('field__control', [inputAlign, type, { disabled, error }]) }} input-class"
+  class="{{ utils.bem('field__control', [inputAlign, type, { disabled, error }]) }} input-class"
   fixed="{{ fixed }}"
   focus="{{ focus }}"
   cursor="{{ cursor }}"
@@ -9,7 +9,7 @@
   maxlength="{{ maxlength }}"
   placeholder="{{ placeholder }}"
   placeholder-style="{{ placeholderStyle }}"
-  placeholder-class="{{ org.linlinjava.canteen.redis.utils.bem('field__placeholder', { error, disabled }) }}"
+  placeholder-class="{{ utils.bem('field__placeholder', { error, disabled }) }}"
   auto-height="{{ !!autosize }}"
   style="{{ computed.inputStyle(autosize) }}"
   cursor-spacing="{{ cursorSpacing }}"

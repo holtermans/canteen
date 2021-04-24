@@ -1,7 +1,7 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 
 <view
-  class="{{ org.linlinjava.canteen.redis.utils.bem('sidebar-item', { selected, disabled }) }} {{ selected ? 'active-class' : '' }} {{ disabled ? 'disabled-class' : '' }} custom-class"
+  class="{{ utils.bem('sidebar-item', { selected, disabled }) }} {{ selected ? 'active-class' : '' }} {{ disabled ? 'disabled-class' : '' }} custom-class"
   hover-class="van-sidebar-item--hover"
   hover-stay-time="70"
   bind:tap="onClick"

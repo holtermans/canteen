@@ -1,5 +1,5 @@
 /* eslint-disable */
-var org.linlinjava.canteen.redis.utils = require('../wxs/org.linlinjava.canteen.redis.utils.wxs');
+var utils = require('../wxs/utils.wxs');
 var style = require('../wxs/style.wxs');
 
 function pivotText(pivotText, percentage) {
@@ -8,7 +8,7 @@ function pivotText(pivotText, percentage) {
 
 function rootStyle(data) {
   return style({
-    'height': data.strokeWidth ? org.linlinjava.canteen.redis.utils.addUnit(data.strokeWidth) : '',
+    'height': data.strokeWidth ? utils.addUnit(data.strokeWidth) : '',
     'background': data.trackColor,
   });
 }

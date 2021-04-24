@@ -1,13 +1,13 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 <wxs src="./index.wxs" module="computed" />
 
 <view
-  class="custom-class {{ org.linlinjava.canteen.redis.utils.bem('grid-item', { square }) }}"
+  class="custom-class {{ utils.bem('grid-item', { square }) }}"
   style="{{ computed.wrapperStyle({ square, gutter, columnNum, index }) }}"
   bindtap="onClick"
 >
   <view
-    class="content-class {{ org.linlinjava.canteen.redis.utils.bem('grid-item__content', [direction, { center, square, clickable, surround: border && gutter }]) }} {{ border ? 'van-hairline--surround' : '' }}"
+    class="content-class {{ utils.bem('grid-item__content', [direction, { center, square, clickable, surround: border && gutter }]) }} {{ border ? 'van-hairline--surround' : '' }}"
     style="{{ computed.contentStyle({ square, gutter }) }}"
   >
     <block wx:if="{{ useSlot }}">

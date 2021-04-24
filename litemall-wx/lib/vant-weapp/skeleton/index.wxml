@@ -1,29 +1,29 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 
 <view
   wx:if="{{ loading }}"
-  class="custom-class {{ org.linlinjava.canteen.redis.utils.bem('skeleton', [{animate}]) }}"
+  class="custom-class {{ utils.bem('skeleton', [{animate}]) }}"
 >
   <view
     wx:if="{{ avatar }}"
-    class="avatar-class {{ org.linlinjava.canteen.redis.utils.bem('skeleton__avatar', [avatarShape])}}"
+    class="avatar-class {{ utils.bem('skeleton__avatar', [avatarShape])}}"
     style="{{ 'width:' + avatarSize + ';height:' + avatarSize }}"
   />
-  <view class="{{ org.linlinjava.canteen.redis.utils.bem('skeleton__content')}}">
+  <view class="{{ utils.bem('skeleton__content')}}">
     <view
       wx:if="{{ title }}"
-      class="title-class {{ org.linlinjava.canteen.redis.utils.bem('skeleton__title') }}"
+      class="title-class {{ utils.bem('skeleton__title') }}"
       style="{{ 'width:' + titleWidth }}"
     />
     <view
       wx:for="{{ rowArray }}"
       wx:key="index"
       wx:for-index="index"
-      class="row-class {{ org.linlinjava.canteen.redis.utils.bem('skeleton__row') }}"
+      class="row-class {{ utils.bem('skeleton__row') }}"
       style="{{ 'width:' + (isArray ? rowWidth[index] : rowWidth) }}"
     />
   </view>
 </view>
-<view wx:else class="{{ org.linlinjava.canteen.redis.utils.bem('skeleton__content')}}">
+<view wx:else class="{{ utils.bem('skeleton__content')}}">
   <slot />
 </view>

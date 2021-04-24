@@ -1,5 +1,6 @@
-package org.linlinjava.canteen.redis.utils;
+package org.yllt.canteen.redis.utils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -187,4 +188,7 @@ public class RedisOperator {
         return redisTemplate.opsForList().rightPush(key, value);
     }
 
+    public long llen(String key){return redisTemplate.opsForList().size(key);}
+
+    public List<String> lrange(String key , long start, long stop){return redisTemplate.opsForList().range(key,start,stop);}
 }

@@ -1,4 +1,4 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 
 <view class="van-submit-bar custom-class">
   <slot name="top" />

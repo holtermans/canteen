@@ -1,10 +1,10 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 <wxs src="./index.wxs" module="computed" />
 
 <view wx:if="{{ fixed && placeholder }}" style="height: {{ height }}px;" />
 
 <view
-  class="{{ org.linlinjava.canteen.redis.utils.bem('nav-bar', { fixed }) }} custom-class {{ border ? 'van-hairline--bottom' : '' }}"
+  class="{{ utils.bem('nav-bar', { fixed }) }} custom-class {{ border ? 'van-hairline--bottom' : '' }}"
   style="{{ computed.barStyle({ zIndex, statusBarHeight, safeAreaInsetTop }) }}; {{ customStyle }}"
 >
   <view class="van-nav-bar__content">

@@ -1,5 +1,5 @@
 /* eslint-disable */
-var org.linlinjava.canteen.redis.utils = require('../../org.linlinjava.canteen.redis.utils.wxs');
+var utils = require('../../utils.wxs');
 
 function getMark(date) {
   return getDate(date).getMonth() + 1;
@@ -48,7 +48,7 @@ function getMonthStyle(visible, date, rowHeight) {
   if (!visible) {
     date = getDate(date);
 
-    var totalDay = org.linlinjava.canteen.redis.utils.getMonthEndDay(
+    var totalDay = utils.getMonthEndDay(
       date.getFullYear(),
       date.getMonth() + 1
     );

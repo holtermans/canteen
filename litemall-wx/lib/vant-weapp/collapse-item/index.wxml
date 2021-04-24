@@ -1,4 +1,4 @@
-<wxs src="../wxs/org.linlinjava.canteen.redis.utils.wxs" module="org.linlinjava.canteen.redis.utils" />
+<wxs src="../wxs/utils.wxs" module="utils" />
 
 <view class="van-collapse-item custom-class {{ index !== 0 ? 'van-hairline--top' : '' }}">
   <van-cell
@@ -10,7 +10,7 @@
     is-link="{{ isLink }}"
     clickable="{{ clickable }}"
     border="{{ border && expanded }}"
-    class="{{ org.linlinjava.canteen.redis.utils.bem('collapse-item__title', { disabled, expanded }) }}"
+    class="{{ utils.bem('collapse-item__title', { disabled, expanded }) }}"
     right-icon-class="van-cell__right-icon"
     custom-class="van-cell"
     hover-class="van-cell--hover"
@@ -31,7 +31,7 @@
     />
   </van-cell>
   <view
-    class="{{ org.linlinjava.canteen.redis.utils.bem('collapse-item__wrapper') }}"
+    class="{{ utils.bem('collapse-item__wrapper') }}"
     style="height: 0;"
     animation="{{ animation }}"
   >

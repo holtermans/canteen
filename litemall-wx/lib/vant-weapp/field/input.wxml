@@ -1,5 +1,5 @@
 <input
-  class="{{ org.linlinjava.canteen.redis.utils.bem('field__control', [inputAlign, { disabled, error }]) }} input-class"
+  class="{{ utils.bem('field__control', [inputAlign, { disabled, error }]) }} input-class"
   type="{{ type }}"
   focus="{{ focus }}"
   cursor="{{ cursor }}"
@@ -9,7 +9,7 @@
   maxlength="{{ maxlength }}"
   placeholder="{{ placeholder }}"
   placeholder-style="{{ placeholderStyle }}"
-  placeholder-class="{{ org.linlinjava.canteen.redis.utils.bem('field__placeholder', { error }) }}"
+  placeholder-class="{{ utils.bem('field__placeholder', { error }) }}"
   confirm-type="{{ confirmType }}"
   confirm-hold="{{ confirmHold }}"
   hold-keyboard="{{ holdKeyboard }}"
