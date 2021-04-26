@@ -122,7 +122,7 @@ Page({
     });
   },
   checkMeal(e) {
-var that = this;
+    var that = this;
     let id = e.currentTarget.dataset.id;
     let type = e.currentTarget.dataset.type;
     let date = e.currentTarget.dataset.date;
@@ -149,17 +149,20 @@ var that = this;
               orderId: id,
               code: code
             }).then(res => {
-              if(res.errno == 0){
+              if (res.errno == 0) {
                 wx.showToast({
                   title: '核销成功',
                 })
                 that.getCanteenOrder();
-              }else{
+              } else {
                 wx.showToast({
-                  title: '核销二维码不正确',
+                  title: res.errmsg
                 })
               }
             })
+          },
+          fail(res){
+              
           }
         })
       } else {

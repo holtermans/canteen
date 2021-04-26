@@ -1,7 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
 import com.github.pagehelper.PageInfo;
-import io.swagger.models.auth.In;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -9,7 +8,7 @@ import org.linlinjava.litemall.db.domain.LitemallBcUser;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.service.litemallBcUserService;
+import org.linlinjava.litemall.db.service.LitemallBcUserService;
 import org.linlinjava.litemall.db.util.BcUserConstant;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/wx/bcuser")
@@ -35,7 +33,7 @@ public class WxBcUserController {
     private LitemallUserService userService;
 
     @Autowired
-    private litemallBcUserService bcUserService;
+    private LitemallBcUserService bcUserService;
 
     /**
      * 查询用户列表没有通过审核的名单

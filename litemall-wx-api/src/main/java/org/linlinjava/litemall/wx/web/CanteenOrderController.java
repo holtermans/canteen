@@ -27,9 +27,11 @@ public class CanteenOrderController {
     @Autowired
     private LitemallUserService userService;
     @Autowired
-    private litemallBcUserService bcUserService;
+    private LitemallBcUserService bcUserService;
     @Autowired
     private ConfigService configService;
+    @Autowired
+    private RedisController redisController;
 
     @RequestMapping("listByIdAndDate")
     public Object getByIdAndDateRange(@RequestParam Integer userId, @RequestParam String date) {
@@ -92,26 +94,34 @@ public class CanteenOrderController {
         }
         //获取二维码信息
         Config config = configService.queryByName("checkCode");
+        System.out.println(config);
         String checkCode = config.getValue();
         //判断二维码是否正确
-        if(!checkCode.equals(code)){
-            return ResponseUtil.badArgument();
+        if (!checkCode.equals(code)) {
+            return ResponseUtil.fail(555,"二维码不正确");
         }
         //这里要增加排队功能，还要判断前面是否有人在排队。在此之前已经做了时间和二维码的验证，所以只需要进行队列的验证
         //先做加入队列的功能
+        long hadd = redisController.hadd(orderId);
+        if (hadd == 1003) {
+            int num1 = canteenOrderService.check(userId, orderId);
+            int num2 = mealOrderService.check(userId, orderId);
+            return ResponseUtil.ok();
 
+        }else{
+            return ResponseUtil.fail(555,"等待排队");
+        }
         //todo 之前设计的不合理，所以导致这里需要两边的订单都要做核销，待改进
-        int num1 = canteenOrderService.check(userId, orderId);
-        int num2 = mealOrderService.check(userId, orderId);
-        return ResponseUtil.ok();
+
     }
+
     /**
      * 订单查询
      *
      * @return
      */
     @RequestMapping("dailyList")
-    public Object dailyList( @RequestParam String date) {
+    public Object dailyList(@RequestParam String date) {
 //        if (userId != null) { //token过期，提示一下
 //            //根据userId查询用户状态是否验证
 //            LitemallUser user = userService.findById(userId);
@@ -129,7 +139,7 @@ public class CanteenOrderController {
 //            return ResponseUtil.unlogin();
 //        }
 
-        List<CanteenOrder> canteenOrders =canteenOrderService.queryByDate(date);
+        List<CanteenOrder> canteenOrders = canteenOrderService.queryByDate(date);
 
         return ResponseUtil.ok(canteenOrders);
     }

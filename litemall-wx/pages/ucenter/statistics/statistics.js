@@ -61,17 +61,33 @@ Page({
     connected: false,
     message: ""
   },
-  initqueue() {
+  finish(e) {
+    console.log(e.currentTarget.dataset.id);
+    var orderId = e.currentTarget.dataset.id
+    var data = {
+      "orderId": orderId
+    }
+    util.request(api.QueueDel, data).then(res => {
+      if (res.errno == 0) {
+        
+      }
+    })
+  },
+  initQueue() {
     var that = this;
     util.request(api.QueueQuery).then((res) => {
       console.log(res);
-      that.setData({
-        message: res.data.orderInfo
-      })
+      if (res.errno == 0) {
+        that.setData({
+          message: res.data.orderInfo
+        })
+      }
+
     })
   },
   //监听任务
   startTask() {
+    this.initQueue();
     var time = 0;
     var that = this;
     i = setInterval(() => {
@@ -98,12 +114,9 @@ Page({
       console.log(result);
       var message = JSON.parse(result.data);
       console.log(message)
-      var temp = [];
-      message.forEach(item => {
-        temp.push(JSON.parse(item));
-      })
+
       this.setData({
-        message: temp
+        message: message
       })
     })
     wx.onSocketClose((result) => {
@@ -143,7 +156,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.initqueue();
     this.startTask();
 
   },
@@ -164,17 +176,25 @@ Page({
     this.getTimingList();
     this.getDishesList();
     var date = new Date();
-    var promise = new Promise((resolve, reject) => {
-      this.setData({
-        'date.selectSingle': date.getTime()
-      });
-      resolve();
+    wx.showLoading({
+      title: '加载中',
     });
-    promise.then(() => {
-      this.getStatistics();
-      this.getCheckedList();
-    })
+    i = setInterval(() => {
+      var promise = new Promise((resolve, reject) => {
+        this.setData({
+          'date.selectSingle': date.getTime()
+        });
+        resolve();
+      });
+      promise.then(() => {
+        this.getStatistics();
+        this.getCheckedList();
+      })
+    }, 1000)
 
+    wx.hideLoading({
+      success: (res) => {},
+    })
   },
   getStatistics() {
     var that = this;
@@ -184,9 +204,9 @@ Page({
     var dishesCount = {};
 
     //查询一日的报餐情况
-    wx.showLoading({
-      title: '加载中',
-    });
+    // wx.showLoading({
+    //   title: '加载中',
+    // });
     util.request(api.AllOrderByDate, {
       date: util.getYMD(that.data.date.selectSingle)
     }).then((res) => {
@@ -234,9 +254,9 @@ Page({
     var that = this;
     var orderGroup = {};
     //查询一日的报餐情况
-    wx.showLoading({
-      title: '加载中',
-    });
+    // wx.showLoading({
+    //   title: '加载中',
+    // });
     util.request(api.DailyCanteenOrderList, {
       date: util.getYMD(that.data.date.selectSingle)
     }).then((res) => {

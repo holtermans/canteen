@@ -18,11 +18,10 @@ import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.ConfigService;
 import org.linlinjava.litemall.db.service.CouponAssignService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.service.litemallBcUserService;
+import org.linlinjava.litemall.db.service.LitemallBcUserService;
 import org.linlinjava.litemall.db.util.BcUserConstant;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.dto.UserInfo;
-import org.linlinjava.litemall.wx.dto.UserToken;
 import org.linlinjava.litemall.wx.dto.WxLoginInfo;
 import org.linlinjava.litemall.wx.service.CaptchaCodeManager;
 import org.linlinjava.litemall.wx.service.UserTokenManager;
@@ -57,7 +56,7 @@ public class WxAuthController {
     private LitemallUserService userService;
 
     @Autowired
-    private litemallBcUserService bcUserService;
+    private LitemallBcUserService bcUserService;
 
     @Autowired
     private WxMaService wxService;

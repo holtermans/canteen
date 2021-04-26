@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class litemallBcUserService {
+public class LitemallBcUserService {
     @Autowired
     private LitemallBcUserMapper bcUserMapper;
 

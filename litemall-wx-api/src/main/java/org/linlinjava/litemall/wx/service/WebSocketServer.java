@@ -1,14 +1,15 @@
 package org.linlinjava.litemall.wx.service;
 
-import org.springframework.stereotype.Component;
 
+import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint("/websocket/{userID}")
+
 @Component
+@ServerEndpoint("/websocket/{userID}")
 public class WebSocketServer {
     //每个客户端都会有相应的session,服务端可以发送相关消息
     private Session session;

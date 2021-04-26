@@ -151,7 +151,13 @@ public class RedisOperator {
      * @return
      */
     public Map<Object, Object> hgetall(String key) {
+
         return redisTemplate.opsForHash().entries(key);
+    }
+
+    public long hgetsize(String key) {
+
+        return redisTemplate.opsForHash().size(key);
     }
 
     // List（列表）

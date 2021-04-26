@@ -6,7 +6,7 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.CanteenOrderService;
 import org.linlinjava.litemall.db.service.LitemallMealOrderService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.service.litemallBcUserService;
+import org.linlinjava.litemall.db.service.LitemallBcUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class WxMealOrderController {
     @Autowired
     private LitemallUserService userService;
     @Autowired
-    private litemallBcUserService bcUserService;
+    private LitemallBcUserService bcUserService;
     @Autowired
     private CanteenOrderService canteenOrderService;
 

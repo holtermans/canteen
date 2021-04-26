@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.wx.web;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -9,7 +8,7 @@ import org.linlinjava.litemall.db.domain.LitemallBcUser;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.service.litemallBcUserService;
+import org.linlinjava.litemall.db.service.LitemallBcUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -36,7 +35,7 @@ public class WxUserController {
     private LitemallUserService userService;
 
     @Autowired
-    private litemallBcUserService bcUserService;
+    private LitemallBcUserService bcUserService;
 
     /**
      * 用户个人页面数据

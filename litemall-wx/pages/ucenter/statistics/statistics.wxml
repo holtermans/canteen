@@ -48,12 +48,24 @@
       socket未连接
       <button size="small" bindtap="startTask">重连</button>
     </view>
-    
+
     排队窗口:已开启时间 {{queue}} 秒
-    <view wx:for="{{message}}">
-        {{item.orderSn}} 
+    <view style="background:#fff;margin-top:10px;width:100%" wx:for="{{message}}">
+
+      <view style="margin:0 auto;">
+        <van-image round width="3rem" height="3rem" src="{{item.bcUserVo.avatar}}" />
+      </view>
+      {{item.bcUserVo.name}}{{item.orderSn}} {{item.orderPrice}}
+
+      {{item.date}} {{item.timingName}}
+      <view wx:for="{{item.dishes}}" wx:for-item="dish">
+        <van-image round width="2rem" height="2rem" src="{{dish.dishesPicUrl}}" /> {{dish.dishesName}} *
+        {{dish.quantity}}
+      </view>
+      <van-button type="primary" bindtap="finish" data-id="{{item.id}}">完成</van-button>
+
     </view>
-    
+
   </view>
 
 
