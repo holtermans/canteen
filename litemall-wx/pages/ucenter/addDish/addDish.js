@@ -37,6 +37,7 @@ Page({
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'Screenshots'],
       success: res => {
+        console.log(res);
         switch (e.currentTarget.dataset.chooseImage) {
           case 'A':
             this.setData({
@@ -80,7 +81,7 @@ Page({
     })
     // tempFilePath可以作为img标签的src属性显示图片
     const tempFilePaths = this.data.chooseImageA.sourceObj;
-    if (tempFilePaths.filePath == undefined) {
+    if (tempFilePaths.path == undefined) {
       var data = {
         name: e.detail.value.name,
         price: e.detail.value.price,
@@ -88,6 +89,7 @@ Page({
       }
       //再发请求去存储
       util.request(api.DishesAdd, data, "POST").then((res) => {
+        console.log(res);
         if (res.errno == 0) {
           wx.navigateBack({
             delta: 1,
@@ -98,7 +100,7 @@ Page({
     }
     var that = this;
     wx.uploadFile({
-      url: api.StorageUpload, //仅为示例，非真实的接口地址
+      url: api.StorageUpload, 
       filePath: tempFilePaths.path,
       name: 'file',
       formData: {
@@ -108,6 +110,7 @@ Page({
         'Content-Type': 'application/json',
       },
       success(res) {
+        console.log(res);
         const result = JSON.parse(res.data);
         var data = {
           name: e.detail.value.name,
@@ -127,7 +130,11 @@ Page({
           }
         })
         //do something
+      },
+      fail(res){
+        console.log(res);
       }
+
     })
     wx.hideLoading({
       success: (res) => {},

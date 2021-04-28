@@ -23,15 +23,8 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
     util.request(api.GetSingleBcUserByUserId).then((res) => {
+      console.log(res);
       if (res.errno == 0) {
         this.setData({
           bcUserInfo: res.data.bcUserInfo,
@@ -40,6 +33,13 @@ Page({
     }).catch(() => {
 
     })
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    
   },
 
 

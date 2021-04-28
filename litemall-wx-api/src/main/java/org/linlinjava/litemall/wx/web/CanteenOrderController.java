@@ -8,6 +8,7 @@ import org.linlinjava.litemall.db.domain.LitemallBcUser;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,8 @@ public class CanteenOrderController {
     private ConfigService configService;
     @Autowired
     private RedisController redisController;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @RequestMapping("listByIdAndDate")
     public Object getByIdAndDateRange(@RequestParam Integer userId, @RequestParam String date) {
@@ -48,25 +51,14 @@ public class CanteenOrderController {
      */
     @RequestMapping("list")
     public Object get10Record(@LoginUser Integer userId) {
-        if (userId != null) { //token过期，提示一下
-            //根据userId查询用户状态是否验证
-            LitemallUser user = userService.findById(userId);
-            if (user != null) {
-                Integer bcUserId = user.getBcUserId();
-                if (bcUserId == null) {
-                    return ResponseUtil.unlogin();
-                }
-                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-                if (bcUser.getStatus() == 0) { //未激活
-                    return ResponseUtil.notActive();
-                }
-            }
+        Object o = userInfoService.checkUserId(userId);
+        if (o != null) {
+            return o;
         } else {
-            return ResponseUtil.unlogin();
+            PageInfo<CanteenOrder> canteenOrders = canteenOrderService.queryByUidAndDate(userId);
+            return ResponseUtil.ok(canteenOrders);
         }
 
-        PageInfo<CanteenOrder> canteenOrders = canteenOrderService.queryByUidAndDate(userId);
-        return ResponseUtil.ok(canteenOrders);
     }
 
     /**
@@ -76,42 +68,31 @@ public class CanteenOrderController {
      */
     @RequestMapping("check")
     public Object orderCheck(@LoginUser Integer userId, @RequestParam Integer orderId, @RequestParam String code) {
-        if (userId != null) { //token过期，提示一下
-            //根据userId查询用户状态是否验证
-            LitemallUser user = userService.findById(userId);
-            if (user != null) {
-                Integer bcUserId = user.getBcUserId();
-                if (bcUserId == null) {
-                    return ResponseUtil.unlogin();
-                }
-                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-                if (bcUser.getStatus() == 0) { //未激活
-                    return ResponseUtil.notActive();
-                }
+        Object o = userInfoService.checkUserId(userId);
+        if (o != null) {
+            return o;
+        } else { //o为null 代表所有信息都没问题
+            //获取二维码信息
+            Config config = configService.queryByName("checkCode");
+            String checkCode = config.getValue();
+            //判断二维码是否正确
+            if (!checkCode.equals(code)) {
+                return ResponseUtil.fail(555, "二维码不正确");
             }
-        } else {
-            return ResponseUtil.unlogin();
-        }
-        //获取二维码信息
-        Config config = configService.queryByName("checkCode");
-        System.out.println(config);
-        String checkCode = config.getValue();
-        //判断二维码是否正确
-        if (!checkCode.equals(code)) {
-            return ResponseUtil.fail(555,"二维码不正确");
-        }
-        //这里要增加排队功能，还要判断前面是否有人在排队。在此之前已经做了时间和二维码的验证，所以只需要进行队列的验证
-        //先做加入队列的功能
-        long hadd = redisController.hadd(orderId);
-        if (hadd == 1003) {
-            int num1 = canteenOrderService.check(userId, orderId);
-            int num2 = mealOrderService.check(userId, orderId);
-            return ResponseUtil.ok();
+            //这里要增加排队功能，还要判断前面是否有人在排队。在此之前已经做了时间和二维码的验证，所以只需要进行队列的验证
+            //先做加入队列的功能
+            long hadd = redisController.hadd(orderId);
+            if (hadd == 1003) {
+                int num1 = canteenOrderService.check(userId, orderId);
+                int num2 = mealOrderService.check(userId, orderId);
+                return ResponseUtil.ok();
 
-        }else{
-            return ResponseUtil.fail(555,"等待排队");
+            } else {
+                return ResponseUtil.fail(555, "等待排队");
+            }
+            //todo 之前设计的不合理，所以导致这里需要两边的订单都要做核销，待改进
         }
-        //todo 之前设计的不合理，所以导致这里需要两边的订单都要做核销，待改进
+
 
     }
 

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dbdev, coredev, admin, wx, redisdev
+    active: db, core, admin, wx, redisdev
   messages:
     encoding: UTF-8
   servlet:

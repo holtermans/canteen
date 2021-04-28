@@ -296,7 +296,8 @@ Page({
           }
         })
         console.log(this.data.dailyMenuList[i].date + " " + stopTime)
-        var stopDateTime = new Date(this.data.dailyMenuList[i].date + " " + stopTime);
+        var stopDateTime = new Date((this.data.dailyMenuList[i].date + " " + stopTime).replace(/-/g, '/'));
+        
 
         this.getServerTime().then(nowTime => {
           if (stopDateTime.getTime() < new Date().getTime()) {

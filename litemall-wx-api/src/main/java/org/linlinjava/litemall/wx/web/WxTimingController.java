@@ -8,6 +8,7 @@ import org.linlinjava.litemall.db.service.LitemallTimingService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.service.LitemallBcUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,15 +27,14 @@ public class WxTimingController {
     private LitemallUserService userService;
     @Autowired
     private LitemallBcUserService bcUserService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @RequestMapping("list")
     public Object index() {
-
-
         List<LitemallTiming> timing = timingService.queryAll();
         HashMap<Object, Object> timingTotal = new HashMap<>();
         timingTotal.put("timingList", timing);
-
         return ResponseUtil.ok(timingTotal);
     }
 
@@ -47,30 +47,19 @@ public class WxTimingController {
                          @RequestParam String endTime,
                          @RequestParam String stopTime,
                          @LoginUser Integer userId) {
-
-        if (userId != null) { //token过期，提示一下
-            //根据userId查询用户状态是否验证
-            LitemallUser user = userService.findById(userId);
-            if (user != null) {
-                int bcUserId = user.getBcUserId();
-                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-                if (bcUser.getStatus() == 0) { //未激活
-                    return ResponseUtil.notActive();
-                }
-            }
+        Object response = userInfoService.checkUserId(userId);
+        if (response != null) {
+            return response;
         } else {
-            return ResponseUtil.unlogin();
+            LitemallTiming timing = new LitemallTiming();
+            timing.setId(id);
+            timing.setStartTime(LocalTime.parse(startTime));
+            timing.setEndTime(LocalTime.parse(endTime));
+            timing.setStatus(status);
+            timing.setStopTime(LocalTime.parse(stopTime));
+            int i = timingService.updateById(timing);
+            return ResponseUtil.ok(id);
         }
-
-        LitemallTiming timing = new LitemallTiming();
-        timing.setId(id);
-        timing.setStartTime(LocalTime.parse(startTime));
-        timing.setEndTime(LocalTime.parse(endTime));
-        timing.setStatus(status);
-        timing.setStopTime(LocalTime.parse(stopTime));
-
-        int i = timingService.updateById(timing);
-        return ResponseUtil.ok(id);
     }
 
 }

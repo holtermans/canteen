@@ -4,6 +4,7 @@ var user = require('../../../utils/user.js');
 var app = getApp();
 // pages/ucenter/statistics/statistics.js
 var i = undefined; //全局计时器
+var j = undefined;
 Page({
 
   /**
@@ -78,9 +79,16 @@ Page({
     util.request(api.QueueQuery).then((res) => {
       console.log(res);
       if (res.errno == 0) {
-        that.setData({
-          message: res.data.orderInfo
-        })
+        if(res.data.orderInfo == null){
+          that.setData({
+            message: []
+          })
+        }else{
+          that.setData({
+            message: res.data.orderInfo
+          })
+        }
+        
       }
 
     })
@@ -88,45 +96,46 @@ Page({
   //监听任务
   startTask() {
     this.initQueue();
-    var time = 0;
-    var that = this;
-    i = setInterval(() => {
-      that.setData({
-        queue: time++
-      })
-    }, 1000);
-    wx.connectSocket({
-      url: api.Socket,
+    // var time = 0;
+    // var that = this;
+    
+    // wx.connectSocket({
+    //   url: api.Socket,
 
-      success: function (res) {
-        console.log(res);
-      },
-      fail: function (res) {
-        console.log(res);
-      }
-    });
-    wx.onSocketOpen((result) => {
-      this.setData({
-        connected: true
-      })
-    })
-    wx.onSocketMessage((result) => {
-      console.log(result);
-      var message = JSON.parse(result.data);
-      console.log(message)
+    //   success: function (res) {
+    //     console.log(res);
+    //   },
+    //   fail: function (res) {
+    //     console.log(res);
+    //   }
+    // });
+    // wx.onSocketOpen((result) => {
+    //   this.setData({
+    //     connected: true
+    //   })
+    //   i = setInterval(() => {
+    //     that.setData({
+    //       queue: time++
+    //     })
+    //   }, 1000);
+    // })
+    // wx.onSocketMessage((result) => {
+    //   console.log(result);
+    //   var message = JSON.parse(result.data);
+    //   console.log(message)
 
-      this.setData({
-        message: message
-      })
-    })
-    wx.onSocketClose((result) => {
-      this.setData({
-        connected: false,
-        message: null
-      });
-      clearInterval(i);
+    //   this.setData({
+    //     message: message
+    //   })
+    // })
+    // wx.onSocketClose((result) => {
+    //   this.setData({
+    //     connected: false,
+    //     message: null
+    //   });
+    //   clearInterval(i);
 
-    })
+    // })
 
   },
 
@@ -179,7 +188,7 @@ Page({
     wx.showLoading({
       title: '加载中',
     });
-    i = setInterval(() => {
+    j = setInterval(() => {
       var promise = new Promise((resolve, reject) => {
         this.setData({
           'date.selectSingle': date.getTime()
@@ -187,8 +196,9 @@ Page({
         resolve();
       });
       promise.then(() => {
-        this.getStatistics();
-        this.getCheckedList();
+        that.getStatistics();
+        that.getCheckedList();
+        that.initQueue();
       })
     }, 1000)
 
@@ -436,7 +446,7 @@ Page({
    */
   onUnload: function () {
     wx.closeSocket();
-    clearInterval(i);
+    clearInterval(j);
   },
 
   /**

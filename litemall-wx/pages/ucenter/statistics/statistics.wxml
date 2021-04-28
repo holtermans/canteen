@@ -41,13 +41,13 @@
     </van-collapse>
   </view>
   <view class="card queue">
-    <view wx:if="{{connected}}" style="color:green">
+    <!-- <view wx:if="{{connected}}" style="color:green">
       socket已连接
     </view>
     <view wx:else style="color:gray">
       socket未连接
       <button size="small" bindtap="startTask">重连</button>
-    </view>
+    </view> -->
 
     排队窗口:已开启时间 {{queue}} 秒
     <view style="background:#fff;margin-top:10px;width:100%" wx:for="{{message}}">

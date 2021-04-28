@@ -32,11 +32,10 @@ App({
     });
   },
   onShow: function (options) {
-    console.log(wx.getLaunchOptionsSync().query);
+
     var that = this;
     console.log((wx.getStorageSync('userInfo')));
     console.log(wx.getStorageSync('token'))
-
     user.checkLogin().then(res => { //入口做登录检测，同时也做
       this.globalData.hasLogin = true;
     }).catch(() => {
@@ -44,7 +43,6 @@ App({
       console.log(this.globalData.hasLogin); 
 
     });
-    
   },
   globalData: {
     hasLogin: false,

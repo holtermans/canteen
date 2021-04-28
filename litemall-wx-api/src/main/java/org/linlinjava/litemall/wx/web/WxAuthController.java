@@ -67,6 +67,7 @@ public class WxAuthController {
     @Autowired
     private CouponAssignService couponAssignService;
 
+
     /**
      * 账号登录
      *
@@ -196,10 +197,8 @@ public class WxAuthController {
         if (code == null || userInfo == null) {
             return ResponseUtil.badArgument();
         }
-
         String sessionKey = null;
         String openId = null;
-
         try {
             WxMaJscode2SessionResult result = this.wxService.getUserService().getSessionInfo(code); //这个是根据临时登录凭证获取 用户唯一标识 openId 和 本次登录会话秘钥 sessionKey的
             sessionKey = result.getSessionKey();
@@ -239,11 +238,10 @@ public class WxAuthController {
             if (userService.updateById(user) == 0) {
                 return ResponseUtil.updatedDataFailed();
             }
-
             Map<Object, Object> result = new HashMap<Object, Object>();
             result.put("userInfo", userInfo);
             return ResponseUtil.ok(result);
-        } else {
+        } else if (bcUserService.findById(user.getBcUserId()) != null) {
             //返回用户信息，返回token
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.getIpAddr(request));
@@ -255,6 +253,17 @@ public class WxAuthController {
             String token = UserTokenManager.generateToken(user.getId());//根据用户id生成token
             Map<Object, Object> result = new HashMap<Object, Object>();
             result.put("token", token);
+            result.put("userInfo", userInfo);
+            return ResponseUtil.ok(result);
+        }else {
+            //返回用户信息，不返回token
+            user.setLastLoginTime(LocalDateTime.now());
+            user.setLastLoginIp(IpUtil.getIpAddr(request));
+            user.setSessionKey(sessionKey);
+            if (userService.updateById(user) == 0) {
+                return ResponseUtil.updatedDataFailed();
+            }
+            Map<Object, Object> result = new HashMap<Object, Object>();
             result.put("userInfo", userInfo);
             return ResponseUtil.ok(result);
         }
@@ -293,13 +302,13 @@ public class WxAuthController {
         }
 
         LitemallUser user = userService.queryByOid(openId);
-        if (user.getBcUserId() == null) { //如果是未关联的
+        if (user.getBcUserId() == null || bcUserService.findById(user.getBcUserId()) == null) { //如果是未关联的
             LitemallBcUser bcUser = new LitemallBcUser();
             bcUser.setName(username);
             bcUser.setMobile(mobile);
-            if(authCode.equals(configAuthCode)) {
+            if (authCode.equals(configAuthCode)) {
                 bcUser.setStatus(BcUserConstant.ACTIVE);//授权码正确自动激活
-            }else {
+            } else {
                 bcUser.setStatus(BcUserConstant.NOT_ACTIVE);//授权码不对需要管理员激活
             }
             bcUserService.add(bcUser);//添加用户

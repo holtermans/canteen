@@ -21,7 +21,6 @@ public class ConfigController {
 
     @RequestMapping("getConfig")
     public Object getConfig(@RequestParam String name) {
-
         Config config = configService.queryByName(name);
         HashMap<Object, Object> result = new HashMap<>();
         result.put("config", config);

@@ -8,6 +8,7 @@ import org.linlinjava.litemall.db.service.LitemallMealOrderService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.service.LitemallBcUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,110 +32,68 @@ public class WxMealOrderController {
     private LitemallBcUserService bcUserService;
     @Autowired
     private CanteenOrderService canteenOrderService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @RequestMapping("add")
     public Object save(@LoginUser Integer userId, @RequestBody List<LitemallMealOrder> mealOrder) {
-        if (userId != null) { //token过期，提示一下
-            //根据userId查询用户状态是否验证
-            LitemallUser user = userService.findById(userId);
-            if (user != null) {
-                Integer bcUserId = user.getBcUserId();
-                if(bcUserId == null){
-                    return ResponseUtil.unlogin();
-                }
-                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-                if (bcUser.getStatus() == 0) { //未激活
-                    return ResponseUtil.notActive();
-                }
-            }
+        Object response = userInfoService.checkUserId(userId);
+        if (response != null) {
+            return response;
         } else {
-            return ResponseUtil.unlogin();
+            mealOrderService.add(userId, mealOrder);
+            return ResponseUtil.ok();
         }
 
-        mealOrderService.add(userId,mealOrder);
-        return ResponseUtil.ok();
     }
 
     //查找用户某天的订餐记录
     @RequestMapping("findByUid")
     public Object findByUidAndDate(@LoginUser Integer userId, @RequestParam("date") String date) {
-        if (userId != null) { //token过期，提示一下
-            //根据userId查询用户状态是否验证
-            LitemallUser user = userService.findById(userId);
-            if (user != null) {
-                Integer bcUserId = user.getBcUserId();
-                if (bcUserId == null) {
-                    return ResponseUtil.unlogin();
-                }
-                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-                if (bcUser.getStatus() == 0) { //未激活
-                    return ResponseUtil.notActive();
-                }
-            }
+        Object response = userInfoService.checkUserId(userId);
+        if (response != null) {
+            return response;
         } else {
-            return ResponseUtil.unlogin();
+            List<LitemallMealOrder> mealOrders = mealOrderService.findByUidAndDate(userId, date);
+            HashMap<Object, Object> result = new HashMap<>();
+            result.put("mealOrders", mealOrders);
+            return ResponseUtil.ok(result);
         }
 
-
-        List<LitemallMealOrder> mealOrders = mealOrderService.findByUidAndDate(userId, date);
-        HashMap<Object, Object> result = new HashMap<>();
-        result.put("mealOrders", mealOrders);
-        return ResponseUtil.ok(result);
     }
 
     @RequestMapping("cancel")
     public Object cancelMealOrder(@LoginUser Integer userId, @RequestParam("date") String date, @RequestParam("timingId") Integer timingId) {
-        if (userId != null) { //token过期，提示一下
-            //根据userId查询用户状态是否验证
-            LitemallUser user = userService.findById(userId);
-            if (user != null) {
-                Integer bcUserId = user.getBcUserId();
-                if (bcUserId == null) {
-                    return ResponseUtil.unlogin();
-                }
-                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-                if (bcUser.getStatus() == 0) { //未激活
-                    return ResponseUtil.notActive();
-                }
-            }
+
+        Object response = userInfoService.checkUserId(userId);
+        if (response != null) {
+            return response;
         } else {
-            return ResponseUtil.unlogin();
+            canteenOrderService.deleteByUidAndDateAndTid(userId, date, timingId);
+            mealOrderService.deleteByUidAndDateAndTid(userId, date, timingId);
+            return ResponseUtil.ok();
         }
-        canteenOrderService.deleteByUidAndDateAndTid(userId,date,timingId);
-        mealOrderService.deleteByUidAndDateAndTid(userId, date, timingId);
-        return ResponseUtil.ok();
+
     }
 
     /**
      * 根据订单查询订单信息
+     *
      * @param userId
      * @param orderId
      * @return
      */
     @RequestMapping("findByOrderId")
     public Object findByOrderId(@LoginUser Integer userId, @RequestParam("orderId") Integer orderId) {
-        if (userId != null) { //token过期，提示一下
-            //根据userId查询用户状态是否验证
-            LitemallUser user = userService.findById(userId);
-            if (user != null) {
-                Integer bcUserId = user.getBcUserId();
-                if (bcUserId == null) {
-                    return ResponseUtil.unlogin();
-                }
-                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-                if (bcUser.getStatus() == 0) { //未激活
-                    return ResponseUtil.notActive();
-                }
-            }
+        Object response = userInfoService.checkUserId(userId);
+        if (response != null) {
+            return response;
         } else {
-            return ResponseUtil.unlogin();
+            List<LitemallMealOrder> mealOrders = mealOrderService.findByOrderId(userId, orderId);
+            HashMap<Object, Object> result = new HashMap<>();
+            result.put("mealOrders", mealOrders);
+            return ResponseUtil.ok(result);
         }
-
-
-        List<LitemallMealOrder> mealOrders = mealOrderService.findByOrderId(userId, orderId);
-        HashMap<Object, Object> result = new HashMap<>();
-        result.put("mealOrders", mealOrders);
-        return ResponseUtil.ok(result);
     }
 
     /**
@@ -145,29 +104,18 @@ public class WxMealOrderController {
      */
     @RequestMapping("list")
     public Object listMealOrder(@LoginUser Integer userId) {
-        if (userId != null) { //token过期，提示一下
-            //根据userId查询用户状态是否验证
-            LitemallUser user = userService.findById(userId);
-            if (user != null) {
-                Integer bcUserId = user.getBcUserId();
-                if (bcUserId == null) {
-                    return ResponseUtil.unlogin();
-                }
-                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-                if (bcUser.getStatus() == 0) { //未激活
-                    return ResponseUtil.notActive();
-                }
-            }
+        Object response = userInfoService.checkUserId(userId);
+        if (response != null) {
+            return response;
         } else {
-            return ResponseUtil.unlogin();
+            PageInfo<LitemallMealOrder> litemallMealOrderPageInfo = mealOrderService.queryByUid(userId);
+            return ResponseUtil.ok(litemallMealOrderPageInfo);
         }
-
-        PageInfo<LitemallMealOrder> litemallMealOrderPageInfo = mealOrderService.queryByUid(userId);
-        return ResponseUtil.ok(litemallMealOrderPageInfo);
     }
 
     /**
      * 根据日期查找所有的订单
+     *
      * @param date
      * @return
      */
