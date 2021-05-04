@@ -14,7 +14,7 @@
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="brief" jdbcType="VARCHAR" property="brief" />
     <result column="limit" jdbcType="INTEGER" property="limit" />
-    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -213,7 +213,7 @@
       `limit`, deleted)
     values (#{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
       #{picUrl,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{brief,jdbcType=VARCHAR}, 
-      #{limit,jdbcType=INTEGER}, #{deleted,jdbcType=TINYINT})
+      #{limit,jdbcType=INTEGER}, #{deleted,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallDishes">
     <!--
@@ -273,7 +273,7 @@
         #{limit,jdbcType=INTEGER},
       </if>
       <if test="deleted != null">
-        #{deleted,jdbcType=TINYINT},
+        #{deleted,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -319,7 +319,7 @@
         `limit` = #{record.limit,jdbcType=INTEGER},
       </if>
       <if test="record.deleted != null">
-        deleted = #{record.deleted,jdbcType=TINYINT},
+        deleted = #{record.deleted,jdbcType=BIT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -340,7 +340,7 @@
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       brief = #{record.brief,jdbcType=VARCHAR},
       `limit` = #{record.limit,jdbcType=INTEGER},
-      deleted = #{record.deleted,jdbcType=TINYINT}
+      deleted = #{record.deleted,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -374,7 +374,7 @@
         `limit` = #{limit,jdbcType=INTEGER},
       </if>
       <if test="deleted != null">
-        deleted = #{deleted,jdbcType=TINYINT},
+        deleted = #{deleted,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -392,7 +392,7 @@
       add_time = #{addTime,jdbcType=TIMESTAMP},
       brief = #{brief,jdbcType=VARCHAR},
       `limit` = #{limit,jdbcType=INTEGER},
-      deleted = #{deleted,jdbcType=TINYINT}
+      deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallDishesExample" resultMap="BaseResultMap">

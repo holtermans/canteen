@@ -554,7 +554,16 @@ Page({
 
 
   onPullDownRefresh: function () {
-    this.onLoad();
+    this.getDailyMenu().then(() => {
+      this.getOrderInfo();//获取订单信息
+      this.getDishesList().then(() => {   //获取菜的信息
+        this.isEmpty();  //判断是否有菜上架
+        this.calculateSum(that.data.currentTiming.id, that.data.dailyMenuList, that.data.dishesList);
+      });
+      wx.stopPullDownRefresh({
+        success: (res) => {},
+      })
+    });
   },
 
 })

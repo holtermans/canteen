@@ -1,25 +1,42 @@
 <view class="page">
   <view class="container">
     <form class="publish-form " catchsubmit="formSubmit">
+      <!-- 菜品名称 -->
       <view class="form-block">
-        <label class="form-block-title" for="publish_title">名称</label>
-        <input class="form-block-input" id="publish_title" type="text" name="name" maxlength="10" />
+        <view class="form-block-title form-block-title-required" for="publish_title">菜品名称:</view>
+        <input class="form-block-input" id="publish_title" type="text" name="name" maxlength="10"
+          placeholder="请输入菜品名称" />
       </view>
+      <!-- 菜品价格 -->
       <view class="form-block">
-        <label class="form-block-title" for="publish_title">价格</label>
-        <input class="form-block-input" id="publish_price" type="digit" name="price" maxlength="10" />
+        <label class="form-block-title form-block-title-required" for="publish_title">菜品价格:</label>
+        <input class="form-block-input" id="publish_price" type="digit" name="price" maxlength="10"
+          placeholder="请输入菜品价格" />
+      </view>
+      <!-- 菜品类型 -->
+      <view class="form-block">
+        <label class="form-block-title form-block-title-required" for="publish_title">菜品类型:</label>
+        <picker style="flex:10" bindchange="bindPickerChange" value="{{index}}" range="{{array}}" range-key="name">
+          <view class="picker">
+            <text style="color:#afafaf">当前选择：</text> <text
+              style="color: #408e98;border:1px solid #799396;padding:2px">{{array[index].name}}</text>
+          </view>
+        </picker>
+      </view>
+      <!-- 菜品简介 -->
+      <view class="form-block">
+        <label class="form-block-title" for="publish_desc">简介:</label>
+        <textarea class="form-block-input" id="publish_desc" type="text" name="brief" maxlength="200" auto-height="true"
+          placeholder="请输入菜品简介"></textarea>
       </view>
 
-      <view class="form-block">
-        <label class="form-block-title" for="publish_desc">简介</label>
-        <textarea class="form-block-input" id="publish_desc" type="text" name="brief" maxlength="200"></textarea>
-      </view>
-      <view class="form-block">
+
+      <!-- 菜品图片 -->
+      <view class="">
         <view class="form-block-title">菜品图片</view>
         <view class="choose-image-area">
           <view class="choose-image-block" data-choose-image="A" bindtap="chooseImage">
-
-            <view class="choose-image-view" wx:if="{{chooseImageA.isUploaded}}" style="background: url('{{chooseImageA.sourceObj.path}}') center center no-repeat;background-size:cover"></view>
+            <view class="choose-controller" wx:if="{{chooseImageA.isUploaded}}" style=""></view>
             <view wx:else class="choose-controller"></view>
           </view>
           <!-- <view class="choose-image-block" data-choose-image="B" bindtap="chooseImage">
@@ -38,10 +55,17 @@
           </view> -->
         </view>
       </view>
-      <view class="form-block">
+      <image hidden="{{!chooseImageA.isUploaded}}" style="max-width:100px;max-height:100px" mode="aspectFit"
+        src="{{chooseImageA.sourceObj.path}}" bindtap="previewImg" data-image-url="{{chooseImageA.sourceObj.path}}">
+      </image>
+
+      <!-- 注意事项 -->
+      <!-- <view class="form-block">
         <text class="form-statement">{{statementText}}</text>
-      </view>
-      <button class="form-submit-btn" form-type="submit" >添加</button>
+      </view> -->
+
+      <!-- 提交 -->
+      <button class="form-submit-btn" form-type="submit">添加</button>
     </form>
   </view>
 </view>

@@ -15,12 +15,26 @@ public class CanteenCategoryService {
 
     /**
      * 获取所有分类
+     *
      * @return
      */
-    public List<CanteenDishCategory> getAllCategory(){
+    public List<CanteenDishCategory> getAllCategory() {
         CanteenDishCategoryExample example = new CanteenDishCategoryExample();
         example.or();
         List<CanteenDishCategory> result = dishCategoryMapper.selectByExample(example);
         return result;
+    }
+
+    public int add(Integer userId, CanteenDishCategory dishCategory) {
+
+        int i = 0;
+        try {
+           i=  dishCategoryMapper.insertSelective(dishCategory);
+        }catch (Exception e){
+            i = -1;
+        }finally {
+
+        }
+        return i;
     }
 }

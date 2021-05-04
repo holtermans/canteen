@@ -21,7 +21,7 @@ public class LitemallDishesService {
 
     public  List<LitemallDishes> queryAll(){
         LitemallDishesExample example = new LitemallDishesExample();
-        example.or().andLogicalDeleted(false);
+        example.or().andDeletedEqualTo(false);
         return dishesMapper.selectByExample(example);
 
     }
@@ -36,27 +36,32 @@ public class LitemallDishesService {
     }
 
     public void deleteByid(Integer id) {
-        dishesMapper.logicalDeleteByPrimaryKey(id);
-
+        dishesMapper.deleteByPrimaryKey(id);
     }
 
     public List<LitemallDishes> findByKeyword(String keyword) {
         LitemallDishesExample example = new LitemallDishesExample();
-        example.or().andNameLike("%"+keyword+"%").andLogicalDeleted(false);
+        example.or().andNameLike("%"+keyword+"%").andDeletedEqualTo(false);
         List<LitemallDishes> litemallDishes = dishesMapper.selectByExample(example);
         return litemallDishes;
     }
 
     public LitemallDishes queryById(Integer dishesId) {
         LitemallDishesExample example = new LitemallDishesExample();
-        example.or().andIdEqualTo(dishesId).andLogicalDeleted(false);
+        example.or().andIdEqualTo(dishesId).andDeletedEqualTo(false);
         LitemallDishes litemallDishes = dishesMapper.selectOneByExample(example);
         return litemallDishes;
     }
 
+    public long countByCateId(Integer cateId) {
+        LitemallDishesExample example = new LitemallDishesExample();
+        example.or().andCategoryIdEqualTo(cateId).andDeletedEqualTo(false);
+        long l = dishesMapper.countByExample(example);
+        return l;
+    }
     public List<LitemallDishes> queryByCateId(Integer cateId) {
         LitemallDishesExample example = new LitemallDishesExample();
-        example.or().andCategoryIdEqualTo(cateId);
+        example.or().andCategoryIdEqualTo(cateId).andDeletedEqualTo(false);
         List<LitemallDishes> litemallDishes = dishesMapper.selectByExample(example);
         return litemallDishes;
     }

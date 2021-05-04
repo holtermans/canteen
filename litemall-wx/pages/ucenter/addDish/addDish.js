@@ -11,21 +11,19 @@ Page({
       sourceObj: {},
       isUploaded: false,
       uploadPath: null,
+    },
+    statementText: '注：注意事项。',
+    array: [{
+        id: 0,
+        name: "套餐"
+      },
+      {
+        id: 1,
+        name: "单品"
+      },
+    ],
+    index: 0,
 
-    },
-    chooseImageB: {
-      sourceObj: {},
-      isUploaded: false
-    },
-    chooseImageC: {
-      sourceObj: {},
-      isUploaded: false
-    },
-    chooseImageD: {
-      sourceObj: {},
-      isUploaded: false
-    },
-    statementText: '注：注意事项。'
   },
 
   /** 
@@ -75,10 +73,31 @@ Page({
       }
     })
   },
+  bindPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value
+    })
+  },
   formSubmit(e) {
+    var that = this;
     wx.showLoading({
       title: '加载中',
     })
+    console.log()
+    //校验表单
+    if (e.detail.value.name == null || e.detail.value.name == '') {
+      wx.showToast({
+        title: '名称不能为空',
+      })
+      return;
+    }
+    if (e.detail.value.price == null || e.detail.value.price == '') {
+      wx.showToast({
+        title: '价格不能为空',
+      })
+      return;
+    }
     // tempFilePath可以作为img标签的src属性显示图片
     const tempFilePaths = this.data.chooseImageA.sourceObj;
     if (tempFilePaths.path == undefined) {
@@ -86,13 +105,22 @@ Page({
         name: e.detail.value.name,
         price: e.detail.value.price,
         brief: e.detail.value.brief,
+        categoryId: that.data.array[that.data.index].id,
+        picUrl: "/static/images/default-dish.png"
       }
       //再发请求去存储
       util.request(api.DishesAdd, data, "POST").then((res) => {
         console.log(res);
         if (res.errno == 0) {
-          wx.navigateBack({
-            delta: 1,
+          wx.redirectTo({
+            url: '/pages/ucenter/dishes/dishes',
+          })
+        } else {
+          wx.hideLoading({
+            success: (res) => {},
+          })
+          wx.showToast({
+            title: res.errmsg,
           })
         }
       })
@@ -100,7 +128,7 @@ Page({
     }
     var that = this;
     wx.uploadFile({
-      url: api.StorageUpload, 
+      url: api.StorageUpload,
       filePath: tempFilePaths.path,
       name: 'file',
       formData: {
@@ -116,6 +144,7 @@ Page({
           name: e.detail.value.name,
           price: e.detail.value.price,
           brief: e.detail.value.brief,
+          categoryId: that.data.array[that.data.index].id,
           picUrl: result.data.storage.url
         }
         that.setData({
@@ -124,14 +153,14 @@ Page({
         //再发请求去存储
         util.request(api.DishesAdd, data, "POST").then((res) => {
           if (res.errno == 0) {
-            wx.navigateBack({
-              delta: 1,
+            wx.redirectTo({
+              url: 'pages/ucenter/dishes/dishes',
             })
           }
         })
         //do something
       },
-      fail(res){
+      fail(res) {
         console.log(res);
       }
 
@@ -144,6 +173,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var dishesCategory = wx.getStorageSync('dishesCategory');
+    this.setData({
+      array: dishesCategory,
+    })
 
   },
 
@@ -194,5 +227,18 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  previewImg: function (e) {
+    console.log(e);
+    wx.previewImage({
+      urls: [e.currentTarget.dataset.imageUrl],
+      current: e.currentTarget.dataset.imageUrl,
+      showmenu: true,
+      success: (res) => {},
+      fail: (res) => {},
+      complete: (res) => {},
+    })
   }
+
+
 })

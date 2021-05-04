@@ -1,17 +1,43 @@
 <!--pages/ucenter/dishes/dished.wxml-->
 <view class="container">
-  <scroll-view>
-    <van-card  price="{{item.price}}"  desc="{{item.brief}}" title="{{item.name}}"
-      thumb="{{ item.picUrl }}"  custom-class="custom-card" thumb-class="custom-thumb" wx:for="{{dishesList}}">
-      <view slot="footer" class="van-card__footer" >
-        <van-button size="mini" round custom-class="button">编辑</van-button>
-        <van-button size="mini" round custom-class="button" bindtap="delete" data-id="{{item.id}}">删除</van-button>
-      </view>
-    </van-card>
-  </scroll-view>
+  <van-search value="{{ value }}" label="菜品名" placeholder="请输入搜索关键词 菜名" use-action-slot bind:change="onChange"
+    bind:search="onSearch">
+    <view slot="action" bind:tap="onClick">搜索</view>
+  </van-search>
 
-  <view class="publish-button" bindtap="navigateToPublish">
-    <image class="publish-button-icon" src="../../../static/images/publish-icon.svg" />
+  <view style="display:flex;">
+    <!-- 侧边栏 -->
+    <view style="flex:1;">
+      <van-sidebar active-key="{{ activeKey }}" bind:change="cateChange">
+        <van-sidebar-item wx:for="{{dishesCategory}}" wx:for-item="cate" title="{{cate.name}}" badge="{{cateCount[index]}}" />
+        <van-button type="info" plain>
+          <text style="font-size:20rpx" >添加分类</text>
+        </van-button>
+      </van-sidebar>
+    </view>
+    <!-- 右侧详情 -->
+    <view style="flex:10;">
+      <scroll-view style="">
+        <van-row gutter="20">
+          <van-col wx:for="{{dishesList}}" span="12">
+            <van-card price="{{item.price}}" desc="{{item.brief}}" title="{{item.name}}" thumb="{{ item.picUrl }}"
+              custom-class="custom-card" thumb-class="custom-thumb">
+              <view slot="footer" class="van-card__footer">
+
+                <van-button size="mini" round custom-class="button" bindtap="delete" data-id="{{item.id}}">删除
+                </van-button>
+              </view>
+            </van-card>
+          </van-col>
+        </van-row>
+        <view style="margin-top:20px;color:#c8c8c8;text-align:center">没有更多了</view>
+
+      </scroll-view>
+    </view>
+    <!-- <view class="publish-button" bindtap="navigateToPublish">
+        <image class="publish-button-icon" src="../../../static/images/publish-icon.svg" />
+      </view> -->
+
   </view>
-
 </view>
+<tui-fab bind:click="navigateToPublish"></tui-fab>

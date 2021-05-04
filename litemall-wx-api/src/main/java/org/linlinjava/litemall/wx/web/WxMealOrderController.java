@@ -37,11 +37,18 @@ public class WxMealOrderController {
 
     @RequestMapping("add")
     public Object save(@LoginUser Integer userId, @RequestBody List<LitemallMealOrder> mealOrder) {
+        System.out.println(mealOrder);
         Object response = userInfoService.checkUserId(userId);
         if (response != null) {
             return response;
         } else {
-            mealOrderService.add(userId, mealOrder);
+            try {
+                mealOrderService.add(userId, mealOrder);
+            }catch (Exception e){
+                return ResponseUtil.fail();
+            }finally {
+
+            }
             return ResponseUtil.ok();
         }
 

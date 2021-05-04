@@ -8,37 +8,39 @@
 }
 
 .form-block{
-  position: relative;
-  margin-bottom: 40rpx;
+  display: flex;
+  min-height: 50px;
+  align-items:center;
 }
 
 .form-block-title {
-  display: block;
   text-align: left;
-  margin-bottom: 20rpx;
-  font-size: 24rpx;
+  font-size: 29rpx;
+  height: 50px;
+  line-height: 50px;
+  flex:auto;
 }
 
 .form-block-input{
-  border: 2rpx solid #dbdbdb;
   border-radius: 8rpx;
-  font-size: 32rpx;
+  font-size: 29rpx;
+  flex:10;
 }
 
 #publish_title {
-  height: 80rpx;
-  padding: 0 28rpx;
+  height: 50rpx;
+
 }
 #publish_price {
-  height: 80rpx;
-  padding: 0 28rpx;
+  height: 50rpx;
+
 }
 
 #publish_desc {
   box-sizing: border-box;
-  height: 400rpx;
+
   width: 100%;
-  padding: 28rpx;
+
 }
 
 .form-statement {
@@ -104,4 +106,12 @@
   width: 40%;
   height: 2rpx;
   transform: translate(-50%, -50%);
+}
+
+.form-block-title-required::before{
+  content: '* ';
+  color: red;
+}
+.picker{
+
 }

@@ -1,9 +1,15 @@
 /* pages/ucenter/dishes/dished.wxss */
+page{
+  background: #fff;
+}
+.container{
+  background-color: #fff;
+}
 .custom-card{
   height: 100px;
 }
 .custom-thumb{
-  height: 100px;
+  height: 50px;
 }
 .van-card__header{
   height: 80%;

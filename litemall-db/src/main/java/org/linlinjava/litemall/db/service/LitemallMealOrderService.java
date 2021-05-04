@@ -34,8 +34,9 @@ public class LitemallMealOrderService {
         BigDecimal price = new BigDecimal(0) ;
         //添加商品的信息
         for (LitemallMealOrder item : mealOrder) {
-
+            System.out.println(item.getDishesId());
             LitemallDishes litemallDishes = dishesService.queryById(item.getDishesId());
+            System.out.println(litemallDishes);
             price = price.add(new BigDecimal(litemallDishes.getPrice()).multiply( new BigDecimal(item.getQuantity())));
             item.setDishesPrice(litemallDishes.getPrice());
             item.setAddTime(LocalDateTime.now());
