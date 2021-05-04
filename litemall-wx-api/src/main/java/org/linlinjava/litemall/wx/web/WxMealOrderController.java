@@ -47,6 +47,12 @@ public class WxMealOrderController {
 
     }
 
+    /**
+     * 根据userId 和 日期查询订单
+     * @param userId
+     * @param date
+     * @return
+     */
     //查找用户某天的订餐记录
     @RequestMapping("findByUid")
     public Object findByUidAndDate(@LoginUser Integer userId, @RequestParam("date") String date) {

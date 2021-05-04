@@ -9,11 +9,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    banner: [
-      {
-        url: "https://www.joyfey.xyz/upload/banner1.jpg"
-      }
-    ],
+    banner: [{
+      url: "https://www.joyfey.xyz/upload/banner1.jpg"
+    }],
     hideEmpty: true,
     price: 0,
     sum: 0,
@@ -60,14 +58,13 @@ Page({
     this.getTimingList(); //获取时段列表
     var date = new Date();
     this.setData({
-      'date.selectSingle': date.getTime()
+      'date.selectSingle': date.getTime()  //设置当前时间
     });
 
     this.getDailyMenu().then(() => {
-      this.getOrderInfo();
-      this.getDishesList().then(() => {
-        this.isEmpty();
-        console.log(that.data.currentTiming.id, that.data.dailyMenuList, that.data.dishesList);
+      this.getOrderInfo();//获取订单信息
+      this.getDishesList().then(() => {   //获取菜的信息
+        this.isEmpty();  //判断是否有菜上架
         this.calculateSum(that.data.currentTiming.id, that.data.dailyMenuList, that.data.dishesList);
       });
       wx.stopPullDownRefresh({
@@ -81,16 +78,12 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    wx.removeStorageSync('cart');
-    this.isEmpty();
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-   
-
   },
   /**
    * 判断菜单是否为空状态
@@ -113,16 +106,18 @@ Page({
     //这里要加入登录检测，因为需要获取个人的信息，
     var that = this;
     var dailyMenuList = this.data.dailyMenuList;
+
     util.request(api.MealOrderQuery, {
       date: util.getYMD(this.data.date.selectSingle)
     }).then((res) => {
-      console.log(res);
+
       let timingIdArr = [];
+
       if (res.errno == 0) {
         res.data.mealOrders.forEach(item => {
           timingIdArr.push(item.timingId);
           for (var index in dailyMenuList) { //恢复点菜数量
-            console.log(dailyMenuList[index].timingId + "" + that.data.currentTiming.id)
+
             if (dailyMenuList[index].dishesId == item.dishesId && dailyMenuList[index].timingId == item.timingId) {
               dailyMenuList[index].quantity = item.quantity;
             }
@@ -141,7 +136,6 @@ Page({
 
   //确认日期
   onConfirm(event) {
-    console.log(event);
     wx.showLoading({
       title: '加载中',
     })
@@ -149,10 +143,8 @@ Page({
       showCalendar: false,
       [`date.${this.data.id}`]: Array.isArray(event.detail) ? event.detail.map(date => date.valueOf()) : event.detail.valueOf()
     });
-    //重新将数量置零
-    this.clearCartList();
-    wx.removeStorageSync('cart');
-    console.log(wx.getStorageSync('cart'))
+
+    //重新获取当前日期的菜单
     this.getDailyMenu().then(() => {
       this.getOrderInfo();
       this.isEmpty();
@@ -165,30 +157,27 @@ Page({
   },
 
   onSelect(event) {
-    console.log(event);
+
   },
 
   onUnselect(event) {
-    console.log(event);
+
   },
 
   onClose() {
-    console.log(this.data.date);
+
     this.setData({
       showCalendar: false
     });
   },
 
   onOpen() {
-    console.log('open');
   },
 
   onOpened() {
-    console.log('opened');
   },
 
   onClosed() {
-    console.log('closed');
   },
   //重置日期
   resetSettings() {
@@ -209,14 +198,17 @@ Page({
       confirmDisabledText: null
     });
   },
-  //选择日期
+  /**
+   * 选择日期
+   * @param {*} event 
+   */
   selectDate(event) {
     this.resetSettings();
     const {
       type,
       id
     } = event.currentTarget.dataset;
-    console.log(event.currentTarget.dataset)
+
     const data = {
       id,
       type,
@@ -227,17 +219,23 @@ Page({
   //切换时段 -> 设置当前时段 -> 跟据当前时段获取当前日期的菜品
   switchCate: function (event) {
     var that = this;
-    var currentTarget = event.currentTarget;
+    
     //获取点击分类的id判断
-    if (this.data.currentTiming.id == event.currentTarget.dataset.id) { //点击当前分类不响应
+    if (this.data.currentTiming.id == event.currentTarget.dataset.id) {
+      //点击当前分类不响应
       return false;
     }
+    this.setData({
+      hideEmpty:true
+    })
     this.getCurrentTiming(event.currentTarget.dataset.id); //设置当前时段分类
     this.isEmpty();
     this.getOrderInfo();
     this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
   },
-  //查找设置当前时段分类
+  /**
+   * 查找设置当前时段分类
+   * */
   getCurrentTiming: function (id) {
     let timgList = this.data.timingList;
     timgList.forEach(item => {
@@ -256,7 +254,10 @@ Page({
       }
     })
   },
-  /**计算合计 */
+  /**
+   * 计算当前所选时间段的点餐价格
+   *  
+   */
   calculateSum(currentTimingId, dailyMenuList, dishesList) {
     var sum = 0;
     dailyMenuList.forEach(item => {
@@ -282,10 +283,8 @@ Page({
     if (util.isInArr(this.data.currentTiming.id, this.data.hasOrderTimingIdArr) != -1) {
       return;
     }
-    console.log(e.currentTarget.dataset.id);
     var id = e.currentTarget.dataset.id;
-    var arr = wx.getStorageSync('cart') || [];
-    var f = false;
+
     for (var i in this.data.dailyMenuList) { // 遍历菜单找到被点击的菜品，数量加1
       if (this.data.dailyMenuList[i].dishesId == id && this.data.currentTiming.id == this.data.dailyMenuList[i].timingId) {
         //确定判断有没有过报餐时间
@@ -295,13 +294,10 @@ Page({
             stopTime = item.stopTime;
           }
         })
-        console.log(this.data.dailyMenuList[i].date + " " + stopTime)
-        var stopDateTime = new Date((this.data.dailyMenuList[i].date + " " + stopTime).replace(/-/g, '/'));
-        
+        var stopDateTime = new Date((this.data.dailyMenuList[i].date + " " + stopTime).replace(/-/g, '/')); //这里是为了兼容苹果，要 "2021/02/02 11:12:11" 这样的时间格式
 
         this.getServerTime().then(nowTime => {
           if (stopDateTime.getTime() < new Date().getTime()) {
-            console.log("超时");
             wx.showToast({
               title: '已过报餐时间',
               icon: 'failure',
@@ -354,7 +350,7 @@ Page({
       return;
     }
     var id = e.currentTarget.dataset.id;
-    var arr = wx.getStorageSync('cart') || [];
+
     for (var i in this.data.dailyMenuList) {
       if (this.data.dailyMenuList[i].dishesId == id && this.data.currentTiming.id == this.data.dailyMenuList[i].timingId) {
 
@@ -362,34 +358,13 @@ Page({
         if (this.data.dailyMenuList[i].quantity <= 0) {
           this.data.dailyMenuList[i].quantity = 0;
         }
-        // if (arr.length > 0) {
-        //   for (var j in arr) {
-        //     if (arr[j].id == id) {
-        //       arr[j].quantity -= 1;
-        //       if (arr[j].quantity <= 0) {
-        //         this.removeByValue(arr, id)
-        //       }
-        //       if (arr.length <= 0) {
-        //         this.setData({
-        //           currentSubCategoryList: this.data.currentSubCategoryList,
-        //         })
-        //       }
-        //       try {
-        //         wx.setStorageSync('cart', arr)
-        //       } catch (e) {
-        //         console.log(e)
-        //       }
-        //     }
-        //   }
-        // }
       }
     }
     this.setData({
-      cartList: arr,
       dailyMenuList: this.data.dailyMenuList,
     })
     this.checkCartCount();
-    console.log(arr);
+
     this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
   },
 
@@ -412,6 +387,9 @@ Page({
       cartList: []
     })
   },
+  /**
+   * 计算购物车已点餐价格
+   */
   checkCartCount: function () {
     let count = 0;
     this.data.cartList.forEach(function (item) {
@@ -434,7 +412,7 @@ Page({
     }
     //获取点菜信息
     this.data.dailyMenuList.forEach(item => {
-      if (item.quantity != 0 && that.data.currentTiming.id == item.timingId) {
+      if (item.quantity != 0 && (that.data.currentTiming.id == item.timingId)) {
         order.push(item);
       }
     })
@@ -445,35 +423,37 @@ Page({
         duration: 500
       });
       return;
-    }
-    wx.showModal({
-      title: '提示',
-      content: '报' + this.data.currentTiming.name,
-      success(res) {
-        if (res.confirm) {
-          var data = []
-          order.forEach((item => {
-            var dataTemp = {
-              "date": item.date,
-              "timingId": item.timingId,
-              "timingName": item.timingName,
-              "dishesId": item.dishesId,
-              "dishesName": item.dishesName,
-              "quantity": item.quantity,
-            }
-            data.push(dataTemp);
-          }));
-          util.request(api.MealOrder, data, "POST").then(function (res) {
-            if (res.errno === 0) {
-              console.log("插入成功")
-              that.getOrderInfo();
-            }
-          });
-        } else if (res.cancel) {
-          console.log('用户点击取消')
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '报' + this.data.currentTiming.name,
+        success(res) {
+          if (res.confirm) {
+            var data = []
+            order.forEach((item => {
+              var dataTemp = {
+                "date": item.date,
+                "timingId": item.timingId,
+                "timingName": item.timingName,
+                "dishesId": item.dishesId,
+                "dishesName": item.dishesName,
+                "quantity": item.quantity,
+              }
+              data.push(dataTemp);
+            }));
+            util.request(api.MealOrder, data, "POST").then(function (res) {
+              if (res.errno === 0) {
+
+                that.getOrderInfo();
+              }
+            });
+          } else if (res.cancel) {
+
+          }
         }
-      }
-    })
+      })
+    }
+
 
   },
   //获取菜品列表
@@ -498,7 +478,7 @@ Page({
     var stopTime = this.data.currentTiming.stopTime;
     var stopDateTime = new Date(util.getYMD(this.data.date.selectSingle) + " " + stopTime);
     if (stopDateTime.getTime() < new Date().getTime()) {
-      console.log("超时");
+
       wx.showToast({
         title: '不可取消',
         icon: 'failure',
@@ -516,10 +496,11 @@ Page({
             date: util.getYMD(that.data.date.selectSingle),
             timingId: that.data.currentTiming.id
           }
-          console.log(data)
           util.request(api.MealOrderCancel, data).then(res => {
             if (res.errno == 0) {
-              console.log("取消成功");
+              wx.showToast({
+                title: '已取消',
+              })
               that.getDailyMenu().then(() => {
                 that.getOrderInfo();
                 that.calculateSum(that.data.currentTiming.id, that.data.dailyMenuList, that.data.dishesList);
@@ -528,7 +509,7 @@ Page({
             }
           })
         } else if (res.cancel) {
-          console.log('用户点击取消')
+
         }
       }
     })
@@ -552,22 +533,20 @@ Page({
       let that = this;
       //将日期格式化
       var date = util.getYMD(this.data.date.selectSingle);
-      console.log(date);
       let data = {
         date: date,
       }
       util.request(api.DailyMenuList, data).then(function (res) {
-        res.data.dailyMenuList.map(item => {
-          item.quantity = 0;
-        })
+
         if (res.errno === 0) {
+          res.data.dailyMenuList.map(item => {
+            item.quantity = 0;
+          })
           that.setData({
             dailyMenuList: res.data.dailyMenuList,
           })
         };
         resolve();
-
-        console.log(that.data.dailyMenuList);
       });
     })
 

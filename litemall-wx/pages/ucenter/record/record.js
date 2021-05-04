@@ -14,13 +14,19 @@ Page({
     hasOrderDateList: [],
     dishesList: [],
     canteenOrderList: [],
+    active: 1,
+    statusCode: ['', 103, 107],
+    checkMode:undefined,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var checkMode = app.globalData.checkMode;
+    this.setData({
+      checkMode: checkMode,
+    })
   },
 
   /**
@@ -161,8 +167,8 @@ Page({
               }
             })
           },
-          fail(res){
-              
+          fail(res) {
+
           }
         })
       } else {
@@ -174,17 +180,32 @@ Page({
     // 只允许从相机扫码
 
   },
+  onChange(e) {
+    this.setData({
+      active: e.detail.index
+    })
+    this.getCanteenOrder();
+  },
 
   getCanteenOrder() {
     let that = this;
-    util.request(api.CanteenOrderList).then(res => { //查询报餐记录
+    var data = {
+      status: this.data.statusCode[this.data.active]
+    }
+    util.request(api.CanteenOrderList, data).then(res => { //查询报餐记录
       if (res.errno == 0) {
         console.log(res);
         that.setData({
-            canteenOrderList: res.data.list,
-          }),
-          console.log(that.data.canteenOrderList)
+          canteenOrderList: res.data.list,
+        });
+        wx.setStorageSync('canteenOrderList', res.data.list);
       }
+    })
+  },
+  createQrcode(e) {
+    console.log(e);
+    wx.navigateTo({
+      url: '/pages/ucenter/QRCode/QRCode?orderSn=' + e.currentTarget.dataset.orderSn + '&orderId=' + e.currentTarget.dataset.orderId,
     })
   }
 })

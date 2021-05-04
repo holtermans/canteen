@@ -33,9 +33,9 @@ page {
 }
 
 .user-info .item {
-  padding: 10rpx;
   display: flex;
   flex-direction: column;
+  margin-left: 5px;
 }
 
 .user-info .item .name {
@@ -49,10 +49,12 @@ page {
 
 .user-info .record {
   display: flex;
+  flex-direction: column;
 }
 
 .user-info .record .item {
   margin-right: 20rpx;
+  color: #848484;
 }
 .special-tab{
   transition: all 0.25s ease-in-out;

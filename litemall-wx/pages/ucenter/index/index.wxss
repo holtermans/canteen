@@ -12,7 +12,7 @@ page {
 }
 
 .profile-info {
-  background-color: #ab956d;
+  background-image: linear-gradient( #02CF86,#00796b );
   color: #f4f4f4;
   display: flex;
   align-items: center;

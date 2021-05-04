@@ -1,0 +1,75 @@
+<!--pages/ucenter/systemConfig.wxml-->
+
+<van-collapse accordion value="{{ collapseAvtive }}" bind:change="collapse">
+  <van-collapse-item title="语音播报设置" name="1">
+    <van-cell title="开关">
+      <view slot="right-icon">
+        <switch checked="{{checked}}" bindchange="onChange" />
+      </view>
+    </van-cell>
+
+    <van-cell title="姓名">
+      <view slot="right-icon">
+        <switch checked="{{nameChecked}}" bindchange="onChangeName" />
+      </view>
+    </van-cell>
+
+    <van-cell title="用餐类型">
+      <view slot="right-icon">
+        <switch checked="{{typeChecked}}" bindchange="onChangeType" />
+      </view>
+    </van-cell>
+
+    <van-cell title="价格">
+      <view slot="right-icon">
+        <switch checked="{{priceChecked}}" bindchange="onChangePrice" />
+      </view>
+    </van-cell>
+  </van-collapse-item>
+
+</van-collapse>
+
+
+
+
+
+<view style="opacity:0">
+  <van-cell-group>
+    <van-field value="{{ value }}" placeholder="等待扫码" border="{{ false }}" bind:confirm="inputConfirm" focus="{{focus}}"
+      bind:blur="getFocus" input-align="center" auto-focus="{{true}}" />
+  </van-cell-group>
+</view>
+
+
+<view
+  style="padding:0 10px; display: block;position: relative; margin-top: 82px;margin-left: 30px;margin-right: 30px;background:#fff;height:50%">
+
+  <view style="position:relative;top:-58px;margin: 0 auto;width: 5rem;">
+
+    <van-image round width="5rem" height="5rem" src="{{bcUserVo.avatar}}" />
+  </view>
+  <view style="margin-top: -50px">
+    <view>
+      {{bcUserVo.name}} {{bcUserVo.mobile}}
+    </view>
+
+    <view>
+      <text style="font-weight:bold;">
+        {{canteenOrder.date}} {{canteenOrder.timingName}} {{canteenOrder.orderPrice}}
+      </text>
+    </view>
+
+    <view wx:for="{{mealOrders}}" style="display:flex">
+
+      <view>
+        <van-image round width="2rem" height="2rem" lazy-load src="{{item.dishesPicUrl}}" />
+      </view>
+      <view style="display:flex;align-items:center; justify-content: center;letter-spacing:1rpx;padding-left:10px">
+        <view style="color:#828282">
+          {{item.dishesName}} {{item.quantity}}份
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<van-divider dashed />

@@ -1,7 +1,5 @@
 package org.linlinjava.litemall.db.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,7 +38,6 @@ public class LitemallBcUser {
      *
      * @mbg.generated
      */
-//    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime addtime;
 
     /**
@@ -104,7 +101,6 @@ public class LitemallBcUser {
      *
      * @mbg.generated
      */
-//    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime updateTime;
 
     /**

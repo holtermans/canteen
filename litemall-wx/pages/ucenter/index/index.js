@@ -28,10 +28,20 @@ Page({
   },
   onShow: function () {
     let that = this;
-    console.log(app.globalData.hasLogin);
     //获取用户的登录信息
     if (app.globalData.hasLogin) {
       let userInfo = wx.getStorageSync('userInfo');
+      if(userInfo == null){
+        var temp = {
+          nickName: '点击登录',
+          avatarUrl: '/static/images/my.png'
+        };
+        this.setData({
+          userInfo: temp,
+          hasLogin: false
+        });
+      }
+
       this.setData({
         userInfo: userInfo,
         hasLogin: true
@@ -54,6 +64,29 @@ Page({
     }
   },
 
+  updateInfo() {
+
+    wx.getUserProfile({
+      desc: '更新账号信息',
+      success: (res) => {
+        wx.setStorageSync('userInfo', res.userInfo);
+        let userInfo = wx.getStorageSync('userInfo');
+        this.setData({
+          userInfo: userInfo,
+          hasLogin: true
+        });
+        wx.showToast({
+          title: '已更新',
+        })
+      },
+      fail: (res)=>{
+        wx.showToast({
+          title: '更新时出错',
+          content: res
+        })
+      }
+    })
+  },
 
   goOrder() {
     if (this.data.hasLogin) {

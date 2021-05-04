@@ -3,7 +3,7 @@
     <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
     <view class="info">
       <text class="name">{{userInfo.nickName}}</text>
-      <view class="iconfont icon-icon--gengxin" style="color:#ffffff">同步账号信息</view>
+      <view class="iconfont icon-icon--gengxin" style="color:#ffffff" bindtap="updateInfo">同步账号信息</view>
     </view>
   </view>
 

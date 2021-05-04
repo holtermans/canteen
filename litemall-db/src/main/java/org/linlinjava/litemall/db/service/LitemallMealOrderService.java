@@ -100,7 +100,7 @@ public class LitemallMealOrderService {
     public List<LitemallMealOrder> findByOrderId(Integer userId, Integer orderId) {
         LitemallMealOrderExample example = new LitemallMealOrderExample();
         example.or().andOrderIdEqualTo(orderId).andDeletedEqualTo(false);
-        List<LitemallMealOrder> mealOrders = mealOrderMapper.selectByExampleSelective(example);
+        List<LitemallMealOrder> mealOrders = mealOrderMapper.selectByExample(example);
         return mealOrders;
     }
 

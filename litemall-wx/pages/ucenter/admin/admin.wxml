@@ -10,6 +10,7 @@
   <van-cell title="每日菜谱" is-link bindtap="goDailyMenu"/>
   <van-cell title="用餐统计" is-link bindtap="goStatistics"/>
   <van-cell title="用户管理" is-link bindtap="goUserManagement"/>
+  <van-cell title="用餐核销" is-link bindtap="goSystemConfig"/>
 
 </view>
 <view wx:else style="text-align:center">

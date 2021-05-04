@@ -4,19 +4,19 @@ var user = require('./utils/user.js');
 
 App({
   onLaunch: function () {
-    Promise.prototype.finally = function (callback) {
-      let P = this.constructor;
-      return this.then(
-        value => {
-          P.resolve(callback()).then(() => value)
-        },
-        reason => {
-          P.resolve(callback()).then(() => {
-            throw reason
-          })
-        }
-      )
-    }
+    // Promise.prototype.finally = function (callback) {
+    //   let P = this.constructor;
+    //   return this.then(
+    //     value => {
+    //       P.resolve(callback()).then(() => value)
+    //     },
+    //     reason => {
+    //       P.resolve(callback()).then(() => {
+    //         throw reason
+    //       })
+    //     }
+    //   )
+    // }
     const updateManager = wx.getUpdateManager();
     wx.getUpdateManager().onUpdateReady(function () {
       wx.showModal({
@@ -34,8 +34,8 @@ App({
   onShow: function (options) {
 
     var that = this;
-    console.log((wx.getStorageSync('userInfo')));
-    console.log(wx.getStorageSync('token'))
+    // console.log((wx.getStorageSync('userInfo')));
+    // console.log(wx.getStorageSync('token'))
     user.checkLogin().then(res => { //入口做登录检测，同时也做
       this.globalData.hasLogin = true;
     }).catch(() => {
@@ -46,5 +46,6 @@ App({
   },
   globalData: {
     hasLogin: false,
+    checkMode:1,// 1 出示二维码核销   2 主动扫码核销
   }
 })

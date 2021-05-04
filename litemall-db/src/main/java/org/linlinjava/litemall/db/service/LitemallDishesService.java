@@ -53,4 +53,11 @@ public class LitemallDishesService {
         LitemallDishes litemallDishes = dishesMapper.selectOneByExample(example);
         return litemallDishes;
     }
+
+    public List<LitemallDishes> queryByCateId(Integer cateId) {
+        LitemallDishesExample example = new LitemallDishesExample();
+        example.or().andCategoryIdEqualTo(cateId);
+        List<LitemallDishes> litemallDishes = dishesMapper.selectByExample(example);
+        return litemallDishes;
+    }
 }

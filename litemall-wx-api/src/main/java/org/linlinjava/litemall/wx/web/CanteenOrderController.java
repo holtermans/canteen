@@ -1,11 +1,9 @@
 package org.linlinjava.litemall.wx.web;
 
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.db.domain.CanteenOrder;
-import org.linlinjava.litemall.db.domain.Config;
-import org.linlinjava.litemall.db.domain.LitemallBcUser;
-import org.linlinjava.litemall.db.domain.LitemallUser;
+import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.UserInfoService;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -35,6 +34,8 @@ public class CanteenOrderController {
     private RedisController redisController;
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private BcUserVoService bcUserVoService;
 
     @RequestMapping("listByIdAndDate")
     public Object getByIdAndDateRange(@RequestParam Integer userId, @RequestParam String date) {
@@ -43,19 +44,39 @@ public class CanteenOrderController {
         List<CanteenOrder> canteenOrders = canteenOrderService.queryByUidAndDateRange(userId, date);
         return ResponseUtil.ok(canteenOrders);
     }
-
+    @RequestMapping("findByOrderSn")
+    public Object getByOrderSn(@LoginUser Integer userId,  @RequestParam String orderSn) {
+        Object o = userInfoService.checkUserId(userId);
+        if (o != null) {
+            return o;
+        } else {
+            CanteenOrder order = canteenOrderService.queryByOrderSn(orderSn);
+            if (order == null) {
+                return ResponseUtil.fail(601, "根据序列号未找到订单");
+            }
+            HashMap<Object, Object> resMap = new HashMap<>();
+            resMap.put("canteenOrder", order);
+            return ResponseUtil.ok(resMap);
+        }
+    }
     /**
      * 获取前十条订餐记录
      *
      * @return
      */
     @RequestMapping("list")
-    public Object get10Record(@LoginUser Integer userId) {
+    public Object get10Record(@LoginUser Integer userId, @RequestParam Short status) {
         Object o = userInfoService.checkUserId(userId);
         if (o != null) {
             return o;
         } else {
-            PageInfo<CanteenOrder> canteenOrders = canteenOrderService.queryByUidAndDate(userId);
+            PageInfo<CanteenOrder> canteenOrders;
+            if (status != null) {
+                canteenOrders = canteenOrderService.queryByUid(userId, status);
+            } else {
+                canteenOrders = canteenOrderService.queryByUid(userId);
+            }
+
             return ResponseUtil.ok(canteenOrders);
         }
 
@@ -97,29 +118,54 @@ public class CanteenOrderController {
     }
 
     /**
-     * 订单查询
+     * 订单核销
+     *
+     * @return
+     */
+    @RequestMapping("checkByOrderSn")
+    public Object orderCheck(@LoginUser Integer operatorId, @RequestParam String orderSn) {
+        Object o = userInfoService.checkUserId(operatorId);
+        if (o != null) {
+            return o;
+        } else { //o为null 代表所有信息都没问题
+            CanteenOrder canteenOrder = canteenOrderService.queryByOrderSn(orderSn);
+            if (canteenOrder == null) {
+                return ResponseUtil.fail(555, "根据序列号未找到订单");
+            } else {
+                Integer orderId = canteenOrder.getId();
+                Integer userId = canteenOrder.getUserId();
+                BcUserVo bcUserVo = bcUserVoService.getBcUserVoByUserId(userId);
+                List<LitemallMealOrder> mealOrders = mealOrderService.findByOrderId(userId, orderId);
+                //这里要增加排队功能，还要判断前面是否有人在排队。在此之前已经做了时间和二维码的验证，所以只需要进行队列的验证
+                //先做加入队列的功能
+//                long hadd = redisController.hadd(orderId);
+//                if (hadd == 1003) {
+                int num1 = canteenOrderService.check(userId, orderId);
+                int num2 = mealOrderService.check(userId, orderId);
+                HashMap<Object, Object> resMap = new HashMap<>();
+                resMap.put("canteenOrder", canteenOrder);
+                resMap.put("mealOrders", mealOrders);
+                resMap.put("bcUserVo", bcUserVo);
+
+                return ResponseUtil.ok(resMap);
+//                } else {
+//                    return ResponseUtil.fail(555, "等待排队");
+//                }
+                //todo 之前设计的不合理，所以导致这里需要两边的订单都要做核销，待改进
+            }
+
+        }
+
+
+    }
+
+    /**
+     * 某一天所有订单查询
      *
      * @return
      */
     @RequestMapping("dailyList")
     public Object dailyList(@RequestParam String date) {
-//        if (userId != null) { //token过期，提示一下
-//            //根据userId查询用户状态是否验证
-//            LitemallUser user = userService.findById(userId);
-//            if (user != null) {
-//                Integer bcUserId = user.getBcUserId();
-//                if (bcUserId == null) {
-//                    return ResponseUtil.unlogin();
-//                }
-//                LitemallBcUser bcUser = bcUserService.findById(bcUserId);
-//                if (bcUser.getStatus() == 0) { //未激活
-//                    return ResponseUtil.notActive();
-//                }
-//            }
-//        } else {
-//            return ResponseUtil.unlogin();
-//        }
-
         List<CanteenOrder> canteenOrders = canteenOrderService.queryByDate(date);
 
         return ResponseUtil.ok(canteenOrders);

@@ -40,6 +40,8 @@ public class UserInfoService {
                 if (bcUser.getStatus() == 0) { //未激活
                     return ResponseUtil.notActive();
                 }
+            }else{
+                return ResponseUtil.unlogin();
             }
         } else {
             return ResponseUtil.unlogin();

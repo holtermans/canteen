@@ -24,6 +24,7 @@ Page({
     ],
     result: null,
     checkTimingId: null,
+    checkTimingName: null,
     timingList: [],
     dishesList: [],
     userList: {}, //储存
@@ -96,47 +97,6 @@ Page({
   //监听任务
   startTask() {
     this.initQueue();
-    // var time = 0;
-    // var that = this;
-    
-    // wx.connectSocket({
-    //   url: api.Socket,
-
-    //   success: function (res) {
-    //     console.log(res);
-    //   },
-    //   fail: function (res) {
-    //     console.log(res);
-    //   }
-    // });
-    // wx.onSocketOpen((result) => {
-    //   this.setData({
-    //     connected: true
-    //   })
-    //   i = setInterval(() => {
-    //     that.setData({
-    //       queue: time++
-    //     })
-    //   }, 1000);
-    // })
-    // wx.onSocketMessage((result) => {
-    //   console.log(result);
-    //   var message = JSON.parse(result.data);
-    //   console.log(message)
-
-    //   this.setData({
-    //     message: message
-    //   })
-    // })
-    // wx.onSocketClose((result) => {
-    //   this.setData({
-    //     connected: false,
-    //     message: null
-    //   });
-    //   clearInterval(i);
-
-    // })
-
   },
 
   //折叠菜单
@@ -154,6 +114,7 @@ Page({
     console.log(e);
     this.setData({
       checkTimingId: e.currentTarget.dataset.id,
+      checkTimingName: e.currentTarget.dataset.timingName
     })
     this.getBcUserInfoByUserId(this.data.userList[e.currentTarget.dataset.id]);
     this.toggle('closeIcon', true);
@@ -181,18 +142,17 @@ Page({
    */
   onShow: function () {
     var that = this;
-
     this.getTimingList();
     this.getDishesList();
     var date = new Date();
     wx.showLoading({
       title: '加载中',
     });
+    this.setData({
+      'date.selectSingle': date.getTime()
+    });
     j = setInterval(() => {
       var promise = new Promise((resolve, reject) => {
-        this.setData({
-          'date.selectSingle': date.getTime()
-        });
         resolve();
       });
       promise.then(() => {
@@ -201,7 +161,6 @@ Page({
         that.initQueue();
       })
     }, 1000)
-
     wx.hideLoading({
       success: (res) => {},
     })

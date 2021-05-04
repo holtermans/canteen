@@ -1,8 +1,8 @@
 // 以下是业务服务器API地址
 // 本机开发时使用
-// var WxApiRoot = 'http://localhost:8080/wx/';
+var WxApiRoot = 'http://localhost:8080/wx/';
 // 局域网测试使用
-var WxApiRoot = 'https://www.joyfey.xyz/wx/';
+// var WxApiRoot = 'https://www.joyfey.xyz/wx/';
 // 云平台部署时使用
 // var WxApiRoot = 'http://122.51.199.160:8080/wx/';
 // 云平台上线时使用
@@ -107,7 +107,10 @@ module.exports = {
   MealOrderQuery: WxApiRoot + 'mealOrder/findByUid', //指定日期报餐查询
   MealOrderCancel: WxApiRoot + 'mealOrder/cancel', //取消报餐
   MealOrderList: WxApiRoot + 'mealOrder/list', //查询个人报餐列表
+  MealOrderByOrderId: WxApiRoot + 'mealOrder/findByOrderId', //查询个人报餐列表
   CanteenOrderList: WxApiRoot + 'canteenOrder/list', //查询近期个人十条报餐记录
+  CanteenOrderByOrderSn: WxApiRoot + 'canteenOrder/findByOrderSn', //查询近期个人十条报餐记录
+
 
   DailyCanteenOrderList: WxApiRoot + 'canteenOrder/dailyList', //查询单天订单信息
   AllOrderByDate: WxApiRoot + 'mealOrder/listByDate', //查询指定日期报餐列表
@@ -115,12 +118,16 @@ module.exports = {
   dishesList: WxApiRoot + 'dishes/list', //菜品列表
   DishesAdd: WxApiRoot + 'dishes/add', //用餐时段更新
   DishesDel: WxApiRoot + 'dishes/delete', //用餐时段更新
+  CanteenDishCateList: WxApiRoot + 'canteenDishCate/getAllCate', //获取全部菜品分类
+  DishGetBydCateId: WxApiRoot + 'dishes/getBydCateId', //获取全部菜品分类
+  
   DishesSearch: WxApiRoot + 'dishes/search', //用餐时段更新
   DailyMenuList: WxApiRoot + 'dailyMenu/queryByDate', //获取列表
   DailyMenuAdd: WxApiRoot + 'dailyMenu/add', //添加菜品
   DailyMenuDel: WxApiRoot + 'dailyMenu/deleteById', //删除菜品
   StorageUpload: WxApiRoot + 'storage/upload', //图片上传,
   OrderCheck: WxApiRoot + 'canteenOrder/check', //订单核销,
+  OrderCheckByOrderSn: WxApiRoot + 'canteenOrder/checkByOrderSn', //订单核销,
 
   GetBcUserInfoByUserId: WxApiRoot + 'user/getBcUserInfoByUserId', //传入ID数组，返回用户,
   GetSingleBcUserByUserId: WxApiRoot + 'user/getSingleBcUserByUserId', //查询当前用户的bc用户信息

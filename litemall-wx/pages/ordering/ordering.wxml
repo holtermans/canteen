@@ -40,55 +40,67 @@
     <!-- 左侧时间段分类 end-->
     <!--start 右侧对应时间段菜品 -->
 
-    <scroll-view class="cate" scroll-y="true">
+    <scroll-view class="cate" scroll-y="true" show-scrollbar="false" enhanced="true">
       <view class="hd" style="">
         <text class="line"></text>
         <text class="txt">{{currentTiming.name}}介绍</text>
         <text class="line"></text>
       </view>
-      <view style="display:{{hideEmpty?'none':'block'}}">
-        <van-empty custom-class="custom-image" image="../../../static/images/custom-empty-image.png"
-          description="未上架" />
-      </view>
+      <van-transition name="fade-up" show="{{ hideEmpty? false : true }}" custom-class="block" duration="{{500}}"> 
+        <view style="display:{{ hideEmpty?'none':'block'}}">
+          <van-empty custom-class="custom-image" image="../../../static/images/custom-empty-image.png"
+            description="未上架" />
+        </view>
+      </van-transition>
+
 
       <view class="bd">
         <!-- start 菜品卡片 -->
-        <view class="item" wx:key="id" wx:for="{{dailyMenuList}}" wx:if="{{item.timingId == currentTiming.id}}">
-          <view style="flex:2;height:200rpx;width:autp;padding:15rpx">
-            <image src="{{dish.picUrl}}" style="height:100%;width:100%" wx:for="{{dishesList}}" wx:for-item="dish"
-              wx:if="{{dish.id == item.dishesId}}"></image>
-          </view>
-          <view style="display:flex;  flex-direction: column; flex:3;padding:10px">
-            <view style="font-size:36px">
-              <text class="txt">{{item.dishesName}}</text>
-            </view>
-            <view class="brief">
-              <text>{{item.dishesBrief}}</text>
-            </view>
-            <view class="price-stepper">
-              <view class="cai_price" data-index="{{index}}">
-                ￥<text wx:for="{{dishesList}}" wx:for-item="dish"
-                  wx:if="{{dish.id == item.dishesId}}">{{dish.price}}</text>
-              </view>
-              <view class="stepper">
-                <!-- 减号 -->
-                <view class="iconfont icon-jian" style="color:#cecece;font-size:23px" hidden="{{item.quantity <= 0}}"
-                  bindtap="minusCount" data-id="{{item.dishesId}}" data-index="{{index}}" >
 
-                </view>
-                <!-- 数量 -->
-                <view class="value" hidden="{{item.quantity <= 0}}" data-id="{{item.dishesId}}"
-                  data-num="{{item.quantity}}">
-                  {{item.quantity}}</view>
-                <!-- 加号 -->
-                <view class="iconfont icon-jiahao" style="color:red;font-size:23px" data-id="{{item.dishesId}}"
-                  data-index="{{index}}" bindtap="addCount" >
+        
 
+        <view wx:key="id" wx:for="{{dailyMenuList}}" wx:if="{{item.timingId == currentTiming.id}}">
+          
+            <view class="item">
+
+              <view style="flex:2;height:200rpx;width:autp;padding:15rpx">
+                <image src="{{dish.picUrl}}" style="height:100%;width:100%" mode="aspectFit" wx:for="{{dishesList}}"
+                  wx:for-item="dish" wx:if="{{dish.id == item.dishesId}}"></image>
+              </view>
+              <view style="display:flex;  flex-direction: column; flex:3;padding:10px">
+                <view style="font-size:36px">
+                  <text class="txt">{{item.dishesName}}</text>
+                </view>
+                <view class="brief">
+                  <text>{{item.dishesBrief}}</text>
+                </view>
+                <view class="price-stepper">
+                  <view class="cai_price" data-index="{{index}}">
+                    ￥<text wx:for="{{dishesList}}" wx:for-item="dish"
+                      wx:if="{{dish.id == item.dishesId}}">{{dish.price}}</text>
+                  </view>
+                  <view class="stepper">
+                    <!-- 减号 -->
+                    <view class="iconfont icon-jian" style="color:#cecece;font-size:23px"
+                      hidden="{{item.quantity <= 0}}" bindtap="minusCount" data-id="{{item.dishesId}}"
+                      data-index="{{index}}">
+
+                    </view>
+                    <!-- 数量 -->
+                    <view class="value" hidden="{{item.quantity <= 0}}" data-id="{{item.dishesId}}"
+                      data-num="{{item.quantity}}">
+                      {{item.quantity}}</view>
+                    <!-- 加号 -->
+                    <view class="iconfont icon-jiahao" style="color:red;font-size:23px" data-id="{{item.dishesId}}"
+                      data-index="{{index}}" bindtap="addCount">
+
+                    </view>
+                  </view>
                 </view>
               </view>
             </view>
-          </view>
         </view>
+
       </view>
     </scroll-view>
 

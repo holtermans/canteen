@@ -15,7 +15,8 @@
     "pages/ucenter/addDish/addDish",
     "pages/ucenter/authInfo/authInfo",
     "pages/ucenter/QRCode/QRCode",
-    "pages/ucenter/userManagement/userManagement"
+    "pages/ucenter/userManagement/userManagement",
+    "pages/ucenter/systemConfig/systemConfig"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
@@ -116,7 +117,14 @@
     "van-dropdown-item": "./lib/vant-weapp/dropdown-item/index",
     "van-skeleton": "./lib/vant-weapp/skeleton/index",
     "van-calendar": "./lib/vant-weapp/calendar/index",
-    "van-share-sheet": "./lib/vant-weapp/share-sheet/index"
+    "van-share-sheet": "./lib/vant-weapp/share-sheet/index",
+    "tui-fab": "./lib/thorui/tui-fab/tui-fab"
   },
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.4",
+      "provider": "wx069ba97219f66d99"
+        }
+  }
 }

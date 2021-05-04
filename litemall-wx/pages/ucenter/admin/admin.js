@@ -74,6 +74,17 @@ Page({
       });
     };
   },
+  goSystemConfig:function(){
+    if (this.data.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/ucenter/systemConfig/systemConfig"
+      });
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    };
+  },
   goUserManagement: function () {
     if (this.data.hasLogin) {
       wx.navigateTo({

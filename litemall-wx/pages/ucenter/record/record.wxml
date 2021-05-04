@@ -42,32 +42,51 @@
     </view>
   </view>
 </view> -->
+<van-tabs active="{{ active }}" bind:change="onChange">
+  <van-tab title="全部"></van-tab>
+  <van-tab title="未取餐"></van-tab>
+  <van-tab title="已取餐"></van-tab>
+
+</van-tabs>
 
 <view class="record-card" wx:for="{{canteenOrderList}}" wx:for-item="canteenOrder">
-  <view>
-    日期： {{canteenOrder.date}}
+
+  <view data-order-sn="{{canteenOrder.orderSn}}" bindtap="createQrcode" data-order-id="{{canteenOrder.id}}">
+
+    <view>
+      日期： {{canteenOrder.date}}
+    </view>
+    <van-divider dashed />
+
+
+
+
+    <view>
+      订单号： {{canteenOrder.orderSn}}
+    </view>
+    <view>
+      报餐时间： {{canteenOrder.addTime}}
+    </view>
+    <view>
+      用餐类型： {{canteenOrder.timingName}}
+    </view>
+    <view>
+      价格： {{canteenOrder.orderPrice}}
+    </view>
+    <view>
+      核销状态：{{canteenOrder.orderStatus == 103 ? '未核销':'已核销'}}
+    </view>
   </view>
-  <view>
-    订单号： {{canteenOrder.orderSn}}
-  </view>
-  <view>
-    报餐时间： {{canteenOrder.addTime}}
-  </view>
-  <view>
-    用餐类型： {{canteenOrder.timingName}}
-  </view>
-  <view>
-    价格： {{canteenOrder.orderPrice}}
-  </view>
-  <view>
-    核销状态：{{canteenOrder.orderStatus == 103 ? '未核销':'已核销'}}
-  </view>
-  <view>
+  <van-divider dashed />
+
+  <view style="display:flex;justify-content: center;align-items: center;">
+
     <button wx:if="{{canteenOrder.orderStatus == 103}}"
       style="background:#fb6c59;width:50px;height:30px;color:#fff;font-size:11px;margin-right:0px;" bindtap="checkMeal"
-      data-id="{{canteenOrder.id}}" data-type="{{canteenOrder.timingId}}" data-date="{{canteenOrder.date}}">取餐</button>
+      data-id="{{canteenOrder.id}}" data-type="{{canteenOrder.timingId}}" data-date="{{canteenOrder.date}}">扫码</button>
     <button wx:else
-      style="background:#c8c8c8;width:50px;height:30px;color:#fff;font-size:11px;margin-right:0px;"
-      >已取餐</button>
+      style="background:#c8c8c8;width:50px;height:30px;color:#fff;font-size:11px;margin-right:0px;">已取餐</button>
   </view>
+
 </view>
+<view style="color:#c8c8c8;text-align:center">没有更多了</view>

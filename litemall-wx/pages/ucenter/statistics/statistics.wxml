@@ -11,7 +11,7 @@
 
       <view wx:for="{{timingList}}" wx:for-item="timing" wx:key="id" class="card">
         <van-collapse-item title="{{timing.name}}" name="{{timing.id}}">
-          <view data-id="{{timing.id}}" bindtap="goDetail">
+          <view data-id="{{timing.id}}" data-timing-name="{{timing.name}}" bindtap="goDetail">
             <!-- <van-divider content-position="left" custom-style="color:#000;font-weight:bold">{{timing.name}}</van-divider> -->
             <view>
               <van-row>
@@ -79,13 +79,16 @@
     bind:closed="ClosedClender">
   </van-calendar>
 
-  <van-popup show="{{ show.closeIcon }}" position="bottom" custom-style="height: 80%;width:100%"
+  <van-popup show="{{ show.closeIcon }}" position="bottom" custom-style="height: 80%;width:100%" closeable="true"
     bind:close="hideCloseIcon">
     <view style="width:100%;padding-top:20px;">
+      <van-divider contentPosition="center">{{checkTimingName}}</van-divider>
       <van-tabs animated type="card" tab-class="special-tab">
         <van-tab wx:for="{{ tabs }}" wx:key="index" title="{{item.name}}"
           info="{{ checkedRecord[checkTimingId][item.id] }}">
+
           <scroll-view class="content" scroll-y="true" scroll-x="false" style="height:100%">
+            <!-- 订餐用户列表循环 -->
             <view wx:for="{{checkUserList[checkTimingId][item.id]}}" wx:for-item="order">
               <view class="user-info" wx:for="{{currentBcUserList}}" wx:key="id" wx:for-item="bcUser"
                 wx:if="{{order.userId == bcUser.id}}">
@@ -96,18 +99,25 @@
                 <view class="item">
                   <view class="">
                     <text class="name">{{bcUser.name}}</text>
-                    <text class="mobile">{{bcUser.mobile}}</text>
+                    <text class="mobile">电话：{{bcUser.mobile}}</text>
                   </view>
                   <view class="record">
-                    <view class="item" style="color:#e23">￥{{order.orderPrice}}</view>
+
+                    <!-- 订单详情 -->
                     <view class="item" wx:for="{{result}}" wx:key="id" wx:for-item="mealorder"
                       wx:if="{{bcUser.id == mealorder.userId &&  checkTimingId == mealorder.timingId}}">
                       {{mealorder.dishesName}} {{mealorder.quantity}}份
                     </view>
+                    <!-- 订单详情 -->
+
+                    <view class="item" style="color:#e23">￥{{order.orderPrice}}</view>
                   </view>
                 </view>
               </view>
+              <van-divider dashed />
+
             </view>
+            <view style="color:#c8c8c8;text-align:center">没有更多了</view>
 
           </scroll-view>
         </van-tab>

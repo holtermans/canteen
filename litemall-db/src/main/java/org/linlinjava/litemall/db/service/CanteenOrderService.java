@@ -38,13 +38,30 @@ public class CanteenOrderService {
      * @param
      * @return
      */
-    public PageInfo<CanteenOrder> queryByUidAndDate(Integer userId) {
+    public PageInfo<CanteenOrder> queryByUid(Integer userId,Short status) {
 
+        CanteenOrderExample example = new CanteenOrderExample();
+        example.setOrderByClause("id desc");
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false).andOrderStatusEqualTo(status);
+        List<CanteenOrder> canteenOrders = canteenOrderMapper.selectByExample(example);
+
+        PageHelper.startPage(1, 10);
+        PageInfo<CanteenOrder> result = new PageInfo<>(canteenOrders);
+        return result;
+    }
+
+    /**
+     * 查询个人某天的订单
+     *
+     * @param userId
+     * @param
+     * @return
+     */
+    public PageInfo<CanteenOrder> queryByUid(Integer userId) {
         CanteenOrderExample example = new CanteenOrderExample();
         example.setOrderByClause("id desc");
         example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         List<CanteenOrder> canteenOrders = canteenOrderMapper.selectByExample(example);
-
         PageHelper.startPage(1, 10);
         PageInfo<CanteenOrder> result = new PageInfo<>(canteenOrders);
         return result;
@@ -133,6 +150,13 @@ public class CanteenOrderService {
     }
     public CanteenOrder queryByKey(Integer orderId){
         CanteenOrder order = canteenOrderMapper.selectByPrimaryKey(orderId);
+        return order;
+    }
+
+    public CanteenOrder queryByOrderSn(String orderSn) {
+        CanteenOrderExample example = new CanteenOrderExample();
+        example.or().andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
+        CanteenOrder order = canteenOrderMapper.selectOneByExampleSelective(example);
         return order;
     }
 }
