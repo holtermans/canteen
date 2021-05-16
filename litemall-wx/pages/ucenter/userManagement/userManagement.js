@@ -41,7 +41,6 @@ Page({
         bcUserList: res.data.bcUserList,
         pages: res.data.bcUserList.pages,
       })
-      console.log(res);
     }).catch(() => {
       util.showErrorModal("数据请求出错");
     });
@@ -59,7 +58,6 @@ Page({
         bcUserList: res.data.bcUserList,
         pages: res.data.bcUserList.pages,
       })
-      console.log(res);
     }).catch(() => {
       util.showErrorModal("数据请求出错");
     });
@@ -110,7 +108,6 @@ Page({
         res.data.bcUserList.list.forEach(item => {
           that.data.bcUserList.list.push(item);
         })
-
         that.setData({
           bcUserList: that.data.bcUserList
         })
@@ -145,7 +142,6 @@ Page({
         if (res.errno == 0) {
           resolve(res)
         } else {
-          console.log(res)
           reject();
         }
         wx.hideLoading({
@@ -160,16 +156,13 @@ Page({
       title: '加载中',
     });
     //获取在数据库中的id
-    console.log(e.currentTarget.dataset.id)
     var data = {
       "id": e.currentTarget.dataset.id,
       "status": 1
     }
     util.request(api.UpdateBcUser, data,"POST").then((res) => {
       if (res.errno == 0) {
-        console.log("res");
         that.setData({
-          
           pageNum: 1,
           pageSize: 10,
           pages: 0,
@@ -179,14 +172,10 @@ Page({
             bcUserList: res.data.bcUserList,
             pages: res.data.bcUserList.pages,
           })
-          console.log(res);
         }).catch(() => {
           util.showErrorModal("数据请求出错");
         });
-      } else {
-        console.log(res)
-        
-      }
+      } else {}
       wx.hideLoading({
         success: (res) => {},
       })
@@ -198,14 +187,12 @@ Page({
       title: '加载中',
     });
     //获取在数据库中的id
-    console.log(e.currentTarget.dataset.id)
     var data = {
       "id": e.currentTarget.dataset.id,
       "status": 0
     }
     util.request(api.UpdateBcUser, data,"POST").then((res) => {
       if (res.errno == 0) {
-        console.log("res")
         that.setData({
           pageNum: 1,
           pageSize: 10,
@@ -216,13 +203,10 @@ Page({
             bcUserList: res.data.bcUserList,
             pages: res.data.bcUserList.pages,
           })
-          console.log(res);
         }).catch(() => {
           util.showErrorModal("数据请求出错");
         });
-      } else {
-        console.log(res)
-        
+      } else {  
       }
       wx.hideLoading({
         success: (res) => {},

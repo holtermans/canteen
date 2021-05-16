@@ -38,3 +38,57 @@ page{
   width: 50%;
   height: 50%;
 }
+.item {
+  padding: 10rpx;
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  width: 100%;
+  margin-right: 34rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.item>view {
+  flex: 1;
+}
+
+.item.last {
+  margin-right: 0;
+}
+
+.item .icon {
+  height: 144rpx;
+  width: 144rpx;
+  float: left;
+}
+
+.item .txt {
+  display: block;
+  font-weight: bold;
+  font-size: 24rpx;
+  color: #333;
+  height: 60rpx;
+  width: 144rpx;
+  float: left;
+  padding-top: 10rpx;
+}
+
+.item .brief {
+  font-size: 36rpx;
+  color: rgb(134, 134, 134);
+  height: 100%;
+  width: auto;
+}
+
+.item .brief text {
+  font-size: 24rpx;
+  color: rgb(134, 134, 134);
+  width: auto;
+}
+.cai_price {
+  flex: 4;
+  color: #b4282d;
+  padding-right: 24rpx;
+}

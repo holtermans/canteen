@@ -1,154 +1,109 @@
 <!--pages/ucenter/statistics/statistics.wxml-->
 <wxs src="./index.wxs" module="computed"></wxs>
-<view class="container">
 
+
+
+<view class="canvas-conter">
+  <view>
+    <van-cell is-link data-type="single" data-id="selectSingle" value="{{ computed.formatFullDate(date.selectSingle) }}"
+      bindtap="selectDate" />
+  </view>
+
+  <view class="tabs flex">
+    <block wx:for="{{tabs}}" wx:key="index">
+      <view class="tab {{index == curIndex ? 'tab--active' : ''}}" bindtap="tabClick" id="{{index}}">{{item}}</view>
+    </block>
+  </view>
+  <ec-canvas style="" id="mychart-dom-pie" canvas-id="mychart-pie" ec="{{ ec }}"></ec-canvas>
+  <cover-view class="pie-text" hidden="{{ showCalendar }}">
+    <cover-view class="pie-subtitle">总报餐人数</cover-view>
+    <cover-view class="pie-title">{{canteenOrderList.length}}</cover-view>
+
+  </cover-view>
+  <!-- <cover-view class="echart-legend">
+    <block wx:for="{{deptList}}" wx:key="id">
+      <cover-view class="echart-legend__item {{index==selectIndex?'checked':''}}">
+        <cover-view class="echart-legend__item-pageIcon" />
+        <cover-view class="echart-legend__item-text" data-id="{{item.id}}" data-index="{{index}}" bindtap="selectDept">
+          {{item.text}}</cover-view>
+      </cover-view>
+    </block>
+  </cover-view> -->
+
+</view>
+
+<view class="table">
+  <view class="th flex">
+    <view class="td flex-item">报餐详情</view>
+
+    <view class="tip">
+      <text class="title">未取餐</text>
+      <text class="data">{{canteenOrderListGroup[103].length?canteenOrderListGroup[103].length:'0'}}</text>
+
+    </view>
+    <view class="tip">
+      <text class="title">已取餐</text>
+      <text class="data ">{{canteenOrderListGroup[107].length?canteenOrderListGroup[107].length:'0'}}</text>
+    </view>
+  </view>
+  <block wx:if="{{canteenOrderList.length!=0}}">
+    <view class="tr flex" wx:for="{{canteenOrderList}}" wx:key="id" data-order-id="{{item.id}}" data-order-sn="{{item.orderSn}}" data-index="{{index}}"  data-name="{{currentBcUserList[item.userId].name}}" data-mobile="{{currentBcUserList[item.userId].mobile}}" data-avatar="{{currentBcUserList[item.userId].avatar}}" bindtap="goDetail">
+      <view class="td flex">
+        <image class="avatar" src="{{currentBcUserList[item.userId].avatar}}" lazy-load />
+        <image wx:if="{{item.hadEat==1}}" class="icon-checked" src="/images/icon/icon-check.png" />
+      </view>
+      <view class="td flex-item">
+        <view class="name">{{currentBcUserList[item.userId].name}}</view>
+        <view class="time">{{item.addTime}}</view>
+      </view>
+      <view class="td">
+        <view class="department">{{item.deptName}}</view>
+        <view class="type {{item.orderStatus == 103? 'yellowish':'green'}}">{{item.orderStatus == 107?"已取餐":"未取餐"}}
+        </view>
+      </view>
+    </view>
+    <!--加载loadding-->
+    <tui-loadmore visible="{{loadding}}"></tui-loadmore>
+    <tui-nomore visible="{{nomore}}"></tui-nomore>
+  </block>
+  <block wx:else>
+    <view class="tr">
+      <view class="td flex-item">
+        <image class="empty-img" src="/static/images/custom-empty-image.png" />
+        <view class="empty-text">{{emptyText}}</view>
+      </view>
+    </view>
+  </block>
+</view>
+
+<!-- <view class="container">
   <view>
     <van-cell is-link title="统计日期" data-type="single" data-id="selectSingle"
       value="{{ computed.formatFullDate(date.selectSingle) }}" bind:click="selectDate" />
   </view>
-  <view>
-    <van-collapse value="{{activeNames}}" bind:change="collapse">
-
-      <view wx:for="{{timingList}}" wx:for-item="timing" wx:key="id" class="card">
-        <van-collapse-item title="{{timing.name}}" name="{{timing.id}}">
-          <view data-id="{{timing.id}}" data-timing-name="{{timing.name}}" bindtap="goDetail">
-            <!-- <van-divider content-position="left" custom-style="color:#000;font-weight:bold">{{timing.name}}</van-divider> -->
-            <view>
-              <van-row>
-                <van-col span="8">报餐：<text style="color:#000;font-size:50rpx">{{userList[timing.id].length}} </text>
-                </van-col>
-                <van-col span="8">已取：<text style="color:#2cb300;font-size:50rpx">{{checkedRecord[timing.id].checked}}
-                  </text>
-                </van-col>
-                <van-col span="8">未取：<text style="color:#e23;font-size:50rpx">{{checkedRecord[timing.id].not_checked}}
-                  </text>
-                </van-col>
-              </van-row>
-            </view>
-            统计：
-            <view style="display:flex">
-              <view wx:for="{{dishesCount[timing.id]}}" wx:key="el" wx:for-item="count">
-                <view style="padding:10rpx" wx:for="{{dishesList}}" wx:key="id" wx:if="{{item.id == count.el}}">
-                  <text>{{item.name}}</text> <text style="color:#e23;font-size:50rpx"> {{count.count}}</text>份
-                </view>
-              </view>
-            </view>
-          </view>
-        </van-collapse-item>
-      </view>
-
-
-    </van-collapse>
+  <view style="background:#fff;padding: 10px;">
+    <van-dropdown-menu>
+      <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" bind:change="onSwitch1Change" />
+      <van-dropdown-item value="{{ value2 }}" options="{{ option2 }}" bind:change="onSwitch2Change" />
+    </van-dropdown-menu>
+    <van-button custom-style="margin-top:10px;" type="primary" size="small" bindtap="search">查询</van-button>
   </view>
-  <view class="card queue">
-    <!-- <view wx:if="{{connected}}" style="color:green">
-      socket已连接
-    </view>
-    <view wx:else style="color:gray">
-      socket未连接
-      <button size="small" bindtap="startTask">重连</button>
-    </view> -->
-
-    排队窗口:已开启时间 {{queue}} 秒
-    <view style="background:#fff;margin-top:10px;width:100%" wx:for="{{message}}">
-
-      <view style="margin:0 auto;">
-        <van-image round width="3rem" height="3rem" src="{{item.bcUserVo.avatar}}" />
+  <view class="order-card" wx:for="{{canteenOrderList}}">
+    <view>
+      <view style="display:flex;align-items:center">
+        <van-image round width="3rem" height="3rem" src="{{currentBcUserList[item.userId].avatar}}" />
+        {{currentBcUserList[item.userId].name}} {{item.orderStatus == 107?"已取餐":"未取餐"}}
       </view>
-      {{item.bcUserVo.name}}{{item.orderSn}} {{item.orderPrice}}
-
-      {{item.date}} {{item.timingName}}
-      <view wx:for="{{item.dishes}}" wx:for-item="dish">
-        <van-image round width="2rem" height="2rem" src="{{dish.dishesPicUrl}}" /> {{dish.dishesName}} *
-        {{dish.quantity}}
-      </view>
-      <van-button type="primary" bindtap="finish" data-id="{{item.id}}">完成</van-button>
 
     </view>
+    <view> {{item.addTime}} {{item.userId}}{{item.timingName}}
+      {{item.price}}</view>
 
-  </view>
+  </view> -->
+
+<van-calendar style="z-index:2" show="{{ showCalendar }}" type="{{ type }}" color="{{ color }}" round="{{ round }}"
+  position="{{ position }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" formatter="{{ formatter }}"
+  row-height="45" bind:confirm="onConfirm" bind:close="CloseClender" bind:closed="ClosedClender">
+</van-calendar>
 
 
-
-
-  <van-calendar show="{{ showCalendar }}" type="{{ type }}" color="{{ color }}" round="{{ round }}"
-    position="{{ position }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" max-range="{{ maxRange }}"
-    formatter="{{ formatter }}" show-confirm="{{ showConfirm }}" confirm-text="{{ confirmText }}"
-    confirm-disabled-text="{{ confirmDisabledText }}" bind:confirm="onConfirm" bind:select="onSelect"
-    bind:unselect="onUnselect" bind:open="onOpen" bind:opened="onOpened" bind:close="CloseClender"
-    bind:closed="ClosedClender">
-  </van-calendar>
-
-  <van-popup show="{{ show.closeIcon }}" position="bottom" custom-style="height: 80%;width:100%" closeable="true"
-    bind:close="hideCloseIcon">
-    <view style="width:100%;padding-top:20px;">
-      <van-divider contentPosition="center">{{checkTimingName}}</van-divider>
-      <van-tabs animated type="card" tab-class="special-tab">
-        <van-tab wx:for="{{ tabs }}" wx:key="index" title="{{item.name}}"
-          info="{{ checkedRecord[checkTimingId][item.id] }}">
-
-          <scroll-view class="content" scroll-y="true" scroll-x="false" style="height:100%">
-            <!-- 订餐用户列表循环 -->
-            <view wx:for="{{checkUserList[checkTimingId][item.id]}}" wx:for-item="order">
-              <view class="user-info" wx:for="{{currentBcUserList}}" wx:key="id" wx:for-item="bcUser"
-                wx:if="{{order.userId == bcUser.id}}">
-                <view class="item">
-                  <van-image style="margin:auto 0" round fit="cover" width="10vw" height="10vw"
-                    src="{{bcUser.avatar}}" />
-                </view>
-                <view class="item">
-                  <view class="">
-                    <text class="name">{{bcUser.name}}</text>
-                    <text class="mobile">电话：{{bcUser.mobile}}</text>
-                  </view>
-                  <view class="record">
-
-                    <!-- 订单详情 -->
-                    <view class="item" wx:for="{{result}}" wx:key="id" wx:for-item="mealorder"
-                      wx:if="{{bcUser.id == mealorder.userId &&  checkTimingId == mealorder.timingId}}">
-                      {{mealorder.dishesName}} {{mealorder.quantity}}份
-                    </view>
-                    <!-- 订单详情 -->
-
-                    <view class="item" style="color:#e23">￥{{order.orderPrice}}</view>
-                  </view>
-                </view>
-              </view>
-              <van-divider dashed />
-
-            </view>
-            <view style="color:#c8c8c8;text-align:center">没有更多了</view>
-
-          </scroll-view>
-        </van-tab>
-      </van-tabs>
-    </view>
-    <!-- <scroll-view scroll-y="true" style="height:89%;margin-top:10%;padding:10px">
-      <view class="popup-title" wx:for="{{timingList}}" wx:if="{{checkTimingId == item.id}}" wx:key="id">
-        {{item.name}}
-      </view>
-      <view class="popup-card" wx:for="{{userList[checkTimingId]}}" wx:for-item="userId" wx:key="id" data-id="userId">
-
-        <view class="user-info" wx:for="{{currentBcUserList}}" wx:key="id" wx:for-item="bcUser"
-          wx:if="{{bcUser.id == userId}}" >  
-          <view class="item">
-            <van-image round fit="cover" width="10vw" height="10vw" src="{{bcUser.avatar}}" />
-          </view>
-          <view class="item name">
-            <text class="name">{{bcUser.name}}</text>
-            <text class="mobile">{{bcUser.mobile}}</text>
-            <text wx:if="{{computed.isInArr(bcUser.id,checkUserList[checkTimingId]['checked']) == -1}}"> 未核销</text>
-          
-          </view>
-        </view>
-
-        <view class="record" wx:for="{{result}}" wx:key="id">
-          <view wx:if="{{userId == item.userId &&  checkTimingId == item.timingId}}">
-            {{item.dishesName}} {{item.quantity}}份
-          </view>
-        </view>
-      </view>
-    </scroll-view> -->
-  </van-popup>
-
-</view>

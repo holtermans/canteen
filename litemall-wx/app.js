@@ -40,8 +40,7 @@ App({
       this.globalData.hasLogin = true;
     }).catch(() => {
       this.globalData.hasLogin = false;
-      console.log(this.globalData.hasLogin); 
-
+      // console.log(this.globalData.hasLogin); 
     });
   },
   globalData: {

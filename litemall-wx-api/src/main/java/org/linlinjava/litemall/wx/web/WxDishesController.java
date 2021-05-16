@@ -50,12 +50,7 @@ public class WxDishesController {
                          @RequestParam String startTime,
                          @RequestParam String endTime,
                          @RequestParam String stopTime) {
-        LitemallTiming timing = new LitemallTiming();
-        timing.setId(id);
-        timing.setStartTime(LocalTime.parse(startTime));
-        timing.setEndTime(LocalTime.parse(endTime));
-        timing.setStatus(status);
-        timing.setStopTime(LocalTime.parse(stopTime));
+
         return ResponseUtil.ok(id);
     }
 
@@ -67,8 +62,12 @@ public class WxDishesController {
 
     @RequestMapping("delete")
     public Object delete(@RequestParam Integer id) {
-        dishesService.deleteByid(id);
-        return ResponseUtil.ok();
+        try {
+            dishesService.deleteByid(id);
+            return ResponseUtil.ok();
+        }catch (Exception e){
+            return ResponseUtil.fail();
+        }
     }
 
     @RequestMapping("getBydCateId")

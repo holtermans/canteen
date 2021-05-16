@@ -111,7 +111,6 @@ Page({
       try {
         wx.setStorageSync('tab', tab);
       } catch (e) {
-
       }
       wx.navigateTo({
         url: route,
@@ -125,72 +124,13 @@ Page({
       });
     };
   },
-  goCoupon() {
-    if (this.data.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/ucenter/couponList/couponList"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
+
+  goComment: function () {
+    wx.showToast({
+      title: '暂未开放',
+    })
   },
-  goGroupon() {
-    if (this.data.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/groupon/myGroupon/myGroupon"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
-  },
-  goCollect() {
-    if (this.data.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/ucenter/collect/collect"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
-  },
-  goFeedback(e) {
-    if (this.data.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/ucenter/feedback/feedback"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
-  },
-  goFootprint() {
-    if (this.data.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/ucenter/footprint/footprint"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
-  },
-  goAddress() {
-    if (this.data.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/ucenter/address/address"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
-  },
+
   goSetTime: function () {
     if (this.data.hasLogin) {
       wx.navigateTo({

@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -9,12 +10,16 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/wx/canteenOrder")
@@ -37,15 +42,42 @@ public class CanteenOrderController {
     @Autowired
     private BcUserVoService bcUserVoService;
 
+    /**
+     * 根据用户id，日期范围查询
+     *
+     * @param userId
+     * @param date
+     * @return
+     */
     @RequestMapping("listByIdAndDate")
     public Object getByIdAndDateRange(@RequestParam Integer userId, @RequestParam String date) {
-        System.out.println(userId);
-        System.out.println(date);
+
         List<CanteenOrder> canteenOrders = canteenOrderService.queryByUidAndDateRange(userId, date);
         return ResponseUtil.ok(canteenOrders);
     }
+
+    /**
+     * 根据用户id，日期查询
+     *
+     * @param userId
+     * @param date
+     * @return
+     */
+    @RequestMapping("queryByIdAndDate")
+    public Object getByIdAndDate(@LoginUser Integer userId, @RequestParam String date) {
+        Object o = userInfoService.checkUserId(userId);
+        if (o != null) {
+            return o;
+        } else {
+            List<CanteenOrder> canteenOrders = canteenOrderService.queryByUidAndDate(userId, date);
+            HashMap<Object, Object> resMap = new HashMap<>();
+            resMap.put("canteenOrderList", canteenOrders);
+            return ResponseUtil.ok(resMap);
+        }
+    }
+
     @RequestMapping("findByOrderSn")
-    public Object getByOrderSn(@LoginUser Integer userId,  @RequestParam String orderSn) {
+    public Object getByOrderSn(@LoginUser Integer userId, @RequestParam String orderSn) {
         Object o = userInfoService.checkUserId(userId);
         if (o != null) {
             return o;
@@ -59,6 +91,7 @@ public class CanteenOrderController {
             return ResponseUtil.ok(resMap);
         }
     }
+
     /**
      * 获取前十条订餐记录
      *
@@ -132,6 +165,8 @@ public class CanteenOrderController {
             if (canteenOrder == null) {
                 return ResponseUtil.fail(555, "根据序列号未找到订单");
             } else {
+                //先做订单的校验
+
                 Integer orderId = canteenOrder.getId();
                 Integer userId = canteenOrder.getUserId();
                 BcUserVo bcUserVo = bcUserVoService.getBcUserVoByUserId(userId);
@@ -146,7 +181,6 @@ public class CanteenOrderController {
                 resMap.put("canteenOrder", canteenOrder);
                 resMap.put("mealOrders", mealOrders);
                 resMap.put("bcUserVo", bcUserVo);
-
                 return ResponseUtil.ok(resMap);
 //                } else {
 //                    return ResponseUtil.fail(555, "等待排队");
@@ -155,8 +189,28 @@ public class CanteenOrderController {
             }
 
         }
+    }
 
-
+    /**
+     * 取消订单
+     * @param operatorId
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("cancel")
+    public Object orderCancel(@LoginUser Integer operatorId, @RequestParam Integer orderId) {
+        Object o = userInfoService.checkUserId(operatorId);
+        if (o != null) {
+            return o;
+        } else {
+            try {
+                canteenOrderService.delByPKey(orderId);
+                mealOrderService.deleteByOrderId(orderId);
+                return ResponseUtil.ok();
+            } catch (Exception e) {
+                return ResponseUtil.fail();
+            }
+        }
     }
 
     /**
@@ -167,8 +221,54 @@ public class CanteenOrderController {
     @RequestMapping("dailyList")
     public Object dailyList(@RequestParam String date) {
         List<CanteenOrder> canteenOrders = canteenOrderService.queryByDate(date);
+        return ResponseUtil.ok(canteenOrders);
+    }
+
+    /**
+     * 按条件查询
+     *
+     * @return
+     */
+    @RequestMapping("queryByFilter")
+    public Object queryByFilter(@LoginUser Integer userId,@RequestBody CanteenOrder order) {
+
+        List<CanteenOrder> canteenOrders = canteenOrderService.queryByFilter(order);
+        HashMap<Object, Object> hashMap = new HashMap<>();
+        hashMap.put("canteenOrderList",canteenOrders);
+
+        return ResponseUtil.ok(hashMap);
+    }
+
+    /**
+     * 按条件查询
+     *
+     * @return
+     */
+    @RequestMapping("queryByFilterThenGroup")
+    public Object queryByFilterThenGroup(@RequestBody CanteenOrder order) {
+        List<CanteenOrder> canteenOrders = canteenOrderService.queryByFilter(order);
+        Map<Short, List<CanteenOrder>> collect = canteenOrders.stream().collect(Collectors.groupingBy(t -> t.getOrderStatus()));
+        HashMap<Object, Object> hashMap = new HashMap<>();
+        hashMap.put("canteenOrderList",canteenOrders);
+        hashMap.put("canteenOrderListGroup",collect);
+        return ResponseUtil.ok(hashMap);
+    }
+
+    /**
+     * 按条件查询
+     *
+     * @return
+     */
+    @RequestMapping("queryByUidAndPage")
+    public Object queryByUidAndPage(@LoginUser Integer userId,
+                                    @RequestParam(defaultValue = "1") Integer pageNum,
+                                    @RequestParam(defaultValue = "10") Integer pageSize,
+                                    @RequestParam(defaultValue = "") Short status
+                                    ) {
+        List<CanteenOrder> canteenOrders = canteenOrderService.queryByUidAndPage(userId, pageNum, pageSize,status);
 
         return ResponseUtil.ok(canteenOrders);
+
     }
 
 }

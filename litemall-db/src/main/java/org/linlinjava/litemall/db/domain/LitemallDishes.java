@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.db.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +56,7 @@ public class LitemallDishes {
      *
      * @mbg.generated
      */
-    private Long price;
+    private BigDecimal price;
 
     /**
      *
@@ -182,7 +183,7 @@ public class LitemallDishes {
      *
      * @mbg.generated
      */
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -194,7 +195,7 @@ public class LitemallDishes {
      *
      * @mbg.generated
      */
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -24,7 +24,7 @@ Page({
    */
   onReady: function () {
     util.request(api.GetSingleBcUserByUserId).then((res) => {
-      console.log(res);
+
       if (res.errno == 0) {
         this.setData({
           bcUserInfo: res.data.bcUserInfo,

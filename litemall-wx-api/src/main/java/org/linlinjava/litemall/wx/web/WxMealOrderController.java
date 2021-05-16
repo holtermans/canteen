@@ -140,4 +140,18 @@ public class WxMealOrderController {
         return ResponseUtil.ok(result);
     }
 
+    /**
+     * 根据日期和时段分类查询订单，做null判断，有一个为空都不查询
+     * @param date
+     * @param timingId
+     * @return
+     */
+    @RequestMapping("listByOrderAndTiming")
+    public Object queryByDate(@RequestParam("date") String date,@RequestParam("timingId") Integer timingId) {
+
+        List<LitemallMealOrder> mealOrders = mealOrderService.queryByDateAndTimingId(date,timingId);
+        HashMap<Object, Object> result = new HashMap<>();
+        result.put("mealOrders", mealOrders);
+        return ResponseUtil.ok(result);
+    }
 }

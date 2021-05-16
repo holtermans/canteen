@@ -1,10 +1,10 @@
 litemall:
   # 开发者应该设置成自己的wx相关信息
   wx:
-    app-id: wxc8a6f204cd0e6456
-    app-secret: 068c9b433be12a31caee9845199e50b8
-    mch-id: 111111
-    mch-key: xxxxxx
+    app-id: wx950dcd5d2a74c5c1
+    app-secret: 5bd340b2d51d72484c3941fb430a3447
+    mch-id:
+    mch-key:
     notify-url: http://www.example.com/wx/order/pay-notify
     # 商户证书文件路径
     # 请参考“商户证书”一节 https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3
@@ -89,7 +89,7 @@ litemall:
       # 这个地方应该是wx模块的WxStorageController的fetch方法对应的地址,
       #address: http://localhost:8080/wx/storage/fetch/
       #这里改成静态资源访问路径
-      address: https://www.joyfey.xyz/upload/
+      address: https://www.yllt.icu/upload/
     # 阿里云对象存储配置信息
     aliyun:
       endpoint: oss-cn-shenzhen.aliyuncs.com

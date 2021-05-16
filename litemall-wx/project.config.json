@@ -18,8 +18,8 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "useMultiFrameRuntime": true,
-    "useApiHook": true,
+    "useMultiFrameRuntime": false,
+    "useApiHook": false,
     "useApiHostProcess": false,
     "babelSetting": {
       "ignore": [],
@@ -27,7 +27,6 @@
       "outputPath": ""
     },
     "enableEngineNative": false,
-    "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
@@ -38,8 +37,8 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.16.1",
-  "appid": "wxc8a6f204cd0e6456",
-  "projectname": "litemall-wx",
+  "appid": "wx950dcd5d2a74c5c1",
+  "projectname": "yllt-bc",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {

@@ -1,6 +1,11 @@
-<view class="container">
-  <view class="login-box">
-    <button type="primary"  class="wx-login-btn" bindtap="getUserProfile">立即授权登录</button>
-    <!-- <button type="primary" class="account-login-btn" bindtap="accountLogin">账号登录</button> -->
-  </view>
+<!-- 授权弹窗 -->
+<view class="popup empower"  style="display: flex;align-items: center;justify-content: center;">
+    <view class="mask"></view>
+    <view class="ep-content popup-box {{animated ? 'animated' : ''}}">
+        <!-- <view class="ep-tit t-center">微信登录</view> -->
+        <image class="ep-img" src="/static/images/unlogin.png" mode="aspectFill"></image>
+        <text class="ep-subtit t-center">您还未登陆，请先登录再进行操作\n\n   </text>
+        <text style="color:#ffc300">在稍后的提示框中点击“允许”</text>
+        <button  style="top: 350rpx" class="btn btn-primary btn-confirm" open-type="getUserInfo" lang="zh_CN" bindtap="getUserProfile">微信登录</button>
+    </view>
 </view>

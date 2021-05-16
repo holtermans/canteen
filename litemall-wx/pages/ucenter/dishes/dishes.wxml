@@ -1,25 +1,30 @@
 <!--pages/ucenter/dishes/dished.wxml-->
 <view class="container">
-  <van-search value="{{ value }}" label="菜品名" placeholder="请输入搜索关键词 菜名" use-action-slot bind:change="onChange"
+  <!-- <van-search value="{{ value }}" label="菜品名" placeholder="请输入搜索关键词 菜名" use-action-slot bind:change="onChange"
     bind:search="onSearch">
     <view slot="action" bind:tap="onClick">搜索</view>
-  </van-search>
+  </van-search> -->
 
   <view style="display:flex;">
     <!-- 侧边栏 -->
     <view style="flex:1;">
       <van-sidebar active-key="{{ activeKey }}" bind:change="cateChange">
-        <van-sidebar-item wx:for="{{dishesCategory}}" wx:for-item="cate" title="{{cate.name}}" badge="{{cateCount[index]}}" />
-        <van-button type="info" plain>
-          <text style="font-size:20rpx" >添加分类</text>
-        </van-button>
+        <van-sidebar-item wx:for="{{dishesCategory}}" wx:for-item="cate" title="{{cate.name}}"
+       />
+
+          <!-- badge="{{cateCount[index]}}" /> -->
+        <!-- <van-button type="info" plain>
+          <text style="font-size:20rpx">添加分类</text>
+        </van-button> -->
       </van-sidebar>
     </view>
     <!-- 右侧详情 -->
     <view style="flex:10;">
       <scroll-view style="">
-        <van-row gutter="20">
-          <van-col wx:for="{{dishesList}}" span="12">
+
+
+
+        <!-- 
             <van-card price="{{item.price}}" desc="{{item.brief}}" title="{{item.name}}" thumb="{{ item.picUrl }}"
               custom-class="custom-card" thumb-class="custom-thumb">
               <view slot="footer" class="van-card__footer">
@@ -27,9 +32,29 @@
                 <van-button size="mini" round custom-class="button" bindtap="delete" data-id="{{item.id}}">删除
                 </van-button>
               </view>
-            </van-card>
-          </van-col>
-        </van-row>
+            </van-card> -->
+
+
+        <view class="item" wx:key="id" wx:for="{{dishesList}}" wx:for-item="dish">
+          <view style="flex:1;height:79px;width:autp;padding:15rpx">
+            <image src="{{dish.picUrl}}" style="height:100%;width:100%" mode="aspectFit"></image>
+          </view>
+          <view style="display:flex;  flex-direction: column; flex:3;padding:10px">
+            <view style="font-size:36px">
+              <text class="txt">{{dish.name}}</text>
+            </view>
+            <view class="brief">
+              <text>{{dish.brief}}</text>
+            </view>
+            <view class="cai_price" data-index="{{index}}">
+              ￥<text>{{dish.price}}</text>
+            </view>
+          </view>
+          <view style="position:relative">
+            <van-button size="small"   custom-style="position:absolute;bottom:0px;border:none" custom-class="button" bindtap="delete" data-id="{{dish.id}}">删除
+            </van-button>
+          </view>
+        </view>
         <view style="margin-top:20px;color:#c8c8c8;text-align:center">没有更多了</view>
 
       </scroll-view>

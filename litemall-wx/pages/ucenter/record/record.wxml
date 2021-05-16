@@ -1,92 +1,64 @@
 <!--pages/ucenter/record/record.wxml-->
-<!-- <view class="record-card" wx:for="{{hasOrderDateList}}" wx:for-item="date" style="background:#fff;">
+<wxs src="/wxs/index.wxs" module="computed"></wxs>
+<van-sticky>
+  <van-tabs swipeable animated active="{{ active }}" bind:change="onChange" sticky>
+    <van-tab title="全部"></van-tab>
+    <van-tab title="未取餐"></van-tab>
+    <van-tab title="已取餐"></van-tab>
+  </van-tabs>
+</van-sticky>
+<view  class="record-card" wx:for="{{canteenOrderList}}" wx:for-item="canteenOrder">
 
-  <van-divider class="date" content-position="center"
-    custom-style="color: #FB6C59;border-color: #c8c8c8;font-size: 18px;">{{date}}</van-divider>
+  <view data-order-sn="{{canteenOrder.orderSn}}" data-order-id="{{canteenOrder.id}}">
 
-  <view class="content-wrap" wx:for="{{timingList}}">
-    <view style="display:flex">
-      <view class="subtile">
-        <van-tag class="demo-margin-right" plain type="primary" color="#fb6c59" size="large">{{item.name}}:</van-tag>
+    <view style="display:flex;align-items:center; ">
+      <view style="flex:1">
+        <text style="margin-right:16px;font-family:'Heiti SC'">就餐日期</text>
+        <text style="font-family:'Heiti SC'">{{ computed.formatDateWeek(canteenOrder.date) }}</text>
       </view>
-      <view class="time">
-        <view wx:for="{{mealOrders}}" wx:for-item="meal" wx:if="{{meal.timingId == item.id && meal.date == date}}"
-          wx:key="id">
-          {{meal.addTime}}
+      <view>
+        <van-icon name="/static/images/qrcode.png" size="40px" bind:click="createQrcode"
+          data-order-sn="{{canteenOrder.orderSn}}" data-order-id="{{canteenOrder.id}}" />
+      </view>
+    </view>
+    <van-divider dashed />
+    <view style="display:flex;">
+      <view class="content-left">
+        <view class="content-title">订单号 </view>
+        <view class="content-title">报餐时间 </view>
+        <view class="content-title">用餐类型 </view>
+        <view class="content-title ">价格 </view>
+        <view class="content-title">核销状态 </view>
+      </view>
+      <view class="content-right">
+        <view class="content-detail"> <text selectable="true">{{canteenOrder.orderSn}}</text></view>
+        <view class="content-detail"> {{canteenOrder.addTime}}</view>
+        <view class="content-detail">{{canteenOrder.timingName}}</view>
+        <view class="content-detail price">{{canteenOrder.orderPrice}} 元</view>
+        <view class="content-detail">
+          <van-tag wx:if="{{canteenOrder.orderStatus == 103}}" plain type="warning">未核销</van-tag>
+          <van-tag wx:else plain type="success">已核销</van-tag>
         </view>
       </view>
     </view>
-    <view class="content" wx:for="{{mealOrders}}" wx:for-item="meal"
-      wx:if="{{meal.timingId == item.id && meal.date == date}}" wx:key="id">
-
-      <image wx:for="{{dishesList}}" wx:for-item="dish" wx:if="{{dish.id == meal.dishesId}}" src="{{dish.picUrl}}"
-        style="width:40px;height:40px;border-radius:5px;margin:auto 0;"></image>
-
-      <view style="color:#666666;font-size:20rpx;display:flex;flex-direction:column;padding:5px;margin-left:5px">
-        <text style="color:#000;font-weight:bold">{{meal.dishesName}}</text>
-        <text style="font-size:20rpx">共 {{meal.quantity}} 份</text>
-      </view>
-
-      <view wx:for="{{dishesList}}" wx:for-item="dish" wx:if="{{dish.id == meal.dishesId}}"
-        style="font-size:20rpx;color:#f00;margin-left:auto;line-height:50px">￥<text
-          style="font-size:25rpx">{{dish.price}}</text></view>
-    </view>
-    <view class="footer">
-      <view style="flex:1;">
-        <button wx:if="{{1 < 2}}"
-          style="background:#fb6c59;width:50px;height:30px;color:#fff;font-size:11px;margin-right:0px;"
-          bindtap="checkMeal">取餐</button>
-        <button wx:else
-          style="background:#C8C8C8;width:50px;height:30px;color:#fff;font-size:20rpx;margin-right:0px;">已取餐</button>
-      </view>
-    </view>
-  </view>
-</view> -->
-<van-tabs active="{{ active }}" bind:change="onChange">
-  <van-tab title="全部"></van-tab>
-  <van-tab title="未取餐"></van-tab>
-  <van-tab title="已取餐"></van-tab>
-
-</van-tabs>
-
-<view class="record-card" wx:for="{{canteenOrderList}}" wx:for-item="canteenOrder">
-
-  <view data-order-sn="{{canteenOrder.orderSn}}" bindtap="createQrcode" data-order-id="{{canteenOrder.id}}">
-
-    <view>
-      日期： {{canteenOrder.date}}
-    </view>
     <van-divider dashed />
 
+    <view style="display:flex;flex-direction:row-reverse">
 
+      <view wx:if="{{canteenOrder.orderStatus == 103}}">
 
+        <van-button plain hairline type="default" size="small" bindtap="cancelMeal" data-id="{{canteenOrder.id}}"
+          data-type="{{canteenOrder.timingId}}" data-date="{{canteenOrder.date}}">取消报餐</van-button>
+      </view>
+      <view wx:else>
+        <van-button plain hairline type="success" disabled size="small">已取餐</van-button>
 
-    <view>
-      订单号： {{canteenOrder.orderSn}}
-    </view>
-    <view>
-      报餐时间： {{canteenOrder.addTime}}
-    </view>
-    <view>
-      用餐类型： {{canteenOrder.timingName}}
-    </view>
-    <view>
-      价格： {{canteenOrder.orderPrice}}
-    </view>
-    <view>
-      核销状态：{{canteenOrder.orderStatus == 103 ? '未核销':'已核销'}}
+      </view>
     </view>
   </view>
-  <van-divider dashed />
-
-  <view style="display:flex;justify-content: center;align-items: center;">
-
-    <button wx:if="{{canteenOrder.orderStatus == 103}}"
-      style="background:#fb6c59;width:50px;height:30px;color:#fff;font-size:11px;margin-right:0px;" bindtap="checkMeal"
-      data-id="{{canteenOrder.id}}" data-type="{{canteenOrder.timingId}}" data-date="{{canteenOrder.date}}">扫码</button>
-    <button wx:else
-      style="background:#c8c8c8;width:50px;height:30px;color:#fff;font-size:11px;margin-right:0px;">已取餐</button>
-  </view>
-
 </view>
-<view style="color:#c8c8c8;text-align:center">没有更多了</view>
+<view style="display:flex; align-items:center;justify-content:center;display:{{showloading?'':'none'}}" >
+  <van-loading size="24px" >加载中...</van-loading>
+</view>
+<view style="margin-top:14px;color:#c8c8c8;text-align:center;display:{{nomore?'':'none'}}" hidden="{{!nomore}}">没有更多了</view>
+

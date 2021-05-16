@@ -1,16 +1,16 @@
 pagehelper:
   helperDialect:  mysql
-  reasonable: true
+  reasonable: false
   supportMethodsArguments:  true
   params: count=countSql
 
 spring:
   datasource:
     druid:
-      url:  jdbc:mysql://42.192.119.5:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      url:  jdbc:mysql://localhost:3306/ylltst?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
       driver-class-name:  com.mysql.cj.jdbc.Driver
       username: root
-      password: "0000"
+      password: "Yllt5258-"
       initial-size:  10
       max-active:  50
       min-idle:  10

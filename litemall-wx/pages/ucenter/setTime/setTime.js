@@ -90,7 +90,6 @@ Page({
   },
 
   onChange(e) {
-    console.log(e.detail.value);
     this.setData({
       checked: e.detail.value
     });
@@ -108,7 +107,7 @@ Page({
   },
   //弹出编辑界面
   showBasic: function (e) {
-    console.log(e.target.dataset.itemId);
+
     var list = this.data.timingList;
     list.forEach(item => {
       if (item.id == e.target.dataset.itemId) {
@@ -136,12 +135,10 @@ Page({
   },
   //时间选择器数据改变更新
   bindTimeChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.target.dataset.timeType)
     var field = "modTiming." + e.target.dataset.timeType;
-    console.log(field);
     var fieldin = {}
     fieldin[field] = e.detail.value;
-    console.log(fieldin);
+
     this.setData(fieldin);
   },
 //编辑页面保存
@@ -162,9 +159,7 @@ Page({
   },
   //编辑界面可用状态按钮响应事件
   changeStatus: function (e) {
-    console.log(e.detail.value)
     var status = e.detail.value ? 1 : 0;
-    console.log(status);
     this.setData({
       "modTiming.status": status,
     })

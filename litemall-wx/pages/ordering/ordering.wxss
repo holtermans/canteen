@@ -25,11 +25,11 @@ page {
 }
 
 .header .value {
-  color: #FF5722;
+  color: #141414;
 }
 
 .catalog {
-  height: 60%;
+  height: 100%;
   width: 100%;
   background: #fff;
   display: flex;
@@ -39,6 +39,7 @@ page {
 .catalog .nav {
   width: 162rpx;
   height: 100%;
+  background-color: #f7f7f7;
 }
 
 .catalog .nav .item {
@@ -57,9 +58,13 @@ page {
 }
 
 .catalog .nav .item.active {
-  color: #ab956d;
+  
   font-size: 36rpx;
   border-left: 6rpx solid #ab956d;
+  background:#ffffff;
+  font-weight: bold;
+  /* color: #000000; */
+  /* color: #ef8b24; */
 }
 
 .catalog .cate {
@@ -67,7 +72,7 @@ page {
   flex: 1;
   height: 100%;
   padding: 0 30rpx 0 30rpx;
-  background: #f7f7f7;
+  background: #ffffff;
 }
 
 .banner {
@@ -127,7 +132,7 @@ page {
 }
 
 .catalog .bd .item {
-  padding: 10rpx;
+
   display: flex;
   flex-direction: row;
   height: auto;
@@ -135,7 +140,6 @@ page {
   margin-right: 34rpx;
   background-color: #fff;
   border-radius: 20rpx;
-  margin-bottom: 20rpx;
 }
 
 .catalog .bd .item>view {
@@ -155,7 +159,7 @@ page {
 .catalog .bd .item .txt {
   display: block;
   font-weight: bold;
-  font-size: 24rpx;
+  font-size: 30rpx;
   color: #333;
   height: 60rpx;
   width: 144rpx;
@@ -300,7 +304,6 @@ page {
   /* iOS 4.1- */
 }
 
-
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
@@ -321,3 +324,13 @@ page {
   content: "\e62d";
 }
 
+.icon-minus-circle-fill:before {
+  content: "\eb41";
+}
+
+.van-submit-bar{
+  background:#fff;
+}
+.van-submit-button{
+  background:#ffc300;
+}

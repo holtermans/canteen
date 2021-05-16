@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
 
+import io.swagger.models.auth.In;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallDailyMenu;
 import org.linlinjava.litemall.db.service.LitemallDailyMenuService;
@@ -25,6 +26,15 @@ public class WxDailyMenuController {
         Object o = dailyMenuService.queryByDate(LocalDate.parse(date));
         HashMap<Object, Object> map = new HashMap<>();
         map.put("dailyMenuList",o);
+        return ResponseUtil.ok(map);
+    }
+
+    @RequestMapping("queryByDateAndTimingId")
+    public Object queryByDateAndTimingId(@RequestParam String date, @RequestParam Integer timingId){
+
+        List<LitemallDailyMenu> litemallDailyMenus = dailyMenuService.queryByDateAndTimingId(LocalDate.parse(date), timingId);
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("dailyMenuList",litemallDailyMenus);
         return ResponseUtil.ok(map);
     }
     @RequestMapping("add")

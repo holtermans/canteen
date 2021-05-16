@@ -33,4 +33,11 @@ public class LitemallDailyMenuService {
     public void deleteById(int id){
         dailyMenuMapper.deleteByPrimaryKey(id);
     }
+
+    public List<LitemallDailyMenu>  queryByDateAndTimingId(LocalDate date, Integer timingId) {
+        LitemallDailyMenuExample example = new LitemallDailyMenuExample();
+        example.or().andDateEqualTo(date).andTimingIdEqualTo(timingId);
+        List<LitemallDailyMenu> litemallDailyMenus = dailyMenuMapper.selectByExampleSelective(example);
+        return litemallDailyMenus;
+    }
 }

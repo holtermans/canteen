@@ -34,10 +34,9 @@ public class LitemallMealOrderService {
         BigDecimal price = new BigDecimal(0) ;
         //添加商品的信息
         for (LitemallMealOrder item : mealOrder) {
-            System.out.println(item.getDishesId());
+
             LitemallDishes litemallDishes = dishesService.queryById(item.getDishesId());
-            System.out.println(litemallDishes);
-            price = price.add(new BigDecimal(litemallDishes.getPrice()).multiply( new BigDecimal(item.getQuantity())));
+            price = price.add(litemallDishes.getPrice().multiply( new BigDecimal(item.getQuantity())));
             item.setDishesPrice(litemallDishes.getPrice());
             item.setAddTime(LocalDateTime.now());
             item.setUserId(userId);
@@ -112,5 +111,25 @@ public class LitemallMealOrderService {
         LitemallMealOrder litemallMealOrder = new LitemallMealOrder();
         litemallMealOrder.setCancelled(true);
         return mealOrderMapper.updateByExampleSelective(litemallMealOrder,example);
+    }
+
+    public int deleteByOrderId(Integer orderId) {
+        LitemallMealOrderExample example = new LitemallMealOrderExample();
+
+        example.or().andOrderIdEqualTo(orderId);
+
+        int i = mealOrderMapper.logicalDeleteByExample(example);
+        return i;
+    }
+
+
+    public List<LitemallMealOrder> queryByDateAndTimingId(String date, Integer timingId) {
+        if(date == null || timingId == null){
+            return null;
+        }
+        LitemallMealOrderExample example = new LitemallMealOrderExample();
+        example.or().andDateEqualTo(LocalDate.parse(date)).andTimingIdEqualTo(timingId).andDeletedEqualTo(false);
+        List<LitemallMealOrder> mealOrders = mealOrderMapper.selectByExampleSelective(example);
+        return mealOrders;
     }
 }

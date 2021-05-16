@@ -1,0 +1,4 @@
+<!--pages/ucenter/check/checkCode/checkCode.wxml-->
+<canvas type="2d" style="width: 200px; height: 200px;" id="myQrcode">
+
+</canvas>

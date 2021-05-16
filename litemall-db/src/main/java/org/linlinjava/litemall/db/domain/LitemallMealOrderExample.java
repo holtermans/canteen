@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.db.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -1302,7 +1303,7 @@ public class LitemallMealOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceEqualTo(Long value) {
+        public Criteria andDishesPriceEqualTo(BigDecimal value) {
             addCriterion("dishes_price =", value, "dishesPrice");
             return (Criteria) this;
         }
@@ -1318,7 +1319,7 @@ public class LitemallMealOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceNotEqualTo(Long value) {
+        public Criteria andDishesPriceNotEqualTo(BigDecimal value) {
             addCriterion("dishes_price <>", value, "dishesPrice");
             return (Criteria) this;
         }
@@ -1334,7 +1335,7 @@ public class LitemallMealOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceGreaterThan(Long value) {
+        public Criteria andDishesPriceGreaterThan(BigDecimal value) {
             addCriterion("dishes_price >", value, "dishesPrice");
             return (Criteria) this;
         }
@@ -1350,7 +1351,7 @@ public class LitemallMealOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andDishesPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("dishes_price >=", value, "dishesPrice");
             return (Criteria) this;
         }
@@ -1366,7 +1367,7 @@ public class LitemallMealOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceLessThan(Long value) {
+        public Criteria andDishesPriceLessThan(BigDecimal value) {
             addCriterion("dishes_price <", value, "dishesPrice");
             return (Criteria) this;
         }
@@ -1382,7 +1383,7 @@ public class LitemallMealOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceLessThanOrEqualTo(Long value) {
+        public Criteria andDishesPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("dishes_price <=", value, "dishesPrice");
             return (Criteria) this;
         }
@@ -1398,22 +1399,22 @@ public class LitemallMealOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceIn(List<Long> values) {
+        public Criteria andDishesPriceIn(List<BigDecimal> values) {
             addCriterion("dishes_price in", values, "dishesPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceNotIn(List<Long> values) {
+        public Criteria andDishesPriceNotIn(List<BigDecimal> values) {
             addCriterion("dishes_price not in", values, "dishesPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceBetween(Long value1, Long value2) {
+        public Criteria andDishesPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("dishes_price between", value1, value2, "dishesPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDishesPriceNotBetween(Long value1, Long value2) {
+        public Criteria andDishesPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("dishes_price not between", value1, value2, "dishesPrice");
             return (Criteria) this;
         }

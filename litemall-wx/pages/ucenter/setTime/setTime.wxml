@@ -3,12 +3,12 @@
   <view class="cards">
     <view class="cardItem" wx:for="{{timingList}}">
       <view class="cardItem_hd">
-        <text>标题: {{item.name}}</text>
+        <text>{{item.name}}</text>
         <!-- <switch checked="{{item.status? true:false}}" bindchange="onChange" /> -->
       </view>
       <view class="cardItem_bd">
         <button class="mini-btn" type="default" size="mini" data-item-id="{{item.id}}" bindtap="showBasic">编辑</button>
-        <button class="mini-btn" type="warn" size="mini">删除</button>
+
       </view>
     </view>
   </view>
@@ -16,7 +16,7 @@
 
 <van-popup closeable show="{{ show.basic}}" position="bottom" custom-style="width:100%;height:80%"
   bind:close="hideBasic">
-  <view class="cell">标题:{{modTiming.name}}</view>
+  <view class="cell">{{modTiming.name}}</view>
   <view class="cell">可报份数：1</view>
   <view class="cell">
     状态：

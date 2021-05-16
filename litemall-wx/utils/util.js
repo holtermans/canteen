@@ -81,7 +81,7 @@ function request(url, data = {}, method = "GET") {
               // Do something when catch error
             }
             // 切换到登录页面
-            wx.navigateTo({
+            wx.redirectTo({
               url: '/pages/auth/login/login'
             });
             
@@ -184,6 +184,19 @@ function getServerTime() {
     console.log(err);
   })
 }
+  /**
+   * 定义根据id删除数组的方法
+   * @param {*} array 
+   * @param {*} val 
+   */
+  function removeByValue(array, val) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i].id == val) {
+        array.splice(i, 1);
+        break;
+      }
+    }
+  }
 
 module.exports = {
   getYMD,
@@ -198,4 +211,5 @@ module.exports = {
   arrCheck,
   isInArr,
   getServerTime,
+  removeByValue
 }

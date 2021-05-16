@@ -79,7 +79,6 @@ Page({
       cateId: this.data.dishesCategory[this.data.activeKey].id
     }
     util.request(api.DishGetBydCateId, data).then(res => {
-      console.log(res);
       if (res.errno == 0) {
         that.setData({
           dishesList: res.data.dishesList,
@@ -98,7 +97,6 @@ Page({
     // var dishesList = wx.getStorageSync('dishCate' + cateId);
     // if (dishesList == '') {
       util.request(api.DishGetBydCateId, data).then(res => {
-        console.log(res);
         if (res.errno == 0) {
           that.setData({
             dishesList: res.data.dishesList,
@@ -134,7 +132,6 @@ Page({
           },
           success(res) {
             const data = res.data
-            console.log(res);
             wx.showToast({
               title: '上传成功',
             })
@@ -142,7 +139,6 @@ Page({
           },
           fail(res) {
             const data = res.data
-            console.log(res);
             wx.showToast({
               title: '上传图片出错',
             })
@@ -168,7 +164,6 @@ Page({
   },
   delete: function (e) {
     var that = this;
-    console.log(e);
     wx.showModal({
       title: '提示',
       content: '确定要删除？',

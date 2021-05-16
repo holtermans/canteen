@@ -29,47 +29,61 @@
 
 </van-collapse>
 
-
-
-
-
-<view style="opacity:0">
-  <van-cell-group>
-    <van-field value="{{ value }}" placeholder="等待扫码" border="{{ false }}" bind:confirm="inputConfirm" focus="{{focus}}"
-      bind:blur="getFocus" input-align="center" auto-focus="{{true}}" />
-  </van-cell-group>
-</view>
-
-
+<van-button custom-style="margin-top:10px;" type="primary" size="small" bindtap="scanForCheck">手机扫码
+</van-button>
 <view
-  style="padding:0 10px; display: block;position: relative; margin-top: 82px;margin-left: 30px;margin-right: 30px;background:#fff;height:50%">
-
-  <view style="position:relative;top:-58px;margin: 0 auto;width: 5rem;">
-
+  style="padding:0 10px; padding-bottom:10px;display: block;position: relative; margin-top: 17px;margin-left: 30px;margin-right: 30px;background:#fff;height:auto">
+  <view style="position:relative;margin: 0 auto;width: 5rem;">
     <van-image round width="5rem" height="5rem" src="{{bcUserVo.avatar}}" />
   </view>
+  <view style="position:absolute;right:0px;top:0px">
+    <van-image width="5rem" height="5rem" wx:if="{{canteenOrder.orderStatus == 107}}" lazy-load
+      src="/static/images/complete.png" />
+  </view>
   <view style="margin-top: -50px">
-    <view>
-      {{bcUserVo.name}} {{bcUserVo.mobile}}
+    <view style="display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+      <view class="flex-item-1 grey">姓名</view>
+      <view class="flex-item-1 grey"> 电话</view>
     </view>
+    <view style="display:flex;align-items:center;justify-content:center;margin-bottom:10px">
 
-    <view>
-      <text style="font-weight:bold;">
-        {{canteenOrder.date}} {{canteenOrder.timingName}} {{canteenOrder.orderPrice}}
-      </text>
+      <view class="flex-item-1 ">{{bcUserVo.name}} </view>
+      <view class="flex-item-1 ">{{bcUserVo.mobile}}</view>
     </view>
-
-    <view wx:for="{{mealOrders}}" style="display:flex">
-
-      <view>
-        <van-image round width="2rem" height="2rem" lazy-load src="{{item.dishesPicUrl}}" />
+    <view>
+      <view style="display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+        <view class="flex-item-1 grey">日期</view>
+        <view class="flex-item-1 grey">用餐类型</view>
+        <view class="flex-item-1 grey">价格</view>
       </view>
-      <view style="display:flex;align-items:center; justify-content: center;letter-spacing:1rpx;padding-left:10px">
-        <view style="color:#828282">
-          {{item.dishesName}} {{item.quantity}}份
-        </view>
+      <view style="display:flex;align-items:center;justify-content:center">
+        <view class="flex-item-1">{{canteenOrder.date}} </view>
+        <view class="flex-item-1">{{canteenOrder.timingName}} </view>
+        <view class="flex-item-1">￥{{canteenOrder.orderPrice}} </view>
+      </view>
+    </view>
+    <van-divider dashed contentPosition="left">详情</van-divider>
+
+    <view wx:for="{{mealOrders}}">
+      <!-- <view>
+          <van-image round width="2rem" height="2rem" lazy-load src="{{item.dishesPicUrl}}" />
+        </view> -->
+
+
+      <view style="display:flex;align-items:center;justify-content:center;padding:0 30px">
+        <view class="flex-item-6">{{item.dishesName}} </view>
+        <view class="flex-item-1 grey">x{{item.quantity}}</view>
+        <view class="flex-item-1">￥{{item.dishesPrice}} </view>
       </view>
     </view>
   </view>
 </view>
+
+
 <van-divider dashed />
+<view style="opacity:0.5">
+  <van-cell-group>
+    <van-field value="{{ value }}" placeholder="等待扫码" border="{{ false }}" bind:confirm="inputConfirm" focus="{{focus}}"
+      bind:blur="getFocu1s" input-align="center" auto-focus="{{true}}" />
+  </van-cell-group>
+</view>

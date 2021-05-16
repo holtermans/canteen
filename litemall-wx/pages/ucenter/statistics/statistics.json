@@ -1,5 +1,8 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "ec-canvas": "/lib/ec-canvas/ec-canvas"
+  },
   "navigationBarTitleText": "报餐数据统计",
   "enablePullDownRefresh": false
+
 }

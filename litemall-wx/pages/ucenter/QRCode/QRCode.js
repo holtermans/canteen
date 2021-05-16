@@ -10,12 +10,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    orderId: undefined,
-    orderSn: undefined,
-    canteenOrderList: undefined,
-    orderDetail: undefined,
-    canteenOrder: undefined,
-    brightness: undefined
+    orderId: null,
+    orderSn: '',
+    canteenOrderList: [],
+    orderDetail: null,
+    canteenOrder: [],
+    brightness: null,
   },
 
   /**
@@ -23,17 +23,6 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-
-    wx.getScreenBrightness({
-      success: (option) => {
-        that.setData({
-          brightness: option.value,
-        })
-      },
-    })
-    wx.setScreenBrightness({
-      value: 0.7,
-    });
     var canteenOrderListTemp = wx.getStorageSync('canteenOrderList');
     canteenOrderListTemp.forEach(item => {
       if (item.orderSn == options.orderSn) {
@@ -47,18 +36,17 @@ Page({
       orderSn: options.orderSn,
       canteenOrderList: canteenOrderListTemp
     });
-    console.log(canteenOrderListTemp);
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    createQrcode(this.data.orderSn);
-    this.getOrderDetail(this.data.orderId);
-    this.getCanteenOrder(this.data.orderSn);
+    createQrcode(this.data.orderSn);//创建二维码
+    this.getOrderDetail(this.data.orderId); //获取订单菜品详情
+    this.getCanteenOrder(this.data.orderSn);  //获取订单信息
     interval = setInterval(() => {
-      this.getCanteenOrder(this.data.orderSn);
+      this.getOrderDetail(this.data.orderId); //获取订单菜品详情
       this.getCanteenOrder(this.data.orderSn);
     }, 1000);
   },
@@ -81,10 +69,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    var brightness = this.data.brightness;
-    wx.setScreenBrightness({
-      value: brightness,
-    });
     clearInterval(interval);
   },
 
@@ -115,7 +99,6 @@ Page({
     }
     util.request(api.CanteenOrderByOrderSn, data).then(res => { //查询报餐记录
       if (res.errno == 0) {
-        console.log(res);
         that.setData({
           canteenOrder: res.data.canteenOrder,
         });
@@ -133,7 +116,6 @@ Page({
     }
     util.request(api.MealOrderByOrderId, data).then(res => { //查询报餐记录
       if (res.errno == 0) {
-        console.log(res);
         that.setData({
           orderDetail: res.data.mealOrders,
         });

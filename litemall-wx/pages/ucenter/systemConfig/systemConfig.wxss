@@ -3,3 +3,15 @@ page{
   background:#f3f3f3;
   height: 100%;
 }
+
+.container{width:100%;height:100%;padding:20px;}
+.container .wrapper{background:#fff;padding:20px;border-radius:5px}
+.container .wrapper .title{background:#fff;width:100%;padding:10px;display:flex;padding-top: 46rpx;justify-content:center;} 
+.container .wrapper .subtitle{display: flex;padding: 14px 14px 0px 20px; padding-left: center;font-weight: bold;align-items:center;}
+.container .wrapper .subtitle .date{margin-right: 14px; }
+.container .wrapper .content{padding:0 20px} 
+.container .wrapper .content .sum{text-align: right;font-size:18px}
+
+.flex-item-1{flex:1;text-align: center;}
+.flex-item-6{flex:6;text-align: left;}
+.grey{opacity:0.6;}

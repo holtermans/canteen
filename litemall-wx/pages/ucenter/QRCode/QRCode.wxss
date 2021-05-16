@@ -1,6 +1,6 @@
 /* pages/ucenter/QRCode/QRCode.wxss */
 page{
-  background-color: #04BE02;
+  background-color: #f4f4f4;
   width: 100%;
   height: 100%;
 }
@@ -24,5 +24,10 @@ page{
   content: "\e626";
 }
 
-
-
+.container{width:100%;height:100%;padding:20px;}
+.container .wrapper{background:#fff;padding:20px;border-radius:5px}
+.container .wrapper .title{background:#fff;width:100%;padding:10px;display:flex;padding-top: 46rpx;justify-content:center;} 
+.container .wrapper .subtitle{display: flex;padding: 14px 14px 0px 20px; padding-left: center;font-weight: bold;align-items:center;}
+.container .wrapper .subtitle .date{margin-right: 14px; }
+.container .wrapper .content{padding:0 20px} 
+.container .wrapper .content .sum{text-align: right;font-size:18px}

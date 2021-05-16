@@ -34,11 +34,10 @@ public class QrCodeController {
     @RequestMapping("get")
     public Object get() throws WxErrorException, IOException {
 
-        File qrcode = wxMaService.getQrcodeService().createQrcode("/pages/ordering/ordering");
+//        File qrcode = wxMaService.getQrcodeService().createQrcode("/pages/ordering/ordering");
+        File qrcode = wxMaService.getQrcodeService().createWxaCode("/pages/ordering/ordering");
         FileInputStream inputStream = new FileInputStream(qrcode);
         LitemallStorage checkCode = storageService.store(inputStream, inputStream.available(), "image/jpeg", qrcode.getName());
-
-
         return ResponseUtil.ok(checkCode);
 
     }

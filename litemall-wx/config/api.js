@@ -1,12 +1,14 @@
 // 以下是业务服务器API地址
 // 本机开发时使用
 // var WxApiRoot = 'http://localhost:8080/wx/';
-// 局域网测试使用
-var WxApiRoot = 'https://www.joyfey.xyz/wx/';
-// 云平台部署时使用
-// var WxApiRoot = 'http://122.51.199.160:8080/wx/';
 // 云平台上线时使用
-// var WxApiRoot = 'https://www.menethil.com.cn/wx/';
+// var WxApiRoot = 'https://www.joyfey.xyz/wx/';
+//公司内部服务器
+var WxApiRoot = 'https://www.yllt.icu/wx/';
+
+
+
+
 
 module.exports = {
   IndexUrl: WxApiRoot + 'home/index', //首页数据接口
@@ -28,27 +30,6 @@ module.exports = {
   AuthRegisterCaptcha: WxApiRoot + 'auth/regCaptcha', //验证码
   AuthBindPhone: WxApiRoot + 'auth/bindPhone', //绑定微信手机号
 
-  GoodsCount: WxApiRoot + 'goods/count', //统计商品总数
-  GoodsList: WxApiRoot + 'goods/list', //获得商品列表
-  GoodsCategory: WxApiRoot + 'goods/category', //获得分类数据
-  GoodsDetail: WxApiRoot + 'goods/detail', //获得商品的详情
-  GoodsRelated: WxApiRoot + 'goods/related', //商品详情页的关联商品（大家都在看）
-
-  BrandList: WxApiRoot + 'brand/list', //品牌列表
-  BrandDetail: WxApiRoot + 'brand/detail', //品牌详情
-
-  CartList: WxApiRoot + 'cart/index', //获取购物车的数据
-  CartAdd: WxApiRoot + 'cart/add', // 添加商品到购物车
-  CartFastAdd: WxApiRoot + 'cart/fastadd', // 立即购买商品
-  CartUpdate: WxApiRoot + 'cart/update', // 更新购物车的商品
-  CartDelete: WxApiRoot + 'cart/delete', // 删除购物车的商品
-  CartChecked: WxApiRoot + 'cart/checked', // 选择或取消选择商品
-  CartGoodsCount: WxApiRoot + 'cart/goodscount', // 获取购物车商品件数
-  CartCheckout: WxApiRoot + 'cart/checkout', // 下单前信息确认
-
-  CollectList: WxApiRoot + 'collect/list', //收藏列表
-  CollectAddOrDelete: WxApiRoot + 'collect/addordelete', //添加或取消收藏
-
   CommentList: WxApiRoot + 'comment/list', //评论列表
   CommentCount: WxApiRoot + 'comment/count', //评论总数
   CommentPost: WxApiRoot + 'comment/post', //发表评论
@@ -57,49 +38,16 @@ module.exports = {
   TopicDetail: WxApiRoot + 'topic/detail', //专题详情
   TopicRelated: WxApiRoot + 'topic/related', //相关专题
 
-  SearchIndex: WxApiRoot + 'search/index', //搜索关键字
-  SearchResult: WxApiRoot + 'search/result', //搜索结果
-  SearchHelper: WxApiRoot + 'search/helper', //搜索帮助
-  SearchClearHistory: WxApiRoot + 'search/clearhistory', //搜索历史清楚
-
-  AddressList: WxApiRoot + 'address/list', //收货地址列表
-  AddressDetail: WxApiRoot + 'address/detail', //收货地址详情
-  AddressSave: WxApiRoot + 'address/save', //保存收货地址
-  AddressDelete: WxApiRoot + 'address/delete', //保存收货地址
-
-  ExpressQuery: WxApiRoot + 'express/query', //物流查询
-
-  RegionList: WxApiRoot + 'region/list', //获取区域列表
 
   OrderSubmit: WxApiRoot + 'order/submit', // 提交订单
   OrderPrepay: WxApiRoot + 'order/prepay', // 订单的预支付会话
   OrderList: WxApiRoot + 'order/list', //订单列表
   OrderDetail: WxApiRoot + 'order/detail', //订单详情
-  OrderCancel: WxApiRoot + 'order/cancel', //取消订单
   OrderRefund: WxApiRoot + 'order/refund', //退款取消订单
   OrderDelete: WxApiRoot + 'order/delete', //删除订单
   OrderConfirm: WxApiRoot + 'order/confirm', //确认收货
   OrderGoods: WxApiRoot + 'order/goods', // 代评价商品信息
   OrderComment: WxApiRoot + 'order/comment', // 评价订单商品信息
-
-  AftersaleSubmit: WxApiRoot + 'aftersale/submit', // 提交售后申请
-  AftersaleList: WxApiRoot + 'aftersale/list', // 售后列表
-  AftersaleDetail: WxApiRoot + 'aftersale/detail', // 售后详情
-
-  FeedbackAdd: WxApiRoot + 'feedback/submit', //添加反馈
-  FootprintList: WxApiRoot + 'footprint/list', //足迹列表
-  FootprintDelete: WxApiRoot + 'footprint/delete', //删除足迹
-
-  GroupOnList: WxApiRoot + 'groupon/list', //团购列表
-  GroupOnMy: WxApiRoot + 'groupon/my', //团购API-我的团购
-  GroupOnDetail: WxApiRoot + 'groupon/detail', //团购API-详情
-  GroupOnJoin: WxApiRoot + 'groupon/join', //团购API-详情
-
-  CouponList: WxApiRoot + 'coupon/list', //优惠券列表
-  CouponMyList: WxApiRoot + 'coupon/mylist', //我的优惠券列表
-  CouponSelectList: WxApiRoot + 'coupon/selectlist', //当前订单可用优惠券列表
-  CouponReceive: WxApiRoot + 'coupon/receive', //优惠券领取
-  CouponExchange: WxApiRoot + 'coupon/exchange', //优惠券兑换
 
   TimingList: WxApiRoot + 'timing/list', //用餐时段列表
   TimingUpdate: WxApiRoot + 'timing/update', //用餐时段更新
@@ -108,13 +56,16 @@ module.exports = {
   MealOrderCancel: WxApiRoot + 'mealOrder/cancel', //取消报餐
   MealOrderList: WxApiRoot + 'mealOrder/list', //查询个人报餐列表
   MealOrderByOrderId: WxApiRoot + 'mealOrder/findByOrderId', //查询个人报餐列表
+  MealOrderQueryByOrderAndTiming : WxApiRoot + 'mealOrder/listByOrderAndTiming', 
   CanteenOrderList: WxApiRoot + 'canteenOrder/list', //查询近期个人十条报餐记录
-  CanteenOrderByOrderSn: WxApiRoot + 'canteenOrder/findByOrderSn', //查询近期个人十条报餐记录
+  CanteenOrderPage: WxApiRoot + 'canteenOrder/queryByUidAndPage', //根据分页和状态查询
+  CanteenOrderByOrderSn: WxApiRoot + 'canteenOrder/findByOrderSn', //通过条码查询
+  GetConfig: WxApiRoot + 'config/getConfig',
 
-
-  DailyCanteenOrderList: WxApiRoot + 'canteenOrder/dailyList', //查询单天订单信息
+  DailyCanteenOrderList: WxApiRoot + 'canteenOrder/dailyList', //查询当日订单信息
   AllOrderByDate: WxApiRoot + 'mealOrder/listByDate', //查询指定日期报餐列表
-
+  QueryByIdAndDate: WxApiRoot + 'canteenOrder/queryByIdAndDate', //查询指定日期报餐列表
+  
   dishesList: WxApiRoot + 'dishes/list', //菜品列表
   DishesAdd: WxApiRoot + 'dishes/add', //用餐时段更新
   DishesDel: WxApiRoot + 'dishes/delete', //用餐时段更新
@@ -125,12 +76,19 @@ module.exports = {
   DailyMenuList: WxApiRoot + 'dailyMenu/queryByDate', //获取列表
   DailyMenuAdd: WxApiRoot + 'dailyMenu/add', //添加菜品
   DailyMenuDel: WxApiRoot + 'dailyMenu/deleteById', //删除菜品
+  DailyMenuLisByDateAndTimingId: WxApiRoot + 'dailyMenu/queryByDateAndTimingId', //获取列表
   StorageUpload: WxApiRoot + 'storage/upload', //图片上传,
+
   OrderCheck: WxApiRoot + 'canteenOrder/check', //订单核销,
+  OrderCancel: WxApiRoot + 'canteenOrder/cancel', //订单核销,
+  QueryByFilter: WxApiRoot + 'canteenOrder/queryByFilter',
   OrderCheckByOrderSn: WxApiRoot + 'canteenOrder/checkByOrderSn', //订单核销,
+  QueryByFilterThenGroup: WxApiRoot + 'canteenOrder/queryByFilterThenGroup', //查询并分组
+  
 
   GetBcUserInfoByUserId: WxApiRoot + 'user/getBcUserInfoByUserId', //传入ID数组，返回用户,
   GetSingleBcUserByUserId: WxApiRoot + 'user/getSingleBcUserByUserId', //查询当前用户的bc用户信息
+  GetBcUserHashMapByUserId: WxApiRoot + 'user/getBcUserHashMapByUserId', //传入ID数组，返回用户,
   GetBcUserList: WxApiRoot + 'bcuser/queryAll', //查询当前用户的bc用户信息
   UpdateBcUser: WxApiRoot + 'bcuser/updateBcUser', //更新用户信息
   Socket: "wss://www.joyfey.xyz/" + 'websocket/12',

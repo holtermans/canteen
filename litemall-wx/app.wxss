@@ -1,4 +1,9 @@
 /**app.wxss**/
+.flex{display: flex;align-items: center;}
+.flex-item{flex: 1;}
+
+
+
 page{
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
   Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei',

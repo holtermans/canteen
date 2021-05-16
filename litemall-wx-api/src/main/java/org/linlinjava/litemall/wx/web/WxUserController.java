@@ -72,7 +72,6 @@ public class WxUserController {
         List<Integer> userIdList = Arrays.asList(userIds);
         List<Integer> bcUserIdList = new ArrayList<>();
         List<LitemallUser> userList = userService.findByIdList(userIdList);
-        System.out.println(userList);
         for (LitemallUser user : userList) {
             bcUserIdList.add(user.getBcUserId());
         }
@@ -80,6 +79,8 @@ public class WxUserController {
         List<LitemallBcUser> bcUserList = bcUserService.findByIdList(bcUserIdList);
 
         List<BcUserVo> bcUserVos = new ArrayList<>();
+        HashMap<Integer, BcUserVo> bcUserVoHashMap = new HashMap<>();
+
         for (LitemallUser user : userList) {
             int userId = user.getId();
             int bcUserId = user.getBcUserId();
@@ -101,7 +102,50 @@ public class WxUserController {
 
         return ResponseUtil.ok(bcUserVos);
     }
+    /**
+     * 根据微信用户表中的id找到自定义的报餐用户信息
+     * 查找一组用户信息
+     *
+     * @param userIds
+     * @return
+     */
+    @RequestMapping("getBcUserHashMapByUserId")
+    public Object getBcUserHashMapByUserId(@RequestBody Integer[] userIds) {
 
+        List<Integer> userIdList = Arrays.asList(userIds);
+        List<Integer> bcUserIdList = new ArrayList<>();
+        List<LitemallUser> userList = userService.findByIdList(userIdList);
+        for (LitemallUser user : userList) {
+            bcUserIdList.add(user.getBcUserId());
+        }
+        //获取报餐用户信息
+        List<LitemallBcUser> bcUserList = bcUserService.findByIdList(bcUserIdList);
+
+        List<BcUserVo> bcUserVos = new ArrayList<>();
+        HashMap<Integer, BcUserVo> bcUserVoHashMap = new HashMap<>();
+
+        for (LitemallUser user : userList) {
+            int userId = user.getId();
+            int bcUserId = user.getBcUserId();
+            String avatar = user.getAvatar();
+            String nickName = user.getNickname();
+            for (LitemallBcUser bcUser : bcUserList) {
+                if (bcUser.getId() == bcUserId) {
+                    BcUserVo bcUserVo = new BcUserVo();
+                    bcUserVo.setId(userId);
+                    bcUserVo.setBcId(bcUserId);
+                    bcUserVo.setAvatar(avatar);
+                    bcUserVo.setNickname(nickName);
+                    bcUserVo.setName(bcUser.getName());
+                    bcUserVo.setMobile(bcUser.getMobile());
+                    bcUserVoHashMap.put(userId,bcUserVo);
+                }
+            }
+        }
+        HashMap<Object, Object> resHashMap = new HashMap<>();
+        resHashMap.put("bcUserVoHashMap",bcUserVoHashMap);
+        return ResponseUtil.ok(resHashMap);
+    }
     /**
      * 取得当前用户的身份信息
      *

@@ -1,3 +1,6 @@
+page{
+  height: 100%;
+}
 .login-box {
   width: 100%;
   height: auto;
@@ -59,3 +62,12 @@
   letter-spacing: 3rpx;
   background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
 }
+
+/* 授权弹窗 */
+.ep-content{width: 600rpx;height: 770rpx;padding: 40rpx 50rpx;box-sizing: border-box;background: white;border-radius: 10rpx;text-align: center;}
+.ep-tit{font-size: 32rpx;color: black;margin: 30rpx 0;line-height: 1;}
+.ep-subtit{font-size: 28rpx;color: #666;margin-bottom: 20rpx;display: block;}
+.ep-img{width: 482rpx;height: 373rpx;margin: 0 auto 16rpx;display: block;}
+.btn-primary{background: #d7242d;color: white;border-radius: 46px;}
+
+

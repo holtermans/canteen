@@ -3,6 +3,9 @@ page {
   height: 100%;
   width: 100%;
 }
+.content-wrapper{
+  padding:20px;
+}
 .demo-swipe-cell {
   user-select: none;
 }

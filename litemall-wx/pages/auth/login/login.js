@@ -9,22 +9,6 @@ Page({
     // 页面渲染完成
 
   },
-  onReady: function () {
-
-  },
-  onShow: function () {
-    // 页面显示
-    console.log(app.globalData.userInfo);
-
-  },
-  onHide: function () {
-    // 页面隐藏
-
-  },
-  onUnload: function () {
-    // 页面关闭
-
-  },
   getUserProfile(e) {
     wx.showLoading({
       title: '登录中',
@@ -34,19 +18,29 @@ Page({
     wx.getUserProfile({
       desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
       success: (res) => {
-        console.log(res);
         app.globalData.userInfo = res.userInfo;
         user.checkLogin().catch(() => { //如果没登录，就登录
           user.loginByWeixin(res.userInfo).then(Rres => {
             if (Rres.data.token == null) {
-              wx.redirectTo({
-                url: "/pages/auth/register/register"
-              });
+              wx.showModal({
+                title: '提示',
+                content: '您还未注册个人真实信息，现在填写？',
+                success (res) {
+                  if (res.confirm) {
+                    wx.redirectTo({
+                      url: "/pages/auth/register/register"
+                    });
+                  } else if (res.cancel) {
+                    
+                  }
+                }
+              })
+              
             } else {
               app.globalData.hasLogin = true;
-              wx.navigateBack({
-                delta: 1
-              })
+              wx.switchTab({
+                url: '/pages/ucenter/index/index'
+              });
 
             }
 
@@ -71,15 +65,12 @@ Page({
     })
   },
   wxLogin: function (e) {
-    // console.log(e);
-    console.log(e);
+
     if (e.detail.userInfo == undefined) {
       app.globalData.hasLogin = false;
       util.showErrorToast('微信登录失败');
       return;
     }
-    console.log("授权成功")
-
     app.globalData.userInfo = e.userInfo; //保存为全局变量
     user.checkLogin().catch(() => { //如果没登录，就登录
       user.loginByWeixin(e.detail.userInfo).then(res => {
@@ -89,9 +80,9 @@ Page({
           });
         } else {
           app.globalData.hasLogin = true;
-          wx.navigateBack({
-            delta: 1
-          })
+          wx.switchTab({
+            url: '/pages/ucenter/index/index'
+          });
         }
 
       }).catch((err) => {

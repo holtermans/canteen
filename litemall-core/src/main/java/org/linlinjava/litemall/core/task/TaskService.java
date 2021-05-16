@@ -9,7 +9,10 @@
 //public class TaskService {
 //    private TaskService taskService;
 //    private DelayQueue<Task> delayQueue =  new DelayQueue<Task>();
-//
+// //DelayQueue是一个无界的BlockingQueue，用于放置实现了Delayed接口的对象，其中的对象只能在其到期时才能从队列中取走。
+// //这种队列是有序的，即队头对象的延迟到期时间最长。注意：不能将null元素放置到这种队列中。
+
+//  //构造方法 > @Autowired > @PostConstruct
 //    @PostConstruct
 //    private void init() {
 //        taskService = this;

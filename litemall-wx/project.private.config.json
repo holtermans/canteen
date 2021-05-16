@@ -352,6 +352,12 @@
           "pathName": "pages/ucenter/addDish/addDish",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/ucenter/check/checkCode/checkCode",
+          "pathName": "pages/ucenter/check/checkCode/checkCode",
+          "query": "",
+          "scene": null
         }
       ]
     }

@@ -1,0 +1,6 @@
+<!--template/orderDetail.wxml-->
+<template name="detail">
+<view>
+
+</view>
+</template>

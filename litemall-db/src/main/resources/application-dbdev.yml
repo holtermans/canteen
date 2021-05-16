@@ -1,6 +1,6 @@
 pagehelper:
   helperDialect:  mysql
-  reasonable: true
+  reasonable: false
   supportMethodsArguments:  true
   params: count=countSql
 

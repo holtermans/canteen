@@ -11,33 +11,34 @@
 
   <view class='user_area'>
     <view class='user_row' bindtap='goOrder'>
-      <view class='user_row_left'>我的订单</view>
-      <van-icon class='user_row_right' name="arrow" />
+      <view class='user_row_left'>我的</view>
+      <!-- <van-icon class='user_row_right' name="arrow" /> -->
     </view>
     <view class='user_column'>
-      <view class='user_column_item' bindtap='goOrderIndex' data-index='1' data-route='/pages/ucenter/authInfo/authInfo'>
+      <view class='user_column_item' bindtap='goOrderIndex' data-index='1'
+        data-route='/pages/ucenter/authInfo/authInfo'>
         <text class="user_column_item_badge" wx:if="{{order.unship != 0}}">{{order.unship}}</text>
-        <image class='user_column_item_image' src='/static/images/send.png'></image>
+        <image class='user_column_item_image' src='/static/images/userinfo.png'></image>
         <view class='user_column_item_text'>我的信息</view>
       </view>
-      <view class='user_column_item' bindtap='goOrderIndex' data-index='2' data-route='/pages/ucenter/record/record'>
+      <!-- <view class='user_column_item' bindtap='goOrderIndex' data-index='2' data-route='/pages/ucenter/record/record'>
         <text class="user_column_item_badge" wx:if="{{order.unpaid != 0}}">{{order.unpaid}}</text>
         <image class='user_column_item_image' src='/static/images/pendpay.png'>
         </image>
         <view class='user_column_item_text'>我的报餐记录</view>
-      </view>
+      </view> -->
       <!-- <view class='user_column_item' bindtap='goOrderIndex' data-index='3' data-route='/pages/ucenter/order/order'>
         <text class="user_column_item_badge" wx:if="{{order.unship != 0}}">{{order.unship}}</text>
         <image class='user_column_item_image' src='/static/images/send.png'></image>
         <view class='user_column_item_text'>用餐核销</view>
       </view> -->
 
-      <view class='user_column_item' bindtap='goOrderIndex' data-index='3' data-route='/pages/ucenter/order/order'>
+      <view class='user_column_item' bindtap='goComment' data-index='3' data-route='/pages/ucenter/order/order'>
         <text class="user_column_item_badge" wx:if="{{order.unship != 0}}">{{order.unship}}</text>
         <image class='user_column_item_image' src='/static/images/send.png'></image>
         <view class='user_column_item_text'>菜品评价</view>
       </view>
-      
+
     </view>
   </view>
 
@@ -96,6 +97,15 @@
   <view class="logout" wx:if="{{hasLogin}}" bindtap="exitLogin">退出登录</view> -->
 
   <view class="logout" wx:if="{{hasLogin}}" bindtap="goAdmin">我是管理员</view>
+  <!-- <van-grid clickable column-num="4" gutter="{{ 5 }}">
+    <van-grid-item icon="/static/icon/time.png" link-type="navigateTo" url="/pages/dashboard/index" text="时段管理" />
+    <van-grid-item icon="search" link-type="reLaunch" url="/pages/dashboard/index" text="菜品管理" />
+    <van-grid-item icon="search" link-type="reLaunch" url="/pages/dashboard/index" text="每日菜谱" />
+    <van-grid-item icon="search" link-type="reLaunch" url="/pages/dashboard/index" text="用餐统计" />
+    <van-grid-item icon="search" link-type="reLaunch" url="/pages/dashboard/index" text="用户管理" />
+    <van-grid-item icon="search" link-type="reLaunch" url="/pages/dashboard/index" text="用餐核销" />
+
+  </van-grid> -->
 
 </view>
 

@@ -35,7 +35,7 @@ Page({
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'Screenshots'],
       success: res => {
-        console.log(res);
+
         switch (e.currentTarget.dataset.chooseImage) {
           case 'A':
             this.setData({
@@ -74,7 +74,6 @@ Page({
     })
   },
   bindPickerChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       index: e.detail.value
     })
@@ -84,7 +83,7 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
-    console.log()
+
     //校验表单
     if (e.detail.value.name == null || e.detail.value.name == '') {
       wx.showToast({
@@ -110,7 +109,6 @@ Page({
       }
       //再发请求去存储
       util.request(api.DishesAdd, data, "POST").then((res) => {
-        console.log(res);
         if (res.errno == 0) {
           wx.redirectTo({
             url: '/pages/ucenter/dishes/dishes',
@@ -138,7 +136,6 @@ Page({
         'Content-Type': 'application/json',
       },
       success(res) {
-        console.log(res);
         const result = JSON.parse(res.data);
         var data = {
           name: e.detail.value.name,
@@ -154,14 +151,14 @@ Page({
         util.request(api.DishesAdd, data, "POST").then((res) => {
           if (res.errno == 0) {
             wx.redirectTo({
-              url: 'pages/ucenter/dishes/dishes',
+              url: '/pages/ucenter/dishes/dishes',
             })
           }
         })
         //do something
       },
       fail(res) {
-        console.log(res);
+
       }
 
     })
@@ -229,7 +226,7 @@ Page({
 
   },
   previewImg: function (e) {
-    console.log(e);
+
     wx.previewImage({
       urls: [e.currentTarget.dataset.imageUrl],
       current: e.currentTarget.dataset.imageUrl,

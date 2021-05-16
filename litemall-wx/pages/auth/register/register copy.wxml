@@ -1,0 +1,36 @@
+<view class="container">
+    <view style="text-align:center;color:#c8c8c8">
+      为了能够正常使用小程序的功能，需要认证您的身份信息
+    </view>
+    <view style="text-align:center;color:#c8c8c8">
+      信息提交后不可修改，请正确填写
+    </view>
+  <view class="form-box">
+
+    <view class="form-item">
+      <input class="username" value="{{username}}" bindinput="bindUsernameInput" placeholder="姓名" auto-focus/>
+      <van-icon  wx:if="{{ username.length > 0 }}" id="clear-username" class="clear" name="close" catchtap="clearInput"/>      
+    </view>
+
+    <view class="form-item">
+      <input class="mobile" value="{{mobile}}" bindinput="bindMobileInput" placeholder="手机号" />
+      <van-icon class="clear" id="clear-mobile" wx:if="{{ mobile.length > 0 }}" name="close" catchtap="clearInput"/>      
+    </view>
+    <view class="form-item code-item">
+        <input class="code" value="{{code}}" bindinput="bindCodeInput" placeholder="授权码" />
+        <van-icon class="clear" id="clear-code" wx:if="{{ code.length > 0 }}" name="close" catchtap="clearInput"/>      
+      </view>
+    <view style="text-align:center;color:#c8c8c8">
+      注：填写授权码能够自动通过验证，未填写授权码需要等待管理员激活
+    </view>
+
+
+    <!-- <view class="form-item-code">
+     
+      <view class="code-btn" ></view>
+    </view> -->
+
+    <button type="primary" class="register-btn" bindtap="startRegister">注册</button>
+
+  </view>
+</view>

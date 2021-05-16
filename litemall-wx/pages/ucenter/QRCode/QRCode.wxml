@@ -1,41 +1,41 @@
 <!--pages/ucenter/QRCode/QRCode.wxml-->
 
 
-<view style="width:100%;height:100%;padding:20px;">
-  <view style="background:#fff;padding:20px">
+<view class="container">
+  <view class="wrapper">
 
-    <view style="background:#fff;width:100%;height:20px;line-height:20px; padding:10px;display:flex;">
-      <text>出示二维码扫描核销</text>
-      
-        <van-image wx:if="{{canteenOrder.orderStatus == 107}}" width="5rem" height="5rem" lazy-load
-          src="/static/images/complete.png" />
+    <view class="title">
+      订单详情
     </view>
-
+    <view style="position:absolute;right:0px">
+      <van-image width="5rem" height="5rem"  wx:if="{{canteenOrder.orderStatus == 107}}" lazy-load src="/static/images/complete.png" />
+    </view>
+    <view class="subtitle">
+      <view class="date">{{canteenOrder.date}}</view>
+      <view class="type">{{canteenOrder.timingName}}</view>
+    </view>
     <van-divider dashed />
 
     <view style="padding:0 10px">
-      <view wx:for="{{canteenOrderList}}" wx:if="{{item.orderSn == orderSn}}">
-        <text style="font-weight:bold;"> {{item.date}} {{item.timingName}}</text>
-      </view>
-      <view wx:for="{{orderDetail}}" style="display:flex">
-
-        <view>
-          <van-image round width="2rem" height="2rem" lazy-load src="{{item.dishesPicUrl}}" />
+      <view wx:for="{{orderDetail}}" style="">
+        <view
+          style="display:flex;align-items:center; justify-content: center;letter-spacing:1rpx;padding-left:10px;padding-bottom:10px;padding-right:10px">
+          <view style="flex:6">{{item.dishesName}} </view>
+          <view style="flex:1;color:#1010107a">x{{item.quantity}}</view>
+          <view style="flex:1;">￥{{item.dishesPrice*item.quantity}}</view>
         </view>
-        <view style="display:flex;align-items:center; justify-content: center;letter-spacing:1rpx;padding-left:10px">
-          <view style="color:#828282">
-            {{item.dishesName}} {{item.quantity}}份
-          </view>
-        </view>
-
       </view>
     </view>
-
+    <view class="content">
+      <view class="sum">
+        合计：￥{{canteenOrder.orderPrice}}
+      </view>
+    </view>
     <van-divider dashed />
 
     <view style="display:flex;flex-direction:column;justify-content:center;align-items: center;">
-      <view style="background:#f3f3f3;height:50px;line-height:50px">
-        <text style="font-size:20rpx">订单号：</text> <text>{{orderSn}}</text>
+      <view style="height:50px;line-height:50px">
+        <text style="font-size:29rpx">订单号：</text> <text>{{orderSn}}</text>
       </view>
       <view wx:if="{{canteenOrder.orderStatus == 107}}" style="opacity:0.1">
         <canvas type="2d" style="width: 200px; height: 200px;" id="myQrcode"></canvas>
@@ -43,7 +43,11 @@
       <view wx:else>
         <canvas type="2d" style="width: 200px; height: 200px;" id="myQrcode"></canvas>
       </view>
-    </view>
 
+    </view>
+    <view
+      style="display:flex;flex-direction:column;justify-content:center;align-items: center;height:50px;line-height:50px;">
+      <text style="color:#7D90A9">出示二维码核销</text>
+    </view>
   </view>
 </view>

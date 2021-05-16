@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.db.service;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.linlinjava.litemall.db.dao.CanteenOrderMapper;
@@ -38,7 +39,7 @@ public class CanteenOrderService {
      * @param
      * @return
      */
-    public PageInfo<CanteenOrder> queryByUid(Integer userId,Short status) {
+    public PageInfo<CanteenOrder> queryByUid(Integer userId, Short status) {
 
         CanteenOrderExample example = new CanteenOrderExample();
         example.setOrderByClause("id desc");
@@ -51,7 +52,7 @@ public class CanteenOrderService {
     }
 
     /**
-     * 查询个人某天的订单
+     * 查询个人前10条的订单
      *
      * @param userId
      * @param
@@ -123,6 +124,7 @@ public class CanteenOrderService {
 
     /**
      * 核销订单
+     *
      * @param userId
      * @param orderId
      * @return
@@ -138,6 +140,7 @@ public class CanteenOrderService {
 
     /**
      * 根据日期查询
+     *
      * @param date
      * @return
      */
@@ -148,7 +151,23 @@ public class CanteenOrderService {
         List<CanteenOrder> canteenOrders = canteenOrderMapper.selectByExample(example);
         return canteenOrders;
     }
-    public CanteenOrder queryByKey(Integer orderId){
+
+    /**
+     * 根据用户id，日期查询
+     *
+     * @param userid 用户id
+     * @param date
+     * @return
+     */
+    public List<CanteenOrder> queryByUidAndDate(Integer userid, String date) {
+        CanteenOrderExample example = new CanteenOrderExample();
+        example.setOrderByClause("id desc");
+        example.or().andUserIdEqualTo(userid).andDateEqualTo(LocalDate.parse(date)).andDeletedEqualTo(false);
+        List<CanteenOrder> canteenOrders = canteenOrderMapper.selectByExample(example);
+        return canteenOrders;
+    }
+
+    public CanteenOrder queryByKey(Integer orderId) {
         CanteenOrder order = canteenOrderMapper.selectByPrimaryKey(orderId);
         return order;
     }
@@ -158,5 +177,43 @@ public class CanteenOrderService {
         example.or().andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
         CanteenOrder order = canteenOrderMapper.selectOneByExampleSelective(example);
         return order;
+    }
+
+    public void delByPKey(Integer orderId) {
+        CanteenOrder order = new CanteenOrder();
+        order.setId(orderId);
+        order.setUpdateTime(LocalDateTime.now());
+        canteenOrderMapper.updateByPrimaryKeySelective(order);
+        canteenOrderMapper.logicalDeleteByPrimaryKey(orderId);
+    }
+
+    public List<CanteenOrder> queryByFilter(CanteenOrder order) {
+        CanteenOrderExample example = new CanteenOrderExample();
+
+        CanteenOrderExample.Criteria or = example.or();
+        or.andDateEqualTo(order.getDate());
+        if (order.getTimingId() != null) {
+            or.andTimingIdEqualTo(order.getTimingId());
+        }
+        if (order.getOrderStatus() != null) {
+            or.andOrderStatusEqualTo(order.getOrderStatus());
+        }
+        or.andDeletedEqualTo(false);
+        List<CanteenOrder> canteenOrders = canteenOrderMapper.selectByExample(example);
+        return canteenOrders;
+    }
+
+    public List<CanteenOrder> queryByUidAndPage(Integer userId, Integer pageNum, Integer pageSize,Short status) {
+        CanteenOrderExample example = new CanteenOrderExample();
+        CanteenOrderExample.Criteria criteria = example.createCriteria();
+
+        if(status != null){
+            criteria.andOrderStatusEqualTo(status);
+        }
+        criteria.andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        example.setOrderByClause("id desc");
+        PageHelper.startPage(pageNum,pageSize);
+        return canteenOrderMapper.selectByExample(example);
+
     }
 }

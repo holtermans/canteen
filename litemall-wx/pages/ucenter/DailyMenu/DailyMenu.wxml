@@ -10,15 +10,17 @@
     <van-tabs type="card" tab-class="special-tab" sticky bind:click="onTabClick">
       <van-tab wx:for="{{ timingList }}" wx:key="id" wx:for-item="timing" title="{{ timing.name }}"
         data-id="{{timing.id}}">
-        <view class="content" wx:for="{{dailyMenuList}}" wx:if="{{timing.id == item.timingId}}">
+        <view class="content-wrapper">
+          <view class="content" wx:for="{{dailyMenuList}}" wx:key="index" wx:if="{{timing.id == item.timingId}}">
+            <van-swipe-cell right-width="{{ 65 }}">
 
-          <van-swipe-cell right-width="{{ 65 }}" >
-            <van-cell-group>
-              <van-cell center title="{{item.dishesName}}"  label=" {{item.dishesBrief}}"/>
-            </van-cell-group>
-            <view slot="right" class="van-swipe-cell__right"  data-id="{{item.id}}" bindtap="DeleteDish">删除</view>
-          </van-swipe-cell>
-
+              <van-cell-group>
+                <van-cell center title="{{item.dishesName}}" label=" {{item.dishesBrief}}" value="{{item.price}}" />
+              </van-cell-group>
+              <view slot="right" class="van-swipe-cell__right" data-id="{{item.id}}" bindtap="DeleteDish">删除</view>
+            </van-swipe-cell>
+          </view>
+          <view style="padding-top:20px;color:#c8c8c8;text-align:center">没有更多了</view>
           <!-- <view>
             {{item.dishesName}}
           </view>

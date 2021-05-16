@@ -1,0 +1,55 @@
+/* eslint-disable */
+
+function formatDate(date) {
+var weekday=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+  if (date) {
+    date = getDate(date);
+    return date.getMonth() + 1 + '/' + date.getDate()
+  }
+}
+
+function formatDateWeek(date) {
+var weekday=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+  if (date) {
+    date.replace('/-/g', '/');
+    date = getDate(date);
+    nowDate = formatFullDate(getDate());
+    checkDate = formatFullDate(date);
+ 
+    var str1 = date.getMonth() < 9? "0" +(date.getMonth()+1 + '-'):(date.getMonth() + 1 + '-') ;
+    var str2 =  date.getDate() < 9 ? + "0" +(date.getDate()+1):date.getDate() + " "
+    var str3 =  (nowDate == checkDate)?"今天": weekday[date.getDay()];
+    return str1+str2+str3;
+  }
+}
+
+function formatFullDate(date) {
+  if (date) {
+    date = getDate(date);
+    return date.getFullYear() + '/' + formatDate(date);
+  }
+}
+
+function formatMultiple(dates) {
+  if (dates.length) {
+    return '选择了 ' + dates.length + '个日期';
+  }
+}
+
+function formatRange(dateRange) {
+  if (dateRange.length) {
+    return formatDate(dateRange[0]) + ' - ' + formatDate(dateRange[1]);
+  }
+}
+//判断是否在数组中
+function isInArr(value,array) {
+  return array.indexOf(value); //不存在返回-1
+}
+module.exports = {
+  formatDate: formatDate,
+  formatFullDate: formatFullDate,
+  formatMultiple: formatMultiple,
+  formatRange: formatRange,
+  isInArr: isInArr,
+  formatDateWeek:formatDateWeek
+};

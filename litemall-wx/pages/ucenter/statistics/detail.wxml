@@ -1,0 +1,48 @@
+<!--pages/ucenter/statistics/detail.wxml-->
+<view
+  style="padding:0 10px; padding-bottom:10px;display: block;position: relative; margin-top: 17px;margin-left: 30px;margin-right: 30px;background:#fff;height:auto">
+  <view style="position:relative;margin: 0 auto;width: 5rem;">
+    <van-image round width="5rem" height="5rem" src="{{avatar}}" />
+  </view>
+  <view style="margin-top: -50px">
+
+    <view style="display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+      <view class="flex-item-1 grey">姓名</view>
+      <view class="flex-item-1 grey">电话</view>
+    </view>
+    <view style="display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+
+      <view class="flex-item-1 ">{{name}} </view>
+      <view class="flex-item-1 ">{{mobile}}</view>
+    </view>
+    <view>
+      <view style="display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+        <view class="flex-item-1 grey">日期</view>
+        <view class="flex-item-1 grey">用餐类型</view>
+        <view class="flex-item-1 grey">价格</view>
+      </view>
+      <view style="display:flex;align-items:center;justify-content:center">
+        <view class="flex-item-1">{{canteenOrder.date}} </view>
+        <view class="flex-item-1">{{canteenOrder.timingName}} </view>
+        <view class="flex-item-1">￥{{canteenOrder.orderPrice}} </view>
+      </view>
+    </view>
+    <van-divider dashed contentPosition="left">详情</van-divider>
+
+    <view wx:for="{{orderDetail}}">
+      <!-- <view>
+          <van-image round width="2rem" height="2rem" lazy-load src="{{item.dishesPicUrl}}" />
+        </view> -->
+
+
+      <view style="display:flex;align-items:center;justify-content:center;padding:10px 30px">
+        <view class="flex-item-6">{{item.dishesName}} </view>
+        <view class="flex-item-1 grey">x{{item.quantity}}</view>
+        <view class="flex-item-1">￥{{item.dishesPrice}} </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<van-divider dashed />

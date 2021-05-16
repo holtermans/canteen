@@ -268,6 +268,7 @@ Page({
   },
   //复选框
   onChange(event) {
+    
     const {
       key
     } = event.currentTarget.dataset;

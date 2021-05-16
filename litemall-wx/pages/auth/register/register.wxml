@@ -1,36 +1,53 @@
-<view class="container">
-    <view style="text-align:center;color:#c8c8c8">
-      为了能够正常使用小程序的功能，需要认证您的身份信息
+<form bindsubmit="startRegister">
+  <view class="container">
+    <view class="panel-box">
+        <view class="avatar">
+            <image src="{{imgUrl}}" />
+        </view>
+        <view class="cells">
+            <view class="cell field flex">
+                <view class="field__left-icon">
+                    <image src="../../../static/icon/icon-user.png" />
+                </view>
+                <view class="cell__value flex-item">
+                    <input type="text" name="username" value="{{username}}" placeholder="请填写你的姓名" placeholder-class="placeholder-class" />
+                </view>
+            </view>
+            <!-- <view class="cell field flex">
+                <view class="field__left-icon">
+                    <image src="../../images/icon/icon-department.png" />
+                </view>
+                <view class="cell__value flex-item">
+                    <picker name="userDepartmentId" bindchange="bindPickerChange" value="{{array[id].id}}" range-key="{{'name'}}" range="{{array}}">
+                        <input name="userDepartmentName" disabled='true' placeholder="请选择你所在部门" placeholder-class="placeholder-class"
+                         value="{{array[id].name}}" />
+                    </picker>
+                </view>
+            </view> -->
+            <view class="cell field flex">
+                <view class="field__left-icon">
+                    <image src="../../../static/icon/icon-phone.png" />
+                </view>
+                <view class="cell__value flex-item">
+                    <input type='number' name="mobile" value="{{mobile}}" placeholder="请填写你的手机号码" placeholder-class="placeholder-class" maxlength="11"/>
+                </view>
+                <!-- <view class="field__button">
+                    <button bindtap="sendCode" disabled='{{disabled}}'>{{smsText}}</button>
+                </view> -->
+            </view>
+            <view class="cell field flex">
+                <view class="field__left-icon">
+                    <image src="../../../static/icon/icon-safety.png" />
+                </view>
+                <view class="cell__value flex-item">
+                    <input type="text" name="code" value="{{code}}" placeholder="授权码" placeholder-class="placeholder-class"  maxlength="6"/>
+                </view>
+            </view>
+        </view>
+
+        <view class="btn-wrap">
+            <button type="primary" form-type="submit">登录</button>
+        </view>
     </view>
-    <view style="text-align:center;color:#c8c8c8">
-      信息提交后不可修改，请正确填写
-    </view>
-  <view class="form-box">
-
-    <view class="form-item">
-      <input class="username" value="{{username}}" bindinput="bindUsernameInput" placeholder="姓名" auto-focus/>
-      <van-icon  wx:if="{{ username.length > 0 }}" id="clear-username" class="clear" name="close" catchtap="clearInput"/>      
-    </view>
-
-    <view class="form-item">
-      <input class="mobile" value="{{mobile}}" bindinput="bindMobileInput" placeholder="手机号" />
-      <van-icon class="clear" id="clear-mobile" wx:if="{{ mobile.length > 0 }}" name="close" catchtap="clearInput"/>      
-    </view>
-    <view class="form-item code-item">
-        <input class="code" value="{{code}}" bindinput="bindCodeInput" placeholder="授权码" />
-        <van-icon class="clear" id="clear-code" wx:if="{{ code.length > 0 }}" name="close" catchtap="clearInput"/>      
-      </view>
-    <view style="text-align:center;color:#c8c8c8">
-      注：填写授权码能够自动通过验证，未填写授权码需要等待管理员激活
-    </view>
-
-
-    <!-- <view class="form-item-code">
-     
-      <view class="code-btn" ></view>
-    </view> -->
-
-    <button type="primary" class="register-btn" bindtap="startRegister">注册</button>
-
   </view>
-</view>
+</form>

@@ -15,7 +15,7 @@ Page({
     value: undefined,
     focus: true,
     canteenOrder: undefined,
-    mealOrders: undefined,
+    mealOrders: [],
     bcUserVo: undefined,
     show: false,
     src: '',
@@ -41,7 +41,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {},
-
   speak(content) {
     var that = this;
     plugin.textToSpeech({
@@ -52,77 +51,121 @@ Page({
         that.setData({
           src: res.filename
         })
-        console.log("succ tts", res.filename)
 
         const innerAudioContext = wx.createInnerAudioContext();
         innerAudioContext.onError(function (res) {
-          console.log(res);
           wx.showToast({
             title: '语音播放失败',
             icon: 'none',
           })
         })
-        console.log(that.data.src);
         innerAudioContext.autoplay = true
         innerAudioContext.src = that.data.src
         innerAudioContext.onPlay(() => {
-          console.log('开始播放')
         })
 
       },
       fail: function (res) {
-        console.log("fail tts", res)
       }
     })
   },
-  inputConfirm: function (e) {
-    // wx.showToast({
-    //   title: e.detail,
-    // });
+  check(orderSn){
+    var that = this;
     wx.showLoading({
       title: '加载中',
     })
     var data = {
-      orderSn: e.detail,
+      orderSn: orderSn,
     }
-    util.request(api.OrderCheckByOrderSn, data).then(res => {
-      wx.hideLoading({
-        success: (res) => {},
-      })
-      if (res.errno == 0) {
-        // wx.showToast({
-        //   title: '核销成功',
-        // });
-        this.setData({
-          canteenOrder: res.data.canteenOrder,
-          mealOrders: res.data.mealOrders,
-          bcUserVo: res.data.bcUserVo,
-          show: true,
-        })
-        if (this.data.checked) {
-          var content = "";
-          if(this.data.nameChecked){
-            content += this.data.bcUserVo.name;
-          }
-          if(this.data.typeChecked){
-            content += this.data.canteenOrder.timingName;
-          }
-          if(this.data.priceChecked){
-            content += this.data.canteenOrder.orderPrice + "元，";
-          }
-          content += "用餐愉快";
-          this.speak(content);
-        }
+    //先查询订单状态
+    util.request(api.CanteenOrderByOrderSn, data).then(res => {
+      if (res.errno == 0) { 
+        var canteenOrder = res.data.canteenOrder; // 临时用
+        var status = canteenOrder.orderStatus; //取出订单状态
+        if (status == 107) {   // 规定107是已经核销的订单，直接结束
+          var param=[canteenOrder.userId];
+          
+          util.request(api.GetBcUserHashMapByUserId,param,"POST").then((res)=>{
+            that.setData({
+              bcUserVo: res.data.bcUserVoHashMap[canteenOrder.userId],
+            })
+          })
+          var param2={
+            orderId: canteenOrder.id,
+          };
+          util.request(api.MealOrderByOrderId,param2).then(res=>{
+            that.setData({
+              mealOrders: res.data.mealOrders,
+            })
+          })
+          that.setData({
+            canteenOrder: res.data.canteenOrder,
+            show: true,
+          })
+          that.speak("该订单已核销");
+          wx.hideLoading({
+            success: (res) => {},
+          });
+          return;
+        }else {    //未核销的订单，去核销
+          util.request(api.OrderCheckByOrderSn, data).then(res => {
+            if (res.errno == 0) {
+              that.setData({
+                canteenOrder: res.data.canteenOrder,
+                mealOrders: res.data.mealOrders,
+                bcUserVo: res.data.bcUserVo,
+                show: true,
+              })
+              if (that.data.checked) {
 
+                var content = "";
+                if (that.data.nameChecked) {
+                  content += that.data.bcUserVo.name;
+                }
+                if (that.data.typeChecked) {
+                  content += that.data.canteenOrder.timingName;
+                }
+                if (that.data.priceChecked) {
+                  content += that.data.canteenOrder.orderPrice + "元，";
+                }
+                content += "祝您用餐愉快";
+                that.speak(content);
+              }
+              wx.hideLoading({
+                success: (res) => {},
+              })
+            } else {
+              that.speak("网络出现了一点问题~");
+              util.showErrorModal(res.errmsg);
+            }
+          })
+          this.setData({
+            value: '',
+            focus: true,
+          });
+        }
       } else {
-        util.showErrorModal(res.errmsg);
+        wx.hideLoading({
+          success: (res) => {},
+        });
+        that.speak("二维码有误");
+        return;
+        
       }
     })
-    this.setData({
-      value: '',
-      focus: true,
-    });
   },
+  inputConfirm: function (e) {
+    var that = this;
+    // wx.showToast({
+    //   title: e.detail,
+    // });
+    this.check(e.detail);
+    this.setData({
+      focus:true,
+      value:'',
+    })
+  },
+
   getFocus: function () {
     this.setData({
       value: '',
@@ -130,7 +173,6 @@ Page({
     });
   },
   onChange(e) {
-    console.log(e);
     // 需要手动对 checked 状态进行更新
     this.setData({
       checked: e.detail.value
@@ -145,71 +187,40 @@ Page({
     }
   },
   onChangeName(e) {
-    console.log(e);
     // 需要手动对 checked 状态进行更新
     this.setData({
       nameChecked: e.detail.value
     });
   },
   onChangePrice(e) {
-    console.log(e);
     // 需要手动对 checked 状态进行更新
     this.setData({
       priceChecked: e.detail.value
     });
   },
   onChangeType(e) {
-    console.log(e);
+
     // 需要手动对 checked 状态进行更新
     this.setData({
       typeChecked: e.detail.value
     });
   },
-  collapse(event){
+  collapse(event) {
     this.setData({
       collapseAvtive: event.detail,
     });
   },
+  scanForCheck(){
+    var that =this;
+    wx.scanCode({
+      onlyFromCamera: true,
+      success(res) {
+        var code = res.result;
+        that.check(code);
+      },
+      fail(res) {
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+      }
+    })
   }
 })

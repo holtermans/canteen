@@ -25,6 +25,5 @@ public class ConfigController {
         HashMap<Object, Object> result = new HashMap<>();
         result.put("config", config);
         return ResponseUtil.ok(result);
-
     }
 }

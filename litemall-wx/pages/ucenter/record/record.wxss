@@ -50,6 +50,21 @@ page {
   vertical-align: middle;
 
 }
+.content-title{
+  color:#1111115a;
+  margin-right: 16px;
+  height: 25px;
+  line-height: 30px;
+}
+.content-detail{
+  height: 25px;
+  line-height: 30px;
+}
+.price{
+  color:#c87d2f;
+  margin-right: 16px;
+}
+
 .footer{
   display: flex;
   flex-direction: row;
