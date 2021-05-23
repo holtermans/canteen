@@ -41,6 +41,11 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {},
+  onShow: function () {
+    this.setData({
+      focus:true
+    })
+  },
   speak(content) {
     var that = this;
     plugin.textToSpeech({
@@ -61,15 +66,13 @@ Page({
         })
         innerAudioContext.autoplay = true
         innerAudioContext.src = that.data.src
-        innerAudioContext.onPlay(() => {
-        })
+        innerAudioContext.onPlay(() => {})
 
       },
-      fail: function (res) {
-      }
+      fail: function (res) {}
     })
   },
-  check(orderSn){
+  check(orderSn) {
     var that = this;
     wx.showLoading({
       title: '加载中',
@@ -79,21 +82,21 @@ Page({
     }
     //先查询订单状态
     util.request(api.CanteenOrderByOrderSn, data).then(res => {
-      if (res.errno == 0) { 
+      if (res.errno == 0) {
         var canteenOrder = res.data.canteenOrder; // 临时用
         var status = canteenOrder.orderStatus; //取出订单状态
-        if (status == 107) {   // 规定107是已经核销的订单，直接结束
-          var param=[canteenOrder.userId];
-          
-          util.request(api.GetBcUserHashMapByUserId,param,"POST").then((res)=>{
+        if (status == 107) { // 规定107是已经核销的订单，直接结束
+          var param = [canteenOrder.userId];
+
+          util.request(api.GetBcUserHashMapByUserId, param, "POST").then((res) => {
             that.setData({
               bcUserVo: res.data.bcUserVoHashMap[canteenOrder.userId],
             })
           })
-          var param2={
+          var param2 = {
             orderId: canteenOrder.id,
           };
-          util.request(api.MealOrderByOrderId,param2).then(res=>{
+          util.request(api.MealOrderByOrderId, param2).then(res => {
             that.setData({
               mealOrders: res.data.mealOrders,
             })
@@ -107,7 +110,7 @@ Page({
             success: (res) => {},
           });
           return;
-        }else {    //未核销的订单，去核销
+        } else { //未核销的订单，去核销
           util.request(api.OrderCheckByOrderSn, data).then(res => {
             if (res.errno == 0) {
               that.setData({
@@ -150,7 +153,7 @@ Page({
         });
         that.speak("二维码有误");
         return;
-        
+
       }
     })
   },
@@ -161,11 +164,16 @@ Page({
     // });
     this.check(e.detail);
     this.setData({
-      focus:true,
-      value:'',
+      focus: true,
+      value: '',
     })
   },
+  goStatistics: function () {
+    wx.navigateTo({
+      url: "/pages/ucenter/statistics/statistics"
+    });
 
+  },
   getFocus: function () {
     this.setData({
       value: '',
@@ -210,8 +218,8 @@ Page({
       collapseAvtive: event.detail,
     });
   },
-  scanForCheck(){
-    var that =this;
+  scanForCheck() {
+    var that = this;
     wx.scanCode({
       onlyFromCamera: true,
       success(res) {

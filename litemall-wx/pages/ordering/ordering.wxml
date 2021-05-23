@@ -14,7 +14,7 @@
     </swiper>
     <!-- 选择订餐日期 -->
     <view>
-      <van-cell value-class="value" is-link title="订餐日期" data-type="single" data-id="selectSingle"
+      <van-cell value-class="value" is-link title="报餐日期" data-type="single" data-id="selectSingle"
         value="{{ computed.formatFullDate(date.selectSingle) }}" bind:click="selectDate" />
     </view>
 

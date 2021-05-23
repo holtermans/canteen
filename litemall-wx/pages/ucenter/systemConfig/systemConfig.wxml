@@ -28,9 +28,16 @@
   </van-collapse-item>
 
 </van-collapse>
-
-<van-button custom-style="margin-top:10px;" type="primary" size="small" bindtap="scanForCheck">手机扫码
-</van-button>
+<view style="display:flex;">
+  <view>
+    <van-button custom-style="margin-top:10px;" type="primary" size="small" bindtap="scanForCheck">手机扫码
+    </van-button>
+  </view>
+  <view style="flex:1;text-align:right;">
+    <van-button plain custom-style="margin-top:10px;" type="primary" size="small" bindtap="goStatistics">查看数据
+    </van-button>
+  </view>
+</view>
 <view
   style="padding:0 10px; padding-bottom:10px;display: block;position: relative; margin-top: 17px;margin-left: 30px;margin-right: 30px;background:#fff;height:auto">
   <view style="position:relative;margin: 0 auto;width: 5rem;">

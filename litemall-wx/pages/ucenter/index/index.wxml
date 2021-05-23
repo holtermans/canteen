@@ -3,7 +3,8 @@
     <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
     <view class="info">
       <text class="name">{{userInfo.nickName}}</text>
-      <view class="iconfont icon-icon--gengxin" style="color:#ffffff" bindtap="updateInfo">同步账号信息</view>
+      <view class="iconfont icon-icon--gengxin {{rotate}}" style="color:#ffffff;font-size:29rpx;padding-top:20rpx"
+        bindtap="updateInfo">同步账号信息</view>
     </view>
   </view>
 
@@ -35,7 +36,7 @@
 
       <view class='user_column_item' bindtap='goComment' data-index='3' data-route='/pages/ucenter/order/order'>
         <text class="user_column_item_badge" wx:if="{{order.unship != 0}}">{{order.unship}}</text>
-        <image class='user_column_item_image' src='/static/images/send.png'></image>
+        <image class='user_column_item_image' src='/static/images/vote.png'></image>
         <view class='user_column_item_text'>菜品评价</view>
       </view>
 
@@ -65,38 +66,47 @@
 
   </view>
   <view class='separate'></view> -->
-
-  <!-- <view class='user_row'>
-    <view class='user_row_left'>后台管理</view>
+  <view wx:if="{{isAdmin}}">
+    <view class='user_row'>
+      <view class='user_row_left'>后台管理</view>
+    </view>
+    <view class='user_column'>
+      <view class="user_column_item" bindtap="goSetTime">
+        <image class='user_column_item_image' src='/static/images/timing.png'></image>
+        <view class='user_column_item_text'>用餐时段</view>
+      </view>
+      <view class='user_column_item' bindtap='goDishes'>
+        <image class='user_column_item_image' src='/static/images/dish.png'></image>
+        <view class='user_column_item_text'>菜品管理</view>
+      </view>
+      <view class='user_column_item' bindtap='goDailyMenu'>
+        <image class='user_column_item_image' src='/static/images/menu.png'></image>
+        <view class='user_column_item_text'>每日菜谱</view>
+      </view>
+      <view class='user_column_item' bindtap='goStatistics'>
+        <image class='user_column_item_image' src='/static/images/statistics.png'></image>
+        <view class='user_column_item_text'>数据统计</view>
+      </view>
+      <view class='user_column_item' bindtap='goUserManagement'>
+        <image class='user_column_item_image' src='/static/images/user-manager.png'></image>
+        <view class='user_column_item_text'>用户管理</view>
+      </view>
+      <view class='user_column_item' bindtap='goSystemConfig'>
+        <image class='user_column_item_image' src='/static/images/manager-check.png'></image>
+        <view class='user_column_item_text'>用餐核销</view>
+      </view>
+    </view>
   </view>
-  <view class='user_column'>
-
-    <button class="user_column_item_phone" bindtap="goSetTime">
-      <image class='user_column_item_image' src='/static/images/mobile.png'></image>
-      <view class='user_column_item_text'>用餐时段</view>
-    </button>
-    <view class='user_column_item' bindtap='goDishes'>
-      <image class='user_column_item_image' src='/static/images/help.png'></image>
-      <view class='user_column_item_text'>菜品库</view>
-    </view>
-    <view class='user_column_item' bindtap='goDailyMenu'>
-      <image class='user_column_item_image' src='/static/images/feedback.png'></image>
-      <view class='user_column_item_text'>每日菜谱</view>
-    </view>
-    <view class='user_column_item' bindtap='goStatistics'>
-      <image class='user_column_item_image' src='/static/images/customer.png'></image>
-      <view class='user_column_item_text'>报餐数据统计</view>
-    </view>
-    <view class='user_column_item' bindtap='aboutUs'>
+    <!-- <view class='user_column_item' bindtap='aboutUs'>
       <image class='user_column_item_image' src='/static/images/about.png'></image>
       <view class='user_column_item_text'>关于我们</view>
-    </view>
-  </view> -->
+    </view> -->
+
   <view class='separate'></view>
   <!-- 
   <view class="logout" wx:if="{{hasLogin}}" bindtap="exitLogin">退出登录</view> -->
 
-  <view class="logout" wx:if="{{hasLogin}}" bindtap="goAdmin">我是管理员</view>
+  <!-- <view class="logout" wx:if="{{hasLogin}}" bindtap="goAdmin">我是管理员</view> -->
   <!-- <van-grid clickable column-num="4" gutter="{{ 5 }}">
     <van-grid-item icon="/static/icon/time.png" link-type="navigateTo" url="/pages/dashboard/index" text="时段管理" />
     <van-grid-item icon="search" link-type="reLaunch" url="/pages/dashboard/index" text="菜品管理" />

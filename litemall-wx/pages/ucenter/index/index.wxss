@@ -65,6 +65,7 @@ page {
   height: 86rpx;
   line-height: 86rpx;
   border-bottom: 1px solid #fafafa;
+  background:#fff;
 }
 
 .user_row_left {
@@ -91,14 +92,16 @@ page {
 
 .user_column {
   /* border: 1px solid black; */
-  height: 140rpx;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap:wrap;
+  background:#ffffff;
 }
 
 .user_column_item {
-  width: 30%;
+  width: 33.3%;
   height: 140rpx;
   background: #fff;
   text-align: center;

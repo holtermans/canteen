@@ -22,7 +22,7 @@
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "食堂订餐服务",
+    "navigationBarTitleText": "食堂报餐服务",
     "enablePullDownRefresh": false,
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FFFFFF",
@@ -38,7 +38,7 @@
         "pagePath": "pages/ordering/ordering",
         "iconPath": "static/images/order.png",
         "selectedIconPath": "static/images/order@selected.png",
-        "text": "点餐"
+        "text": "报餐"
       },
       {
         "pagePath": "pages/ucenter/record/record",

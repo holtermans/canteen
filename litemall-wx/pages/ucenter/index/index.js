@@ -16,22 +16,29 @@ Page({
       unrecv: 0,
       uncomment: 0
     },
-    hasLogin: false
+    hasLogin: false,
+    isAdmin:false,
   },
   onLoad: function (options) {
     let that = this;
     // 页面初始化 options为页面跳转所带来的参数
-
-  },
-  onReady: function () {
-
+    //判断用户是否为管理员
+    util.request(api.GetSingleBcUserByUserId).then((res) => {
+      if (res.errno == 0) {
+        this.setData({
+          bcUserInfo: res.data.bcUserInfo,
+          isAdmin:res.data.bcUserInfo.admin,
+        })
+      }
+    }).catch(() => {
+    })
   },
   onShow: function () {
     let that = this;
     //获取用户的登录信息
     if (app.globalData.hasLogin) {
       let userInfo = wx.getStorageSync('userInfo');
-      if(userInfo == null){
+      if (userInfo == null) {
         var temp = {
           nickName: '点击登录',
           avatarUrl: '/static/images/my.png'
@@ -40,21 +47,13 @@ Page({
           userInfo: temp,
           hasLogin: false
         });
+      } else {
+        this.setData({
+          userInfo: userInfo,
+          hasLogin: true
+        });
       }
-
-      this.setData({
-        userInfo: userInfo,
-        hasLogin: true
-      });
     }
-  },
-
-  onHide: function () {
-    // 页面隐藏
-
-  },
-  onUnload: function () {
-    // 页面关闭
   },
   goLogin() {
     if (!this.data.hasLogin) {
@@ -63,9 +62,7 @@ Page({
       });
     }
   },
-
   updateInfo() {
-
     wx.getUserProfile({
       desc: '更新账号信息',
       success: (res) => {
@@ -79,7 +76,7 @@ Page({
           title: '已更新',
         })
       },
-      fail: (res)=>{
+      fail: (res) => {
         wx.showToast({
           title: '更新时出错',
           content: res
@@ -110,8 +107,7 @@ Page({
       let route = e.currentTarget.dataset.route
       try {
         wx.setStorageSync('tab', tab);
-      } catch (e) {
-      }
+      } catch (e) {}
       wx.navigateTo({
         url: route,
         success: function (res) {},
@@ -130,7 +126,28 @@ Page({
       title: '暂未开放',
     })
   },
-
+  goSystemConfig:function(){
+    if (this.data.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/ucenter/systemConfig/systemConfig"
+      });
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    };
+  },
+  goUserManagement: function () {
+    if (this.data.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/ucenter/userManagement/userManagement"
+      });
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    };
+  },
   goSetTime: function () {
     if (this.data.hasLogin) {
       wx.navigateTo({
@@ -176,7 +193,6 @@ Page({
       });
     };
   },
-
   goAdmin: function () {
     if (this.data.hasLogin) {
       wx.navigateTo({

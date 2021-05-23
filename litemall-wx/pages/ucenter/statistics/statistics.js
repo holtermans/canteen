@@ -48,21 +48,32 @@ Page({
     type: 'single',
     round: true,
     color: undefined,
-    minDate: Date.now(),
+    minDate: new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate()-7
+    ).getTime(),
     maxDate: new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
-      new Date().getDate()+1
+      new Date().getDate()+7
     ).getTime(),
-
-    position: undefined,
-    formatter: undefined,
-    showConfirm: false,
     showCalendar: false,
     connected: false,
     message: "",
-
-
+    defaultDate: Date.now(),   //默认选中日期
+    position: 'top',
+    formatter(day) {
+      const month = day.date.getMonth() + 1;
+      const date = day.date.getDate();
+        if(month ==  new Date().getMonth()+1 &&date == new Date().getDate()){
+          day.text="今天"
+        }
+      return day;
+    },
+    showConfirm: false,
+    confirmText: '确定',
+    defaultDate: Date.now(),
     option1: [],
     option2: [{
         text: '全部',
@@ -100,7 +111,10 @@ Page({
     dailyMenuMap: null,
     chart: {
       data: null,
-    }
+    },
+    showUnchecked:false,
+    showChecked: false,
+    main:true,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -121,7 +135,6 @@ Page({
     this.initChart();
     this.search();
     this.getDishesList();
-
     wx.showLoading({
       title: '加载中',
     });
@@ -587,23 +600,24 @@ Page({
       minDate: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate()
+        new Date().getDate()-7
       ).getTime(),
       maxDate: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate()+1
+        new Date().getDate()+7
       ).getTime(),
       position: 'top',
       formatter: null,
       showConfirm: true,
       confirmText: '确定',
+      defaultDate: Date.now(),
     });
   },
   //选择日期
   selectDate(event) {
     chart.clear(); //清空实例,防止数字闪烁
-    this.resetSettings();
+    // this.resetSettings();
     const {
       type,
       id,
@@ -630,7 +644,34 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.initChart();
+    this.search();
+    this.getDishesList();
+    wx.showLoading({
+      title: '加载中',
+    });
+    wx.hideLoading({
+      success: (res) => {},
+    })
     wx.stopPullDownRefresh();
+  },
+
+  showUnchecked:function(){
+      this.setData({
+        showUnchecked:!this.data.showUnchecked,
+        showChecked:false,
+      })
+      this.setData({
+        main:!(this.data.showUnchecked || this.data.showChecked),
+      })
+  },
+  showChecked:function(){
+    this.setData({
+      showChecked: !this.data.showChecked,
+      showUnchecked:false,
+    })
+    this.setData({
+      main:!(this.data.showUnchecked || this.data.showChecked),
+    })
   },
 })
