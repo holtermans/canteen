@@ -1,13 +1,18 @@
 <!--pages/ucenter/record/record.wxml-->
-<wxs src="/wxs/index.wxs" module="computed" ></wxs>
-<view class="container" >
-  <van-sticky>
+<wxs src="/wxs/index.wxs" module="computed"></wxs>
+
+<scroll-view class="container" scroll-y="{{true}}" style="height:100%" bindscrolltolower="reachBottom">
+
+  <view style="">
     <van-tabs swipeable animated active="{{ active }}" bind:click="onChange" sticky>
       <van-tab title="全部"></van-tab>
       <van-tab title="未取餐"></van-tab>
       <van-tab title="已取餐"></van-tab>
     </van-tabs>
-  </van-sticky>
+
+  </view>
+
+
   <view class="record-card" wx:for="{{canteenOrderList}}" wx:for-item="canteenOrder">
 
     <view data-order-sn="{{canteenOrder.orderSn}}" data-order-id="{{canteenOrder.id}}">
@@ -63,5 +68,4 @@
   </view>
   <view style="margin-top:14px;color:#c8c8c8;text-align:center;display:{{nomore?'':'none'}}" hidden="{{!nomore}}">没有更多了
   </view>
-
-</view>
+</scroll-view>

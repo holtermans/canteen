@@ -1,7 +1,27 @@
 /* pages/ucenter/record/record.wxss */
 page {
-  background: #f4f4f4;
+
   color: #000;
+  
+  height: 100%;
+  background: -webkit-linear-gradient(red, blue);
+  /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(red, blue);
+  /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(red, blue);
+  /* Firefox 3.6 - 15 */
+  background: linear-gradient(red, blue);
+  /* 标准的语法 */
+
+}
+
+.container {
+  height: 100%;
+  overflow: scroll;
+  margin-top: 100px;
+  width: 90%;
+  margin: 0 auto;
+  background:#f4f4f447;
   padding-top:50px;
 }
 
@@ -51,22 +71,25 @@ page {
   vertical-align: middle;
 
 }
-.content-title{
-  color:#1111115a;
+
+.content-title {
+  color: #1111115a;
   margin-right: 16px;
   height: 25px;
   line-height: 30px;
 }
-.content-detail{
+
+.content-detail {
   height: 25px;
   line-height: 30px;
 }
-.price{
-  color:#c87d2f;
+
+.price {
+  color: #c87d2f;
   margin-right: 16px;
 }
 
-.footer{
+.footer {
   display: flex;
   flex-direction: row;
 }

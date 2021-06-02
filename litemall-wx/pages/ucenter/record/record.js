@@ -33,7 +33,17 @@ Page({
     setTimeout(() => {
       this.getCanteenOrder();
     }, 500);
-
+  },
+  
+  reachBottom: function () {
+    console.log("bottom")
+    if (this.data.nomore) return;
+    this.setData({
+      showloading: true,
+    });
+    setTimeout(() => {
+      this.getCanteenOrder();
+    }, 500);
   },
   /**
    * 生命周期函数--监听页面加载
