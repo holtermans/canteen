@@ -14,12 +14,26 @@
       <view class="tab {{index == curIndex ? 'tab--active' : ''}}" bindtap="tabClick" id="{{index}}">{{item}}</view>
     </block>
   </view>
-  <ec-canvas style="" id="mychart-dom-pie" canvas-id="mychart-pie" ec="{{ ec }}"></ec-canvas>
-  <cover-view class="pie-text" hidden="{{ showCalendar }}">
-    <cover-view class="pie-subtitle">总报餐人数</cover-view>
-    <cover-view class="pie-title">{{canteenOrderList.length}}</cover-view>
+  <!-- <ec-canvas style="" id="mychart-dom-pie" canvas-id="mychart-pie" ec="{{ ec }}"></ec-canvas> -->
+  <view class="flex" hidden="{{ showCalendar }}">
+    <view class="pie-subtitle">总报餐人数</view>
+    <view class="pie-title">{{canteenOrderList.length}}</view>
+  </view>
 
-  </cover-view>
+  <view wx:if="{{chart.data.length > 0}}" style="width:100%;padding:5px">
+    <view style="display:flex;">
+
+    <view style="flex:1;border:1px solid #cccccc;font-weight:bold">菜品名</view>
+      <view style="flex:1;border:1px solid #cccccc;font-weight:bold ">份数</view>
+    </view>
+    <view wx:for="{{chart.data}}" style="display:flex;">
+      <view style="flex:1;border:1px solid #cccccc">{{item.name}}</view>
+      <view style="flex:1;border:1px solid #cccccc">{{item.value}}份</view>
+    </view>
+  </view>
+  <view wx:else="">
+    未上架菜品
+  </view>
   <!-- <cover-view class="echart-legend">
     <block wx:for="{{deptList}}" wx:key="id">
       <cover-view class="echart-legend__item {{index==selectIndex?'checked':''}}">
@@ -64,7 +78,7 @@
         </view>
       </view>
     </view>
-    
+
     <view class="tr flex" wx:if="{{showUnchecked}}" wx:for="{{canteenOrderListGroup[103]}}" wx:key="id"
       data-order-id="{{item.id}}" data-order-sn="{{item.orderSn}}" data-index="{{index}}"
       data-name="{{currentBcUserList[item.userId].name}}" data-mobile="{{currentBcUserList[item.userId].mobile}}"
@@ -107,7 +121,7 @@
 
     </view>
     <view style="margin-top:14px;color:#c8c8c8;text-align:center;">
-        没有更多了</view>
+      没有更多了</view>
   </block>
   <block wx:else>
     <view class="tr">
@@ -146,5 +160,6 @@
 
 <van-calendar style="z-index:2" show="{{ showCalendar }}" type="{{ type }}" color="{{ color }}" round="{{ round }}"
   position="{{ position }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" formatter="{{ formatter }}"
-  default-date="{{defaultDate}}" row-height="45" bind:confirm="onConfirm" bind:close="CloseClender" bind:closed="ClosedClender" >
+  default-date="{{defaultDate}}" row-height="45" bind:confirm="onConfirm" bind:close="CloseClender"
+  bind:closed="ClosedClender">
 </van-calendar>

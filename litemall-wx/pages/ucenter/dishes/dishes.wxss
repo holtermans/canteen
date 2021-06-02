@@ -1,9 +1,12 @@
 /* pages/ucenter/dishes/dished.wxss */
 page{
   background: #fff;
+  height: 100%;
+
 }
 .container{
   background-color: #fff;
+  height: 100%;
 }
 .custom-card{
   height: 100px;
@@ -69,8 +72,6 @@ page{
   font-weight: bold;
   font-size: 24rpx;
   color: #333;
-  height: 60rpx;
-  width: 144rpx;
   float: left;
   padding-top: 10rpx;
 }

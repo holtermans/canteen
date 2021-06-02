@@ -17,7 +17,7 @@ Page({
     active: 1,
     statusCode: ['', 103, 107],
     checkMode: undefined,
-
+    //分页数据
     pageNum: 1,
     pageSize: 3,
     nomore: false,
@@ -50,7 +50,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    this.refresh();
   },
   getMyOrderList() {
     let that = this;
@@ -216,7 +216,7 @@ Page({
 
   },
   onChange(e) {
-    console.log("change事件")
+    // console.log("change事件")
     wx.showLoading({
       title: '加载中',
     })
@@ -264,7 +264,7 @@ Page({
       url: '/pages/ucenter/QRCode/QRCode?orderSn=' + e.currentTarget.dataset.orderSn + '&orderId=' + e.currentTarget.dataset.orderId,
     })
   },
-  onPullDownRefresh: function () {  
+  onPullDownRefresh: function () {
     this.setData({
       pageNum: 1,
       canteenOrderList: [],
@@ -283,7 +283,29 @@ Page({
         success: (res) => {},
       })
     });
-   
   },
+  refresh(){
+    wx.showLoading({
+      title: '加载中',
+    })
+    this.setData({
+      pageNum: 1,
+      canteenOrderList: [],
+      nomore: false,
+      showLoading: false,
+    })
+    var promise = new Promise((resolve, reject) => {
+      this.getCanteenOrder();
+      resolve();
+    });
+    promise.then(() => {
+      wx.stopPullDownRefresh({
+        success: (res) => {},
+      });
+      wx.hideLoading({
+        success: (res) => {},
+      })
+    });
+  }
 
 })

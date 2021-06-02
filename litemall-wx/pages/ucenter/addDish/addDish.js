@@ -110,9 +110,15 @@ Page({
       //再发请求去存储
       util.request(api.DishesAdd, data, "POST").then((res) => {
         if (res.errno == 0) {
-          wx.redirectTo({
-            url: '/pages/ucenter/dishes/dishes',
-          })
+          // let pages = getCurrentPages();
+          //   let beforePage=pages[pages.length-2];
+          //   beforePage.onLoad();
+            wx.navigateBack({
+              delta: 1,
+            })
+          // wx.redirectTo({
+          //   url: '/pages/ucenter/dishes/dishes',
+          // })
         } else {
           wx.hideLoading({
             success: (res) => {},
@@ -150,9 +156,15 @@ Page({
         //再发请求去存储
         util.request(api.DishesAdd, data, "POST").then((res) => {
           if (res.errno == 0) {
-            wx.redirectTo({
-              url: '/pages/ucenter/dishes/dishes',
+            // let pages = getCurrentPages();
+            // let beforePage=pages[pages.length-2];
+            // beforePage.onLoad();
+            wx.navigateBack({
+              delta: 1,
             })
+            // wx.redirectTo({
+            //   url: '/pages/ucenter/dishes/dishes',
+            // })
           }
         })
         //do something

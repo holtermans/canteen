@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
 import org.linlinjava.litemall.core.util.ResponseUtil;
+import org.linlinjava.litemall.db.domain.CanteenOrder;
 import org.linlinjava.litemall.db.domain.LitemallDishes;
 import org.linlinjava.litemall.db.domain.LitemallTiming;
 import org.linlinjava.litemall.db.service.LitemallDishesService;
@@ -41,17 +42,23 @@ public class WxDishesController {
         dishesFilter.put("dishesList", dishes);
         return ResponseUtil.ok(dishesFilter);
     }
+    @RequestMapping("searchByCateAndKeyword")
+    public Object searchByCateAndKeyword(@RequestParam String keyword,
+                                         @RequestParam Integer cateId,
+                                         @RequestParam(defaultValue = "1") Integer pageNum,
+                                         @RequestParam(defaultValue = "10") Integer pageSize
+                                         ) {
 
+        List<LitemallDishes> dishes = dishesService.findByCateAndKeyword(keyword,cateId,pageNum,pageSize);
+        HashMap<Object, Object> dishesFilter = new HashMap<>();
+        dishesFilter.put("dishesList", dishes);
+        return ResponseUtil.ok(dishesFilter);
+    }
 
     @RequestMapping("update")
-    public Object update(@RequestParam int id,
-                         @RequestParam String name,
-                         @RequestParam byte status,
-                         @RequestParam String startTime,
-                         @RequestParam String endTime,
-                         @RequestParam String stopTime) {
-
-        return ResponseUtil.ok(id);
+    public Object update(@RequestBody LitemallDishes dish) {
+        dishesService.updateById(dish);
+        return ResponseUtil.ok();
     }
 
     @RequestMapping("add")
@@ -81,5 +88,21 @@ public class WxDishesController {
             resMap.put("dishesList", dishes);
             return ResponseUtil.ok(resMap);
         }
+    }
+
+    /**
+     * 按条件查询
+     *
+     * @return
+     */
+    @RequestMapping("queryByCateIdAndPage")
+    public Object queryByUidAndPage(
+                                    @RequestParam Integer cateId,
+                                    @RequestParam(defaultValue = "1") Integer pageNum,
+                                    @RequestParam(defaultValue = "10") Integer pageSize
+    ) {
+        List<LitemallDishes> litemallDishes = dishesService.queryByCateIdAndPage(cateId, pageNum, pageSize);
+        return ResponseUtil.ok(litemallDishes);
+
     }
 }

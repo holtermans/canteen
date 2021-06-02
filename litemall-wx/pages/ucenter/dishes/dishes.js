@@ -14,7 +14,20 @@ Page({
     dishesCategory: [],
     cateCount: [],
     activeKey: 0, //侧边栏激活标签,
-    columns: ['杭州', '宁波', '温州', '嘉兴', '湖州'],
+    columns: [],
+    //分页数据
+    pageNum: 1,
+    pageSize: 10,
+    nomore: false,
+    showLoading: false,
+    triggered: false,
+    //搜索框
+    value: '',
+    // 分类添加弹出
+    showAddCate: false,
+    input: {
+      cateName: '',
+    }
   },
 
   /**
@@ -46,7 +59,6 @@ Page({
           });
           wx.setStorageSync('dishesCategory', res.data.categoryList); //缓存
           wx.setStorageSync('cateCount', res.data.cateCount); //缓存
-
           resovle();
         } else {
           wx.showToast({
@@ -61,7 +73,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    this.refresh();
   },
 
 
@@ -76,12 +88,17 @@ Page({
   getDishesList: function () {
     let that = this;
     var data = {
-      cateId: this.data.dishesCategory[this.data.activeKey].id
+      cateId: that.data.dishesCategory[that.data.activeKey].id,
+      pageNum: that.data.pageNum,
+      pageSize: that.data.pageSize,
     }
-    util.request(api.DishGetBydCateId, data).then(res => {
+    util.request(api.QueryByCateIdAndPage, data).then(res => {
       if (res.errno == 0) {
         that.setData({
-          dishesList: res.data.dishesList,
+          dishesList: [...that.data.dishesList, ...res.data],
+          pageNum: res.data.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
+          showloading: false,
+          nomore: res.data.length < that.data.pageSize ? true : false,
         })
       }
     })
@@ -91,28 +108,16 @@ Page({
     var that = this;
     var index = event.detail;
     var cateId = this.data.dishesCategory[index].id //得到菜品分类ID
-    var data = {
-      cateId: cateId
-    }
-    // var dishesList = wx.getStorageSync('dishCate' + cateId);
-    // if (dishesList == '') {
-      util.request(api.DishGetBydCateId, data).then(res => {
-        if (res.errno == 0) {
-          that.setData({
-            dishesList: res.data.dishesList,
-          })
-          wx.setStorageSync('dishCate' + cateId, res.data.dishesList);
-        }
-      })
-    // } else {
-    //   that.setData({
-    //     dishesList: dishesList,
-    //   });
-    // }
-    //设置定期清理缓存
-    // setTimeout(() => {
-    //   wx.removeStorageSync('dishCate' + cateId)
-    // }, 30000);
+    this.setData({
+      activeKey: index
+    });
+    this.setData({
+      pageNum: 1,
+      dishesList: [],
+      nomore: false,
+      showLoading: false,
+    })
+    this.getDishesList();
   },
 
   addDish: function () {
@@ -158,7 +163,7 @@ Page({
     })
   },
   navigateToPublish: function () {
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/ucenter/addDish/addDish'
     })
   },
@@ -176,15 +181,129 @@ Page({
               wx.showToast({
                 title: '已删除',
               });
-              that.getDishesList();
-              that.getDishCate().then(()=>{})
+              that.refresh();
             }
           })
         } else if (res.cancel) {}
       }
     })
+  },
+  goDetail: function (e) {
+    var id = e.currentTarget.dataset.id;
+    this.data.dishesList.filter(v => {
+      if (v.id == id) {
+        wx.navigateTo({
+          url: '/pages/ucenter/dishes/updateDish/updateDish?queryBean=' + JSON.stringify(v),
+        })
+      }
+    })
+  },
+  scrollToBottom() {
+    var that = this;
+    console.log(that.data.value)
+    if (that.data.value == '') {
+      if (this.data.nomore) return;
+      this.setData({
+        showloading: true,
+      });
+      this.getDishesList();
+ 
+    } else {
+      var query = {
+        cateId: that.data.dishesCategory[that.data.activeKey].id,
+        keyword: that.data.value,
+        pageNum: that.data.pageNum,
+        pageSize: that.data.pageSize,
+      }
+      util.request(api.SearchByCateAndKeyword, query).then((res) => {
+        that.setData({
+          dishesList: [...that.data.dishesList, ...res.data.dishesList],
+          pageNum: res.data.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
+          showloading: false,
+          nomore: res.data.length < that.data.pageSize ? true : false,
+        });
+        console.log(res.data.dishesList);
+      })
+    }
 
+  },
+  refresh() {
+    var that = this;
+    this.setData({
+      pageNum:1,
+      dishesList:[]
+    })
 
+    that.onLoad();
+  },
+  onChange(e) {
+    var that = this;
+    this.setData({
+      pageNum: 1,
+      pageSize: 10,
+      dishesList: [],
+      value: e.detail
+    })
+    var query = {
+      cateId: that.data.dishesCategory[that.data.activeKey].id,
+      keyword: e.detail
+    }
+    util.request(api.SearchByCateAndKeyword, query).then((res) => {
+      that.setData({
+        dishesList: [...that.data.dishesList, ...res.data.dishesList],
+        pageNum: res.data.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
+        showloading: false,
+        nomore: res.data.length < that.data.pageSize ? true : false,
+      });
+      console.log(res.data.dishesList);
+    })
+  },
+  addCate() {
+    this.setData({
+      showAddCate: true
+    })
+  },
+  closeAddCate() {
+    this.setData({
+      showAddCate: false
+    })
+  },
+  saveCate(e) {
+    var that = this;
+    this.setData({
+      showAddCate: false,
+      'input.cateName':''
+    });
+    
+    if(e.detail.value.cateName == ''){return}
+    var query={
+      name:e.detail.value.cateName
+    }
+    util.request(api.CanteenDishCateAdd, query,"POST").then((res) => {
+      console.log(res.data);
+      that.onLoad();
+    })
+  },
+  longtap(e){
+    var that = this;
+    wx.showModal({
+      title: '删除',
+      content: e.currentTarget.dataset.name,
+      success (res) {
+        if (res.confirm) {
+          var query={
+            id:e.currentTarget.dataset.id
+          }
+          util.request(api.CanteenDishCateDel, query).then((res) => {
+            res.errno == 0 ? that.onLoad():wx.showToast({
+              title: '不能删除',
+            })
+          })
+        } else if (res.cancel) {
+          
+        }
+      }
+    })
   }
 
 })

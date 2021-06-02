@@ -1,6 +1,9 @@
 var api = require('../../../config/api.js');
 var util = require('../../../utils/util.js');
 var user = require('../../../utils/user.js');
+const {
+  CatalogCurrent
+} = require('../../../config/api.js');
 
 var app = getApp();
 Page({
@@ -13,56 +16,96 @@ Page({
     wx.showLoading({
       title: '登录中',
     })
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
-    // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    wx.getUserProfile({
-      desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
-        app.globalData.userInfo = res.userInfo;
-        user.checkLogin().catch(() => { //如果没登录，就登录
-          user.loginByWeixin(res.userInfo).then(Rres => {
-            if (Rres.data.token == null) {
-              wx.showModal({
-                title: '提示',
-                content: '您还未注册个人真实信息，现在填写？',
-                success (res) {
-                  if (res.confirm) {
-                    wx.redirectTo({
-                      url: "/pages/auth/register/register"
-                    });
-                  } else if (res.cancel) {
-                    
+    try {
+      // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
+      // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+      wx.getUserProfile({
+        desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+        success: (res) => {
+          app.globalData.userInfo = res.userInfo;
+          user.checkLogin().catch(() => { //如果没登录，就登录
+            user.loginByWeixin(res.userInfo).then(Rres => {
+              if (Rres.data.token == null) {
+                wx.showModal({
+                  title: '提示',
+                  content: '您还未注册个人真实信息，现在填写？',
+                  success(res) {
+                    if (res.confirm) {
+                      wx.redirectTo({
+                        url: "/pages/auth/register/register"
+                      });
+                    } else if (res.cancel) {
+
+                    }
                   }
-                }
-              })
-              
-            } else {
-              app.globalData.hasLogin = true;
-              wx.switchTab({
-                url: '/pages/ucenter/index/index'
-              });
+                })
 
-            }
+              } else {
+                app.globalData.hasLogin = true;
+                wx.switchTab({
+                  url: '/pages/ucenter/index/index'
+                });
 
-          }).catch((err) => {
-            app.globalData.hasLogin = false;
-            util.showErrorToast('微信登录失败');
+              }
+            }).catch((err) => {
+              app.globalData.hasLogin = false;
+              util.showErrorToast('微信登录失败');
+            });
+
           });
+          wx.hideLoading({
+            success: (res) => {},
+          })
+        },
+        fail: (res) => {
+          wx.hideLoading({
+            success: (res) => {},
+          })
+          app.globalData.hasLogin = false;
+          util.showErrorToast('微信登录失败');
+          return;
+        }
+      })
+    } catch (err) {
+      wx.getUserInfo({
+        success: function (res) {
+          app.globalData.userInfo = res.userInfo;
+          user.checkLogin().catch(() => { //如果没登录，就登录
+            user.loginByWeixin(res.userInfo).then(Rres => {
+              if (Rres.data.token == null) {
+                wx.showModal({
+                  title: '提示',
+                  content: '您还未注册个人真实信息，现在填写？',
+                  success(res) {
+                    if (res.confirm) {
+                      wx.redirectTo({
+                        url: "/pages/auth/register/register"
+                      });
+                    } else if (res.cancel) {
 
-        });
-        wx.hideLoading({
-          success: (res) => {},
-        })
-      },
-      fail: (res) => {
-        wx.hideLoading({
-          success: (res) => {},
-        })
-        app.globalData.hasLogin = false;
-        util.showErrorToast('微信登录失败');
-        return;
-      }
-    })
+                    }
+                  }
+                })
+
+              } else {
+                app.globalData.hasLogin = true;
+                wx.switchTab({
+                  url: '/pages/ucenter/index/index'
+                });
+
+              }
+            }).catch((err) => {
+              app.globalData.hasLogin = false;
+              util.showErrorToast('微信登录失败');
+            });
+
+          });
+          wx.hideLoading({
+            success: (res) => {},
+          })
+        }
+      })
+    }
   },
   wxLogin: function (e) {
 

@@ -12,7 +12,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    canteenOrderListGroup:null,
+    canteenOrderListGroup: null,
     orderGroup: null, //食堂一日订单都在这；
     queue: 0,
     activeNames: ['1'],
@@ -51,24 +51,24 @@ Page({
     minDate: new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
-      new Date().getDate()-7
+      new Date().getDate() - 7
     ).getTime(),
     maxDate: new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
-      new Date().getDate()+7
+      new Date().getDate() + 7
     ).getTime(),
     showCalendar: false,
     connected: false,
     message: "",
-    defaultDate: Date.now(),   //默认选中日期
+    defaultDate: Date.now(), //默认选中日期
     position: 'top',
     formatter(day) {
       const month = day.date.getMonth() + 1;
       const date = day.date.getDate();
-        if(month ==  new Date().getMonth()+1 &&date == new Date().getDate()){
-          day.text="今天"
-        }
+      if (month == new Date().getMonth() + 1 && date == new Date().getDate()) {
+        day.text = "今天"
+      }
       return day;
     },
     showConfirm: false,
@@ -112,9 +112,9 @@ Page({
     chart: {
       data: null,
     },
-    showUnchecked:false,
+    showUnchecked: false,
     showChecked: false,
-    main:true,
+    main: true,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -131,7 +131,7 @@ Page({
    */
   onShow: function () {
     var that = this;
-    
+
     this.initChart();
     this.search();
     this.getDishesList();
@@ -142,7 +142,7 @@ Page({
       success: (res) => {},
     })
   },
- 
+
   tabClick(e) {
     const that = this;
     that.setData({
@@ -155,7 +155,7 @@ Page({
       loadding: false,
       nomore: false
     });
-    chart.clear(); //清空实例,防止数字闪烁
+    // chart.clear(); //清空实例,防止数字闪烁
     that.initChart();
     that.search();
 
@@ -164,41 +164,41 @@ Page({
   initChart: function () {
     const that = this;
     // 获取组件的 canvas、width、height 后的回调函数
-    this.ecComponent.init((canvas, width, height, dpr) => {
-      // 在这里初始化图表
-      chart = echarts.init(canvas, null, {
-        width: width,
-        height: height,
-        devicePixelRatio: dpr
-      });
-      Promise.all([that.getTimingList(), that.getDailyMenu(), that.getMealOrder()]).then(result => {
-        var timingList = result[0];
-        var dailyMenu = result[1];
-        var mealOrders = result[2];
-        var data = {};
-        var list = [];
-        for (var i = 0; i < dailyMenu.length; i++) {
-          var num = 0;
-          for (var j = 0; j < mealOrders.length; j++) {
-            if (dailyMenu[i].dishesId == mealOrders[j].dishesId) {
-                num += mealOrders[j].quantity;
-            }
+    Promise.all([that.getTimingList(), that.getDailyMenu(), that.getMealOrder()]).then(result => {
+      var timingList = result[0];
+      var dailyMenu = result[1];
+      var mealOrders = result[2];
+      var data = {};
+      var list = [];
+      for (var i = 0; i < dailyMenu.length; i++) {
+        var num = 0;
+        for (var j = 0; j < mealOrders.length; j++) {
+          if (dailyMenu[i].dishesId == mealOrders[j].dishesId) {
+            num += mealOrders[j].quantity;
           }
-          data = {
-            name: dailyMenu[i].dishesName,
-            value: num
-          };
-          list.push(data);
         }
-        this.setData({
-          "chart.data": list,
-        })
-        that.setOption(chart);
+        data = {
+          name: dailyMenu[i].dishesName,
+          value: num
+        };
+        list.push(data);
+      }
+      this.setData({
+        "chart.data": list,
       });
-
-      // 注意这里一定要返回 chart 实例，否则会影响事件处理等
-      return chart;
+      console.log(list);
+      // that.setOption(chart);
     });
+    // this.ecComponent.init((canvas, width, height, dpr) => {
+    //   // 在这里初始化图表
+    //   chart = echarts.init(canvas, null, {
+    //     width: width,
+    //     height: height,
+    //     devicePixelRatio: dpr
+    //   });
+    //   // 注意这里一定要返回 chart 实例，否则会影响事件处理等
+    //   return chart;
+    // });
   },
   /**
    * 获取图标数据
@@ -212,26 +212,38 @@ Page({
       tooltip: {
         trigger: 'item'
       },
+      toolbox: {
+        show: true,
+        feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
       legend: {
         top: '5%',
         left: 'center',
-        z:-1
+        z: -1,
+        type: 'scroll',
+      
       },
       series: [{
-        z:2,
+        z: 2,
         name: '菜品统计',
         type: 'pie',
         radius: ['30%', '50%'],
-        avoidLabelOverlap: false,
+        avoidLabelOverlap: true,
+        
         label: {
           show: true,
           position: 'outside',
-          formatter: '{b}\n{c}份'
+          formatter: '{b}\n{c}份',
         },
         emphasis: {
           label: {
             show: true,
-            fontSize: '15',
+            fontSize: '12',
           }
         },
         labelLine: {
@@ -329,7 +341,7 @@ Page({
     // this.getBcUserInfoByUserId(this.data.userList[e.currentTarget.dataset.id]);
     console.log(e);
     wx.navigateTo({
-      url: '/pages/ucenter/statistics/detail?orderSn=' + e.currentTarget.dataset.orderSn + '&orderId=' + e.currentTarget.dataset.orderId +'&name=' + e.currentTarget.dataset.name  +'&mobile=' + e.currentTarget.dataset.mobile  +'&avatar=' + e.currentTarget.dataset.avatar,
+      url: '/pages/ucenter/statistics/detail?orderSn=' + e.currentTarget.dataset.orderSn + '&orderId=' + e.currentTarget.dataset.orderId + '&name=' + e.currentTarget.dataset.name + '&mobile=' + e.currentTarget.dataset.mobile + '&avatar=' + e.currentTarget.dataset.avatar,
     })
 
   },
@@ -346,8 +358,7 @@ Page({
         wx.hideLoading({
           success: (res) => {},
         })
-        if (res.errno == 0) {
-        }
+        if (res.errno == 0) {}
         resolve(res.data.mealOrders);
       }).catch(res => {
 
@@ -499,7 +510,7 @@ Page({
     promise.then(() => {
       // that.getStatistics();
       // that.getCheckedList();
-      chart.clear(); //清空实例,防止数字闪烁
+      // chart.clear(); //清空实例,防止数字闪烁
       that.initChart();
       that.search();
     });
@@ -600,12 +611,12 @@ Page({
       minDate: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate()-7
+        new Date().getDate() - 7
       ).getTime(),
       maxDate: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate()+7
+        new Date().getDate() + 7
       ).getTime(),
       position: 'top',
       formatter: null,
@@ -616,7 +627,7 @@ Page({
   },
   //选择日期
   selectDate(event) {
-    chart.clear(); //清空实例,防止数字闪烁
+    // chart.clear(); //清空实例,防止数字闪烁
     // this.resetSettings();
     const {
       type,
@@ -656,22 +667,22 @@ Page({
     wx.stopPullDownRefresh();
   },
 
-  showUnchecked:function(){
-      this.setData({
-        showUnchecked:!this.data.showUnchecked,
-        showChecked:false,
-      })
-      this.setData({
-        main:!(this.data.showUnchecked || this.data.showChecked),
-      })
-  },
-  showChecked:function(){
+  showUnchecked: function () {
     this.setData({
-      showChecked: !this.data.showChecked,
-      showUnchecked:false,
+      showUnchecked: !this.data.showUnchecked,
+      showChecked: false,
     })
     this.setData({
-      main:!(this.data.showUnchecked || this.data.showChecked),
+      main: !(this.data.showUnchecked || this.data.showChecked),
+    })
+  },
+  showChecked: function () {
+    this.setData({
+      showChecked: !this.data.showChecked,
+      showUnchecked: false,
+    })
+    this.setData({
+      main: !(this.data.showUnchecked || this.data.showChecked),
     })
   },
 })

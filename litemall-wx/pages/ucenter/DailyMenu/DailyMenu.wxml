@@ -48,23 +48,35 @@
   </van-calendar>
 
   <!-- 添加菜品弹出层组件 -->
-
   <van-popup show="{{ show.addDish }}" closeable round duration="300" position="bottom" custom-style="height: 80%"
     bind:close="onPopClose">
-    <view style="padding-top:10%">
+    <view style="padding-top:10%;height:80%">
+      <!-- 搜索框 -->
       <van-search value="{{ keyword }}" label="菜品名" shape="round" placeholder="请输入搜索关键词" use-action-slot
-        bind:search="onSearch">
+        bind:change="onSearch">
       </van-search>
-      <van-checkbox-group value="{{ result }}" data-key="result" bind:change="onChange">
-        <van-cell-group>
-          <van-cell wx:for="{{ dishesList }}" wx:if="{{!item.hasAdd}}" wx:key="id" title="{{ item.name }}"
-            value-class="value-class" clickable data-index="{{ index }}" bind:click="checkBoxToggle"
-            label="{{item.brief}}">
-            <van-checkbox catch:tap="noop" class="checkboxes-{{ index }}" name="{{ item.id }}" />
-          </van-cell>
-        </van-cell-group>
-      </van-checkbox-group>
+
+      <view style="float:left;width:20%">
+        <van-sidebar active-key="{{ activeKey }}" bind:change="cateChange">
+          <van-sidebar-item wx:for="{{dishesCategory}}" wx:for-item="cate" title="{{cate.name}}" />
+        </van-sidebar>
+      </view>
+
+      <scroll-view style="height:100%;float:left;width:80%" scroll-y="{{true}}" bindscrolltolower="scrollToBottom">
+        <van-checkbox-group value="{{ result }}" data-key="result" bind:change="onChange">
+          <van-cell-group>
+            <van-cell wx:for="{{ dishesList }}" wx:if="{{!item.hasAdd}}" wx:key="id" title="{{ item.name }}"
+              value-class="value-class" clickable data-index="{{ index }}" bind:click="checkBoxToggle"
+              label="{{item.brief}}">
+              <van-checkbox catch:tap="noop" class="checkboxes-{{ index }}" name="{{ item.id }}" />
+            </van-cell>
+          </van-cell-group>
+        </van-checkbox-group>
+        <view style="display:{{showloading?'':'none'}};text-align:center"><van-loading color="#1989fa" /></view>
+        <view style="padding-top:50px;color:#888888;text-align:center;display:{{!showloading?'':'none'}};">没有更多了</view>
+      </scroll-view>
     </view>
+
     <view style="position:fixed;bottom:0px;width:100%">
       <van-button type="primary" size="large" block custom-class="demo-margin-bottom" bindtap="saveConfirm">添加
       </van-button>

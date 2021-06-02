@@ -197,7 +197,14 @@ function getServerTime() {
       }
     }
   }
-
+function toIndex(arr){
+  var newarr ={};
+  arr.forEach((v)=>{
+    var id = v.id ;
+    newarr[id] = v;
+  });
+  return newarr;
+}
 module.exports = {
   getYMD,
   getYMDHMS,
@@ -211,5 +218,6 @@ module.exports = {
   arrCheck,
   isInArr,
   getServerTime,
-  removeByValue
+  removeByValue,
+  toIndex
 }

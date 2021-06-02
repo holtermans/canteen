@@ -22,6 +22,7 @@ public class LitemallDailyMenuService {
     public Object queryByDate(LocalDate date){
         LitemallDailyMenuExample example = new LitemallDailyMenuExample();
         example.or().andDateEqualTo(date);
+        example.setOrderByClause("  convert(dishes_name using gbk ) asc");
         List<LitemallDailyMenu> litemallDailyMenus = dailyMenuMapper.selectByExampleSelective(example);
         return litemallDailyMenus;
     }
@@ -37,6 +38,7 @@ public class LitemallDailyMenuService {
     public List<LitemallDailyMenu>  queryByDateAndTimingId(LocalDate date, Integer timingId) {
         LitemallDailyMenuExample example = new LitemallDailyMenuExample();
         example.or().andDateEqualTo(date).andTimingIdEqualTo(timingId);
+        example.setOrderByClause("convert(dishes_name using gbk ) asc");
         List<LitemallDailyMenu> litemallDailyMenus = dailyMenuMapper.selectByExampleSelective(example);
         return litemallDailyMenus;
     }

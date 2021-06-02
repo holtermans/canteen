@@ -8,6 +8,7 @@
     "pages/auth/reset/reset",
     "pages/ucenter/setTime/setTime",
     "pages/ucenter/dishes/dishes",
+    "pages/ucenter/dishes/updateDish/updateDish",
     "pages/ucenter/DailyMenu/DailyMenu",
     "pages/ucenter/record/record",
     "pages/ucenter/statistics/statistics",
@@ -121,4 +122,5 @@
       "provider": "wx069ba97219f66d99"
     }
   }
+  
 }

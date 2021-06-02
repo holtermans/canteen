@@ -1,7 +1,7 @@
 <!--pages/ucenter/record/record.wxml-->
 <wxs src="/wxs/index.wxs" module="computed"></wxs>
 <van-sticky>
-  <van-tabs swipeable animated active="{{ active }}" bind:change="onChange" sticky>
+  <van-tabs swipeable animated active="{{ active }}" bind:click="onChange" sticky>
     <van-tab title="全部"></van-tab>
     <van-tab title="未取餐"></van-tab>
     <van-tab title="已取餐"></van-tab>

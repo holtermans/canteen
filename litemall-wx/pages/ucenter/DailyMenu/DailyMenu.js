@@ -38,7 +38,15 @@ Page({
     confirmDisabledText: undefined,
     show: {
       addDish: false,
-    }
+    },
+    //选菜页面
+    dishesCategory: [],
+    cateCount: 0,
+    activeKey: 0, //侧边栏激活标签,
+    //分页查询
+    pageNum: 1,
+    pageSize: 10,
+    showloading: false,
   },
 
 
@@ -46,14 +54,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+    this.getDishCate().then(() => {});
   },
 
   /**
@@ -74,19 +75,6 @@ Page({
     })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
@@ -95,19 +83,7 @@ Page({
     this.onShow();
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
 
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
   //确认日期
   onConfirm(event) {
     console.log(event);
@@ -123,32 +99,11 @@ Page({
     promise.then(this.getDailyMenu());
 
   },
-
-  onSelect(event) {
-    console.log(event);
-  },
-
-  onUnselect(event) {
-    console.log(event);
-  },
-
   onClose() {
     console.log(this.data.date);
     this.setData({
       showCalendar: false
     });
-  },
-
-  onOpen() {
-    console.log('open');
-  },
-
-  onOpened() {
-    console.log('opened');
-  },
-
-  onClosed() {
-    console.log('closed');
   },
   //重置日期
   resetSettings() {
@@ -233,16 +188,38 @@ Page({
     this.getDishesList();
     this.toggle('addDish', true);
   },
-  search(e){
-    console.log(e);
-  },
-  onSearch(e){
+  onSearch(e) {
     var that = this;
-    console.log("搜索")
-    util.request(api.DishesSearch,{keyword:e.detail}).then(res => {
-      if(res.errno == 0){
+    this.setData({
+      pageNum: 1,
+      pageSize: 10,
+      dishesList: [],
+      keyword: e.detail,
+      result: [],
+    })
+    var query = {
+      cateId: that.data.dishesCategory[that.data.activeKey].id,
+      keyword: e.detail,
+      pageNum: that.data.pageNum,
+      pageSize: that.data.pageSize,
+    }
+    util.request(api.SearchByCateAndKeyword, query).then((res) => {
+      that.setData({
+        dishesList: [...that.data.dishesList, ...res.data.dishesList],
+        pageNum: res.data.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
+        showloading: false,
+        nomore: res.data.length < that.data.pageSize ? true : false,
+      });
+      console.log(res.data.dishesList);
+    })
+
+    return;
+    util.request(api.DishesSearch, {
+      keyword: e.detail
+    }).then(res => {
+      if (res.errno == 0) {
         that.setData({
-          dishesList:res.data.dishesList
+          dishesList: res.data.dishesList
         })
       }
     })
@@ -263,12 +240,12 @@ Page({
     this.clearCheckBoxResult();
     this.hideAddDish();
     this.setData({
-      keyword:'',
+      keyword: '',
     })
   },
+
   //复选框
   onChange(event) {
-    
     const {
       key
     } = event.currentTarget.dataset;
@@ -276,9 +253,49 @@ Page({
       [key]: event.detail
     });
   },
+  getDishCate() {
+    var that = this;
+    return new Promise((resovle, reject) => {
+      //请求数据
+      util.request(api.CanteenDishCateList).then(res => {
+        if (res.errno == 0) {
+          that.setData({
+            dishesCategory: res.data.categoryList,
+            cateCount: res.data.cateCount, //跟随分类而来的菜品统计数目
+          });
+          wx.setStorageSync('dishesCategory', res.data.categoryList); //缓存
+          wx.setStorageSync('cateCount', res.data.cateCount); //缓存
+
+          resovle();
+        } else {
+          wx.showToast({
+            title: errmsg,
+          })
+          reject();
+        }
+      })
+    })
+  },
   //获取菜品
   getDishesList: function () {
     let that = this;
+    var data = {
+      cateId: that.data.dishesCategory[that.data.activeKey].id,
+      pageNum: that.data.pageNum,
+      pageSize: that.data.pageSize,
+    }
+    util.request(api.QueryByCateIdAndPage, data).then(res => {
+      if (res.errno == 0) {
+        that.setData({
+          dishesList: [...that.data.dishesList, ...res.data],
+          pageNum: res.data.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
+          showloading: false,
+          nomore: res.data.length < that.data.pageSize ? true : false,
+        })
+      }
+    })
+
+    return;
     util.request(api.dishesList).then(function (res) {
       if (res.errno === 0) {
         let dishesList = res.data.dishesList;
@@ -307,7 +324,7 @@ Page({
           }
           dishesList[i].hasAdd = flag;
         }
-        console.log(dishesList);
+
         that.setData({
           dishesList: dishesList,
         });
@@ -327,6 +344,16 @@ Page({
   //确认添加菜谱
   saveConfirm() {
     var that = this;
+
+    // console.log(that.data.result);
+    // this.data.result.forEach((item1) => {
+    //   that.data.dishesList.some((item2) => {
+    //       if(item1 == item2.id){
+    //         console.log(item2);
+    //       } 
+    //   })
+    // })
+    // return;
     wx.showModal({
       title: '提示',
       content: '更新菜谱', //this.data.result中存的是check-box中的name
@@ -336,12 +363,12 @@ Page({
           var data = [];
           //组装数据
           that.data.result.forEach((r) => {
-
             var dataTemp = {
               "date": util.getYMD(that.data.date.selectSingle),
               "timingId": that.data.currentTimingId,
               "timingName": that.data.currentTiming.name,
               "dishesId": r,
+
               "dishesName": that.getUtil(r, "name"),
               "dishesBrief": that.getUtil(r, "brief")
             }
@@ -377,7 +404,6 @@ Page({
   },
 
   DeleteDish(e) {
-
     let that = this;
     var data = {
       "id": e.currentTarget.dataset.id
@@ -401,5 +427,53 @@ Page({
       }
     })
 
-  }
+  },
+  //标签切换
+  cateChange(event) {
+    var that = this;
+    var index = event.detail;
+    var cateId = this.data.dishesCategory[index].id //得到菜品分类ID
+    this.setData({
+      activeKey: index,
+      keyword: '',
+      result:[],
+    });
+    this.setData({
+      pageNum: 1,
+      dishesList: [],
+      nomore: false,
+      showLoading: false,
+    })
+    this.getDishesList();
+  },
+  scrollToBottom() {
+    var that = this;
+    console.log(that.data.keyword)
+    if (that.data.keyword == '') {
+      if (this.data.nomore) return;
+      this.setData({
+        showloading: true,
+      });
+      setTimeout(() => {
+        this.getDishesList();
+      }, 500);
+    } else {
+      var query = {
+        cateId: that.data.dishesCategory[that.data.activeKey].id,
+        keyword: that.data.keyword,
+        pageNum: that.data.pageNum,
+        pageSize: that.data.pageSize,
+      }
+      util.request(api.SearchByCateAndKeyword, query).then((res) => {
+        that.setData({
+          dishesList: [...that.data.dishesList, ...res.data.dishesList],
+          pageNum: res.data.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
+          showloading: false,
+          nomore: res.data.length < that.data.pageSize ? true : false,
+        });
+        console.log(res.data.dishesList);
+      })
+    }
+
+  },
 })

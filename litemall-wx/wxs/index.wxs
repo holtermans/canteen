@@ -17,7 +17,7 @@ var weekday=["星期日","星期一","星期二","星期三","星期四","星期
     checkDate = formatFullDate(date);
  
     var str1 = date.getMonth() < 9? "0" +(date.getMonth()+1 + '-'):(date.getMonth() + 1 + '-') ;
-    var str2 =  date.getDate() < 9 ? + "0" +(date.getDate()+1):date.getDate() + " "
+    var str2 =  date.getDate() < 9 ? "0" +(date.getDate())+ " ":date.getDate() + " "
     var str3 =  (nowDate == checkDate)?"今天": weekday[date.getDay()];
     return str1+str2+str3;
   }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class CanteenDishCateController {
     public Object getAllCate() {
         List<CanteenDishCategory> categoryList = canteenCategoryService.getAllCategory();
         ArrayList<Object> cateCount = new ArrayList<>();
-        for(CanteenDishCategory cdc : categoryList){
+        for (CanteenDishCategory cdc : categoryList) {
             Integer cateId = cdc.getId();
             long l = dishesService.countByCateId(cateId);
             cateCount.add(l);
@@ -45,19 +46,29 @@ public class CanteenDishCateController {
         return ResponseUtil.ok(resMap);
     }
 
+//    @RequestMapping("add")
+//    public Object add(@LoginUser Integer operatorId, @RequestBody CanteenDishCategory dishCategory) {
+//        Object o = userInfoService.checkUserId(operatorId); //校验userId，这里是操作者id
+//        if (o != null) {
+//            return o;
+//        } else {
+//            int add = canteenCategoryService.add(operatorId, dishCategory);
+//            if (add >= 1) {
+//                return ResponseUtil.ok();
+//            } else {
+//                return ResponseUtil.fail();
+//            }
+//        }
+//    }
+
     @RequestMapping("add")
-    public Object add(@LoginUser Integer operatorId, @RequestBody CanteenDishCategory dishCategory) {
-        Object o = userInfoService.checkUserId(operatorId); //校验userId，这里是操作者id
-        if (o != null) {
-            return o;
-        } else {
-            int add = canteenCategoryService.add(operatorId, dishCategory);
-            if (add >= 1) {
-                return ResponseUtil.ok();
-            }else{
-                return ResponseUtil.fail();
-            }
-        }
+    public Object add(@RequestBody CanteenDishCategory dishCategory) {
+           return canteenCategoryService.add(dishCategory) > 0 ? ResponseUtil.ok() : ResponseUtil.fail();
     }
 
+    @RequestMapping("delete")
+    public Object add(@RequestParam Integer id) {
+        return canteenCategoryService.delete(id) > 0 ? ResponseUtil.ok() : ResponseUtil.fail();
+    }
 }
+

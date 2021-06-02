@@ -6,26 +6,33 @@
       <swiper-item wx:for="{{banner}}" wx:key="id">
         <block>
           <navigator url="{{item.url}}" style="height:100%">
-            <image src="{{item.url}}" style="height:100%;width:100%" mode="widthFix"></image>
+            <image src="{{item.url}}" style="height:100%;width:100%" mode="widthFix" lazy-load></image>
           </navigator>
         </block>
 
       </swiper-item>
     </swiper>
+    <!-- <van-notice-bar left-icon="volume-o" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" /> -->
+
     <!-- 选择订餐日期 -->
+    <!-- <view>
+      <van-cell value-class="value" is-link title="报餐日期" data-type="single" data-id="selectSingle"
+        value="{{ computed.formatFullDate(date.selectSingle) }}" bind:click="selectDate" />
+    </view> -->
     <view>
       <van-cell value-class="value" is-link title="报餐日期" data-type="single" data-id="selectSingle"
         value="{{ computed.formatFullDate(date.selectSingle) }}" bind:click="selectDate" />
     </view>
-
   </view>
   <!-- 时段分类 -->
   <view class="catalog">
+
     <!--start 左侧时间段分类-->
     <scroll-view class="nav" scroll-y="true">
-      <view class="item {{ currentTiming.id == item.id ? 'active' : ''}}" wx:for="{{timingList}}" wx:key="id"
-        data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">
-        <view style="width:20px;position:absolute;right:2px;" hidden="{{!item.hasOrder||item.orderStatus==107}}">
+      <view bindtap="switchCate" class="item {{ currentTiming.id == item.id ? 'active' : ''}}" wx:for="{{timingList}}"
+        wx:key="id" data-id="{{item.id}}" data-index="{{index}}">
+        <view style="width:20px;position:absolute;right:2px;" hidden="{{!item.hasOrder||item.orderStatus==107}}"
+          hover-class="cate-hover-class">
           <tui-badge type="warning" absolute="true" absolute scaleRatio="{{0.8}}" translateX="40%" top="-6rpx">
             {{item.orderNum}}
           </tui-badge>
@@ -40,24 +47,15 @@
             {{item.name}}
           </view>
         </view>
-        <!-- <view class="notes">
-          截止时间:{{item.stopTime}}
-        </view> -->
-        <!-- <view class="notes" style="color:#fb6c59"
-          hidden="{{ computed.isInArr(item.id,hasOrderTimingIdArr) == -1 ? true:false }}">
-          已报
-        </view> -->
-        <!-- <view class="notes" style="color:#fb6c59" hidden="{{ !item.hasOrder}}">
-          已报
-        </view> -->
+
       </view>
     </scroll-view>
     <!-- 左侧时间段分类 end-->
     <!--start 右侧对应时间段菜品 -->
 
     <scroll-view class="cate" scroll-y="true" show-scrollbar="false" enhanced="true">
-      <view style="display:flex;flex-direction:column;justify-content:center; align-items:center;background:#fdd486;height:30px">
-
+      <view
+        style="display:flex;flex-direction:column;justify-content:center; align-items:center;background:#fdd486;height:30px">
         <text
           style="font-size: 10pt;color: #4e4e4e;line-height: 2;font-family: Arial !important;background:#fff;border-radius:20px;padding: 0 20px;font-weight:600;">报餐截止时间:{{currentTiming.stopTime}}</text>
       </view>
@@ -66,15 +64,17 @@
         <text class="txt">{{currentTiming.name}}菜单</text>
         <text class="line"></text>
       </view>
-      <van-transition class="bd" duration="{{500}}" name="" wx:if="{{ dailyMenuMap[currentTiming.id].length != 0}}">
+      <view class="bd" ame="" wx:if="{{ dailyMenuMap[currentTiming.id].length != 0}}">
         <!-- start 菜品卡片 -->
         <view wx:key="id" wx:for="{{dailyMenuList}}" wx:if="{{item.timingId == currentTiming.id}}">
           <view class="item">
-            <view style="flex:1;height:200rpx;width:auto;padding:0rpx 5rpx">
-              <image src="{{dish.picUrl}}" style="height:100%;width:100%" mode="aspectFit" wx:for="{{dishesList}}"
-                wx:for-item="dish" wx:if="{{dish.id == item.dishesId}}"></image>
+            <view style="flex:1;height:79px;width:auto;padding:10rpx 5rpx">
+              <!-- <image src="{{dish.picUrl}}" style="height:100%;width:100%" mode="aspectfill" wx:for="{{dishesList}}"
+                wx:for-item="dish" wx:if="{{dish.id == item.dishesId}}" lazy-load="{{true}}"></image> -->
+              <image src="{{dishesListIndex[item.dishesId].picUrl}}" style="height:100%;width:100%" mode="aspectfill" 
+               lazy-load="{{true}}"></image>
             </view>
-            <view style="display:flex;  flex-direction: column; flex:3;padding:10px">
+            <view style="display:flex;  flex-direction: column; flex:2;padding:10px">
               <view style="font-size:36px">
                 <text class="txt">{{item.dishesName}}</text>
               </view>
@@ -83,38 +83,37 @@
               </view>
               <view class="price-stepper">
                 <view class="cai_price" data-index="{{index}}">
-                  <text style="color:#fa5151">￥</text> 
-                  <text wx:for="{{dishesList}}" wx:for-item="dish"
-                    wx:if="{{dish.id == item.dishesId}}" style="color:#fa5151;font-size:20px">{{dish.price}}</text>
+                  <text style="color:#fa5151">￥</text>
+                  <text wx:for="{{dishesList}}" wx:for-item="dish" wx:if="{{dish.id == item.dishesId}}"
+                    style="color:#fa5151;font-size:20px">{{dish.price}}</text>
                 </view>
                 <view class="stepper">
                   <!-- 减号 -->
-                  <view class="iconfont icon-jian" style="color:#cecece;font-size:23px" hidden="{{item.quantity <= 0}}"
-                    bindtap="minusCount" data-id="{{item.dishesId}}" data-index="{{index}}">
+                  <view class="iconfont icon-minus-circle-fill button-minus" style="" hidden="{{item.quantity <= 0}}"
+                    bindtap="minusCount" data-id="{{item.dishesId}}" data-index="{{index}}"
+                    hover-class="button-hover-class">
                   </view>
                   <!-- 数量 -->
-                  <view class="value" data-id="{{item.dishesId}}"
-                    data-num="{{item.quantity}}">
+                  <view class="value" data-id="{{item.dishesId}}" data-num="{{item.quantity}}">
                     <text hidden="{{item.quantity == 0}}">{{item.quantity}}</text>
                   </view>
                   <!-- 加号 -->
-                  <view class="iconfont icon-jiahao" style="color:#ffc300;font-size:23px" data-id="{{item.dishesId}}"
-                    data-index="{{index}}" bindtap="addCount">
+                  <view class="iconfont icon-jiahao button-add" data-id="{{item.dishesId}}" data-index="{{index}}"
+                    bindtap="addCount" hover-class="button-hover-class">
                   </view>
                 </view>
               </view>
             </view>
           </view>
         </view>
-      </van-transition>
-      <van-transition name="" wx:else show="{{ dailyMenuMap[currentTiming.id].length == 0}}" custom-class="block"
-        duration="{{500}}">
+      </view>
+      <view name="" wx:else show="{{ dailyMenuMap[currentTiming.id].length == 0}}">
         <view style="">
           <!-- <van-empty custom-class="custom-image" image="../../../static/images/custom-empty-image.png"
             description="未上架" /> -->
-            <van-empty image="search" description="未上架" />
+          <van-empty image="search" description="未上架" />
         </view>
-      </van-transition>
+      </view>
     </scroll-view>
 
     <!-- 菜品卡片 end -->
@@ -122,8 +121,24 @@
   <!-- 右侧对应时间段菜品 end -->
   <view class="cart-bottom">
 
-    <van-submit-bar price="{{sum * 100}}" button-text="{{currentTiming.hasOrder?currentTiming.orderStatus==107?'已取餐':'待取餐':'报餐'}}"
-      bind:submit="onSubmitOrder" custom-class="van-submit-bar" button-class="van-submit-button" disabled="{{currentTiming.hasOrder}}" tip="{{ true }}" safe-area-inset-bottom="{{ false }}">
+    <van-submit-bar price="{{sum * 100}}"
+      button-text="{{currentTiming.hasOrder?currentTiming.orderStatus==107?'已取餐':'待取餐':'报餐'}}"
+      bind:submit="onSubmitOrder" custom-class="van-submit-bar" button-class="van-submit-button"
+      disabled="{{currentTiming.hasOrder}}" tip="{{ true }}" safe-area-inset-bottom="{{ false }} ">
+
+      <view slot="{{(tip == ''|| tip == null) ? '':'tip'}}">
+        <view style="font-size:12px">
+          {{tip}}
+        </view>
+        <!-- <view hidden="{{(sum == 0 || currentTiming.name =='早餐') || currentTiming.hasOrder}}">
+          <van-checkbox value="{{ haveToOrder }}" bind:change="haveToOrderChange">
+            <view style="height:45px;line-height:45px;font-size:12px">
+              {{tip}}
+            </view>
+          </van-checkbox>
+        </view> -->
+      </view>
+
     </van-submit-bar>
 
     <!-- 购物车栏 end -->
@@ -134,8 +149,7 @@
     position="{{ position }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" max-range="{{ maxRange }}"
     formatter="{{ formatter }}" show-confirm="{{ showConfirm }}" confirm-text="{{ confirmText }}"
     confirm-disabled-text="{{ confirmDisabledText }}" bind:confirm="onConfirm" bind:select="onSelect"
-    show-title="{{false}}" row-height="42" bind:unselect="onUnselect" bind:open="onOpen" bind:opened="onOpened"
-    bind:close="onClose" bind:closed="onClosed">
+    show-title="{{false}}" row-height="42" bind:close="onClose" bind:closed="onClosed">
   </van-calendar>
   <!-- 日历组件 end -->
 </view>

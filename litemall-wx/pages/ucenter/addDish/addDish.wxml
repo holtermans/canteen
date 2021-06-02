@@ -4,7 +4,7 @@
       <!-- 菜品名称 -->
       <view class="form-block">
         <view class="form-block-title form-block-title-required" for="publish_title">菜品名称:</view>
-        <input class="form-block-input" id="publish_title" type="text" name="name" maxlength="10"
+        <input class="form-block-input" id="publish_title" type="text" name="name" maxlength="50"
           placeholder="请输入菜品名称" />
       </view>
       <!-- 菜品价格 -->

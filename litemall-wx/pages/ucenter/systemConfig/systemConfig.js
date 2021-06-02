@@ -43,7 +43,7 @@ Page({
   onReady: function () {},
   onShow: function () {
     this.setData({
-      focus:true
+      focus: true
     })
   },
   speak(content) {
@@ -105,7 +105,14 @@ Page({
             canteenOrder: res.data.canteenOrder,
             show: true,
           })
-          that.speak("该订单已核销");
+          if (that.data.checked) {
+
+            that.speak("该订单已核销");
+            wx.showToast({
+              title: '该订单已核销',
+              icon:"error"
+            })
+          }
           wx.hideLoading({
             success: (res) => {},
           });
@@ -151,7 +158,13 @@ Page({
         wx.hideLoading({
           success: (res) => {},
         });
-        that.speak("二维码有误");
+        if (that.data.checked) {
+          wx.showToast({
+            title: '二维码有误',
+            icon:"error"
+          })
+          that.speak("二维码有误");
+        }
         return;
 
       }
@@ -190,7 +203,6 @@ Page({
         nameChecked: e.detail.value,
         priceChecked: e.detail.value,
         typeChecked: e.detail.value,
-
       });
     }
   },

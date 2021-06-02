@@ -25,7 +25,7 @@ public class CanteenCategoryService {
         return result;
     }
 
-    public int add(Integer userId, CanteenDishCategory dishCategory) {
+    public int add(CanteenDishCategory dishCategory) {
 
         int i = 0;
         try {
@@ -36,5 +36,9 @@ public class CanteenCategoryService {
 
         }
         return i;
+    }
+
+    public Integer delete(Integer id) {
+        return dishCategoryMapper.deleteByPrimaryKey(id);
     }
 }

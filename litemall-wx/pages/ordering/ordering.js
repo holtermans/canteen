@@ -2,6 +2,7 @@ var util = require("../../utils/util.js");
 var api = require('../../config/api.js');
 var user = require('../../utils/user.js');
 var app = getApp();
+var refreshFlag = false;
 // pages/ordering/ordering.js
 Page({
 
@@ -11,14 +12,15 @@ Page({
   data: {
     iconUrl: ['/static/images/breakfast.png', '/static/images/lunch.png', '/static/images/dinner.png'],
     banner: [{
-      url: "https://www.yllt.icu/upload/banner1.jpg"
-    },
-    {
-      url: "https://www.yllt.icu/upload/banner2.jpg"
-    },
-    {
-      url: "https://www.yllt.icu/upload/banner3.jpg"
-    }],
+        url: "https://www.yllt.icu/upload/banner1.jpg"
+      },
+      {
+        url: "https://www.yllt.icu/upload/banner2.jpg"
+      },
+      {
+        url: "https://www.yllt.icu/upload/banner3.jpg"
+      }
+    ],
     price: 0,
     sum: 0,
     cartList: [], //购物车列表
@@ -45,13 +47,24 @@ Page({
     ).getTime(),
     maxRange: undefined,
     position: undefined,
-    formatter: undefined,
+    formatter(day) {
+      const month = day.date.getMonth() + 1;
+      const date = day.date.getDate();
+      if (month == new Date().getMonth() + 1 && date == new Date().getDate()) {
+        day.text = "今天"
+      }
+      return day;
+    },
     showConfirm: true,
     showCalendar: false,
     tiledMinDate: new Date(2012, 0, 10).getTime(),
     tiledMaxDate: new Date(2012, 2, 20).getTime(),
-    confirmText: undefined,
-    confirmDisabledText: undefined
+    //提示
+    tip: '',
+    haveToOrder: true,
+    showTip: false,
+    haveToOrderDish: {},
+    dishesListIndex:[]
   },
 
   /**
@@ -83,24 +96,40 @@ Page({
       if (app.globalData.hasLogin) {
         that.getCanteenOrder();
       }
-
+      refreshFlag = true;
     });
-    //获取时段列表
+    //获取提示
+    this.getTip();
+
   },
 
+  getTip() {
+    var that = this;
+    var query = {
+      name: "tip"
+    }
+    util.request(api.GetConfig, query).then((res) => {
+      that.setData({
+        tip: res.data.config.value
+      })
+    })
+  },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
     var that = this;
+    // this.getDailyMenu();
+    // this.getDishesList() //获取菜的信息
+    // if (app.globalData.hasLogin) {
+    //   this.getCanteenOrder();
+    // }
+    // this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
+    if (refreshFlag) {
+      this.refresh();
 
-    this.getDailyMenu();
-    this.getDishesList() //获取菜的信息
-    if (app.globalData.hasLogin) {
-      this.getCanteenOrder();
     }
-    this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
   },
   /**
    * 判断菜单是否为空状态
@@ -180,7 +209,7 @@ Page({
       }).catch(res => {
         var timinglist = that.data.timingList;
         wx.showToast({
-          icon:"error",
+          icon: "error",
           title: res,
         });
       });
@@ -191,15 +220,20 @@ Page({
   //日历确认日期
   onConfirm(event) {
     var that = this;
-    wx.showLoading({
-      title: '加载中',
-    })
+
     this.setData({
       showCalendar: false,
       [`date.${this.data.id}`]: Array.isArray(event.detail) ? event.detail.map(date => date.valueOf()) : event.detail.valueOf()
     });
+    return;
 
-    Promise.all([this.getTimingList(), this.getDailyMenu()]).then(result => {
+  },
+  onClosed() {
+    var that = this;
+    wx.showLoading({
+      title: '加载中',
+    })
+    Promise.all([that.getTimingList(), that.getDailyMenu()]).then(result => {
       var timingList = result[0];
       var dailyMenu = result[1];
       var data = {};
@@ -212,18 +246,20 @@ Page({
       that.setData({
         dailyMenuMap: data,
       });
+      that.getCanteenOrder();
+      that.calculateSum(that.data.currentTiming.id, that.data.dailyMenuList, that.data.dishesList);
+      wx.hideLoading({
+        success: (res) => {},
+      })
     });
-    this.getCanteenOrder();
-    this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
-    wx.hideLoading({
-      success: (res) => {},
-    })
+
   },
 
   /**
    * 日历关闭事件
    */
   onClose() {
+
     this.setData({
       showCalendar: false
     });
@@ -242,7 +278,6 @@ Page({
       ).getTime(),
       maxRange: null,
       position: 'bottom',
-      formatter: null,
       showConfirm: true,
       confirmText: '确定',
       confirmDisabledText: null
@@ -275,10 +310,9 @@ Page({
       //点击当前分类不响应
       return false;
     }
-    this.setData({
-      hideEmpty: true,
-    });
+
     this.getCurrentTiming(event.currentTarget.dataset.id); //设置当前时段分类
+
     //以下是为了刷新数据所做查询
     if (app.globalData.hasLogin) {
       this.getCanteenOrder();
@@ -293,7 +327,7 @@ Page({
    * */
   getCurrentTiming: function (id) {
     let timgList = this.data.timingList;
-    timgList.forEach(item => {
+    timgList.some(item => {
       if (item.id == id) {
         this.setData({
           currentTiming: {
@@ -307,7 +341,9 @@ Page({
             hasOrder: item.hasOrder,
             orderStatus: item.orderStatus,
           },
+
         });
+        return true;
       }
     })
   },
@@ -316,6 +352,7 @@ Page({
    *  
    */
   calculateSum(currentTimingId, dailyMenuList, dishesList) {
+    var that = this;
     var sum = 0;
     dailyMenuList.forEach(item => {
       if (item.timingId == currentTimingId) {
@@ -330,6 +367,12 @@ Page({
         sum += quantity * price;
       }
     })
+    // 加上必点餐
+
+    if (!((sum == 0 || that.data.currentTiming.name == '早餐') || that.data.currentTiming.hasOrder) && that.data.haveToOrder) {
+      sum = sum == 0 ? sum : sum + that.data.haveToOrderDish.price;
+    }
+
     this.setData({
       sum: sum
     })
@@ -341,41 +384,21 @@ Page({
     if (util.isInArr(this.data.currentTiming.id, this.data.hasOrderTimingIdArr) != -1) {
       return;
     }
+    if (this.data.currentTiming.hasOrder) {
+      wx.showToast({
+        title: '不可重复报餐',
+      })
+      return;
+    }
     var id = e.currentTarget.dataset.id;
     for (var i in this.data.dailyMenuList) { // 遍历菜单找到被点击的菜品，数量加1
       if (this.data.dailyMenuList[i].dishesId == id && this.data.currentTiming.id == this.data.dailyMenuList[i].timingId) {
-        //确定判断有没有过报餐时间
-        // var stopTime = null;
-        // this.data.timingList.forEach(item => { //获取截止时间
-        //   if (this.data.dailyMenuList[i].timingId == item.id) {
-        //     stopTime = item.stopTime;
-        //   }
-        // })
-        // var stopDateTime = new Date((this.data.dailyMenuList[i].date + " " + stopTime).replace(/-/g, '/')); //这里是为了兼容苹果，要 "2021/02/02 11:12:11" 这样的时间格式
-        // this.getServerTime().then(nowTime => {
-        //   nowTime = nowTime.replace(/-/g, '/');
-        //   if (stopDateTime.getTime() < new Date(nowTime).getTime()) {
-        //     wx.showToast({
-        //       title: '已过报餐时间',
-        //       icon: 'failure',
-        //       duration: 2000
-        //     })
-        //     return;
-        //   }
         this.data.dailyMenuList[i].quantity += 1;
         this.setData({
           dailyMenuList: this.data.dailyMenuList,
-        })
-        // this.checkCartCount();
+          cartList: [...this.data.cartList, this.data.dailyMenuList[i]],
+        });
         this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
-
-        // if (this.data.currentSubCategoryList[i].limit == this.data.currentSubCategoryList[i].quantity) {
-        //   wx.showToast({
-        //     title: '超出限额',
-        //   })
-        //   return;
-        // }
-
         break;
       }
     }
@@ -391,7 +414,7 @@ Page({
           resolve(res.data.nowTime);
         } else {
           wx.showToast({
-            icon:"error",
+            icon: "error",
             title: '时间同步出错',
           })
         }
@@ -409,8 +432,7 @@ Page({
 
     for (var i in this.data.dailyMenuList) {
       if (this.data.dailyMenuList[i].dishesId == id && this.data.currentTiming.id == this.data.dailyMenuList[i].timingId) {
-
-        this.data.dailyMenuList[i].quantity -= 1;
+        this.data.dailyMenuList[i].quantity -= 1; //数量减一
         if (this.data.dailyMenuList[i].quantity <= 0) {
           this.data.dailyMenuList[i].quantity = 0;
         }
@@ -418,6 +440,7 @@ Page({
     }
     this.setData({
       dailyMenuList: this.data.dailyMenuList,
+
     })
     this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
   },
@@ -483,17 +506,31 @@ Page({
                     "quantity": item.quantity,
                   }
                   data.push(dataTemp);
+
                 }));
+                // 加必选
+                if (!((that.data.sum == 0 || that.data.currentTiming.name == '早餐') || that.data.currentTiming.hasOrder) && that.data.haveToOrder) {
+                  var essential = {
+                    "date": '',
+                    "timingId": that.data.currentTiming.id,
+                    "timingName": that.data.currentTiming.name,
+                    "dishesId": that.data.haveToOrderDish.id,
+                    "dishesName": that.data.haveToOrderDish.name,
+                    "quantity": 1,
+                  };
+                  data.push(essential);
+                }
+
                 util.request(api.MealOrder, data, "POST").then(function (res) {
                   if (res.errno === 0) {
                     that.getDailyMenu();
                     that.getCanteenOrder();
-                    // that.getOrderInfo();
+                    that.setData({
+                      sum: 0
+                    })
                   }
                 });
-              } else if (res.cancel) {
-
-              }
+              } else if (res.cancel) {}
             }
           })
         }
@@ -508,8 +545,18 @@ Page({
       let that = this;
       util.request(api.dishesList).then(function (res) {
         if (res.errno === 0) {
+          var dishesList = util.toIndex(res.data.dishesList);
           that.setData({
             dishesList: res.data.dishesList,
+            dishesListIndex: dishesList,
+          })
+          res.data.dishesList.some((item) => {
+            if (item.categoryId == 8) {
+              that.setData({
+                haveToOrderDish: item
+              });
+              return true;
+            }
           })
         }
         resolve();
@@ -620,13 +667,41 @@ Page({
       if (app.globalData.hasLogin) {
         that.getCanteenOrder();
       }
+      this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
     });
     wx.stopPullDownRefresh({
       success: (res) => {},
     })
+
+  },
+  haveToOrderChange(e) {
+    this.setData({
+      haveToOrder: e.detail
+    });
     this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
-    
+
   },
 
-
+  refresh() {
+    var that = this;
+    Promise.all([this.getTimingList(), this.getDailyMenu()]).then(result => {
+      var timingList = result[0];
+      var dailyMenu = result[1];
+      var data = {};
+      for (var i = 0; i < timingList.length; i++) {
+        data[timingList[i].id] = [];
+      }
+      for (var i = 0; i < dailyMenu.length; i++) {
+        data[dailyMenu[i].timingId].push(dailyMenu[i]);
+      }
+      that.setData({
+        dailyMenuMap: data
+      });
+      that.getDishesList();
+      if (app.globalData.hasLogin) {
+        that.getCanteenOrder();
+      }
+      this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
+    });
+  }
 })

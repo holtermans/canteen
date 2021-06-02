@@ -67,9 +67,15 @@ module.exports = {
   QueryByIdAndDate: WxApiRoot + 'canteenOrder/queryByIdAndDate', //查询指定日期报餐列表
   
   dishesList: WxApiRoot + 'dishes/list', //菜品列表
-  DishesAdd: WxApiRoot + 'dishes/add', //用餐时段更新
-  DishesDel: WxApiRoot + 'dishes/delete', //用餐时段更新
+  QueryByCateIdAndPage: WxApiRoot + 'dishes/queryByCateIdAndPage', //菜品列表
+  SearchByCateAndKeyword: WxApiRoot + 'dishes/searchByCateAndKeyword', //查找菜品
+
+  DishesAdd: WxApiRoot + 'dishes/add', //用餐添加
+  DishesDel: WxApiRoot + 'dishes/delete', //菜品信息删除
+  DishUpdate: WxApiRoot + 'dishes/update',//菜品信息更新
   CanteenDishCateList: WxApiRoot + 'canteenDishCate/getAllCate', //获取全部菜品分类
+  CanteenDishCateAdd: WxApiRoot + 'canteenDishCate/add', //添加菜品分类
+  CanteenDishCateDel: WxApiRoot + 'canteenDishCate/delete', //删除菜品分类
   DishGetBydCateId: WxApiRoot + 'dishes/getBydCateId', //获取全部菜品分类
   
   DishesSearch: WxApiRoot + 'dishes/search', //用餐时段更新

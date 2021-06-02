@@ -1,11 +1,9 @@
 package org.linlinjava.litemall.db.service;
 
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallDishesMapper;
 import org.linlinjava.litemall.db.dao.LitemallTimingMapper;
-import org.linlinjava.litemall.db.domain.LitemallDishes;
-import org.linlinjava.litemall.db.domain.LitemallDishesExample;
-import org.linlinjava.litemall.db.domain.LitemallTiming;
-import org.linlinjava.litemall.db.domain.LitemallTimingExample;
+import org.linlinjava.litemall.db.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +62,29 @@ public class LitemallDishesService {
         example.or().andCategoryIdEqualTo(cateId).andDeletedEqualTo(false);
         List<LitemallDishes> litemallDishes = dishesMapper.selectByExample(example);
         return litemallDishes;
+    }
+
+    public List<LitemallDishes> queryByCateIdAndPage(Integer cateId, Integer pageNum, Integer pageSize) {
+        LitemallDishesExample example = new LitemallDishesExample();
+
+        LitemallDishesExample.Criteria criteria = example.createCriteria();
+        criteria.andCategoryIdEqualTo(cateId);
+        criteria.andDeletedEqualTo(false);
+        example.setOrderByClause("name desc");
+        PageHelper.startPage(pageNum,pageSize);
+        return dishesMapper.selectByExample(example);
+    }
+
+    public List<LitemallDishes> findByCateAndKeyword(String keyword, Integer cateId, Integer pageNum, Integer pageSize) {
+
+        LitemallDishesExample example = new LitemallDishesExample();
+
+        LitemallDishesExample.Criteria criteria = example.createCriteria();
+        criteria.andCategoryIdEqualTo(cateId);
+        criteria.andNameLike("%"+keyword+"%");
+        criteria.andDeletedEqualTo(false);
+        example.setOrderByClause("id desc");
+        PageHelper.startPage(pageNum,pageSize);
+        return dishesMapper.selectByExample(example);
     }
 }
