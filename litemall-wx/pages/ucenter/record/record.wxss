@@ -2,6 +2,7 @@
 page {
   background: #f4f4f4;
   color: #000;
+  padding-top:50px;
 }
 
 .date {

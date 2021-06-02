@@ -1,64 +1,67 @@
 <!--pages/ucenter/record/record.wxml-->
-<wxs src="/wxs/index.wxs" module="computed"></wxs>
-<van-sticky>
-  <van-tabs swipeable animated active="{{ active }}" bind:click="onChange" sticky>
-    <van-tab title="全部"></van-tab>
-    <van-tab title="未取餐"></van-tab>
-    <van-tab title="已取餐"></van-tab>
-  </van-tabs>
-</van-sticky>
-<view  class="record-card" wx:for="{{canteenOrderList}}" wx:for-item="canteenOrder">
+<wxs src="/wxs/index.wxs" module="computed" ></wxs>
+<view class="container" >
+  <van-sticky>
+    <van-tabs swipeable animated active="{{ active }}" bind:click="onChange" sticky>
+      <van-tab title="全部"></van-tab>
+      <van-tab title="未取餐"></van-tab>
+      <van-tab title="已取餐"></van-tab>
+    </van-tabs>
+  </van-sticky>
+  <view class="record-card" wx:for="{{canteenOrderList}}" wx:for-item="canteenOrder">
 
-  <view data-order-sn="{{canteenOrder.orderSn}}" data-order-id="{{canteenOrder.id}}">
+    <view data-order-sn="{{canteenOrder.orderSn}}" data-order-id="{{canteenOrder.id}}">
 
-    <view style="display:flex;align-items:center; ">
-      <view style="flex:1">
-        <text style="margin-right:16px;font-family:'Heiti SC'">就餐日期</text>
-        <text style="font-family:'Heiti SC'">{{ computed.formatDateWeek(canteenOrder.date) }}</text>
+      <view style="display:flex;align-items:center; ">
+        <view style="flex:1">
+          <text style="margin-right:16px;font-family:'Heiti SC'">就餐日期</text>
+          <text style="font-family:'Heiti SC'">{{ computed.formatDateWeek(canteenOrder.date) }}</text>
+        </view>
+        <view>
+          <van-icon name="/static/images/qrcode.png" size="40px" bind:click="createQrcode"
+            data-order-sn="{{canteenOrder.orderSn}}" data-order-id="{{canteenOrder.id}}" />
+        </view>
       </view>
-      <view>
-        <van-icon name="/static/images/qrcode.png" size="40px" bind:click="createQrcode"
-          data-order-sn="{{canteenOrder.orderSn}}" data-order-id="{{canteenOrder.id}}" />
+      <van-divider dashed />
+      <view style="display:flex;">
+        <view class="content-left">
+          <view class="content-title">订单号 </view>
+          <view class="content-title">报餐时间 </view>
+          <view class="content-title">用餐类型 </view>
+          <view class="content-title ">价格 </view>
+          <view class="content-title">核销状态 </view>
+        </view>
+        <view class="content-right">
+          <view class="content-detail"> <text selectable="true">{{canteenOrder.orderSn}}</text></view>
+          <view class="content-detail"> {{canteenOrder.addTime}}</view>
+          <view class="content-detail">{{canteenOrder.timingName}}</view>
+          <view class="content-detail price">{{canteenOrder.orderPrice}} 元</view>
+          <view class="content-detail">
+            <van-tag wx:if="{{canteenOrder.orderStatus == 103}}" plain type="warning">未核销</van-tag>
+            <van-tag wx:else plain type="success">已核销</van-tag>
+          </view>
+        </view>
       </view>
-    </view>
-    <van-divider dashed />
-    <view style="display:flex;">
-      <view class="content-left">
-        <view class="content-title">订单号 </view>
-        <view class="content-title">报餐时间 </view>
-        <view class="content-title">用餐类型 </view>
-        <view class="content-title ">价格 </view>
-        <view class="content-title">核销状态 </view>
-      </view>
-      <view class="content-right">
-        <view class="content-detail"> <text selectable="true">{{canteenOrder.orderSn}}</text></view>
-        <view class="content-detail"> {{canteenOrder.addTime}}</view>
-        <view class="content-detail">{{canteenOrder.timingName}}</view>
-        <view class="content-detail price">{{canteenOrder.orderPrice}} 元</view>
-        <view class="content-detail">
-          <van-tag wx:if="{{canteenOrder.orderStatus == 103}}" plain type="warning">未核销</van-tag>
-          <van-tag wx:else plain type="success">已核销</van-tag>
+      <van-divider dashed />
+
+      <view style="display:flex;flex-direction:row-reverse">
+
+        <view wx:if="{{canteenOrder.orderStatus == 103}}">
+
+          <van-button plain hairline type="default" size="small" bindtap="cancelMeal" data-id="{{canteenOrder.id}}"
+            data-type="{{canteenOrder.timingId}}" data-date="{{canteenOrder.date}}">取消报餐</van-button>
+        </view>
+        <view wx:else>
+          <van-button plain hairline type="success" disabled size="small">已取餐</van-button>
+
         </view>
       </view>
     </view>
-    <van-divider dashed />
-
-    <view style="display:flex;flex-direction:row-reverse">
-
-      <view wx:if="{{canteenOrder.orderStatus == 103}}">
-
-        <van-button plain hairline type="default" size="small" bindtap="cancelMeal" data-id="{{canteenOrder.id}}"
-          data-type="{{canteenOrder.timingId}}" data-date="{{canteenOrder.date}}">取消报餐</van-button>
-      </view>
-      <view wx:else>
-        <van-button plain hairline type="success" disabled size="small">已取餐</van-button>
-
-      </view>
-    </view>
   </view>
-</view>
-<view style="display:flex; align-items:center;justify-content:center;display:{{showloading?'':'none'}}" >
-  <van-loading size="24px" >加载中...</van-loading>
-</view>
-<view style="margin-top:14px;color:#c8c8c8;text-align:center;display:{{nomore?'':'none'}}" hidden="{{!nomore}}">没有更多了</view>
+  <view style="display:flex; align-items:center;justify-content:center;display:{{showloading?'':'none'}}">
+    <van-loading size="24px">加载中...</van-loading>
+  </view>
+  <view style="margin-top:14px;color:#c8c8c8;text-align:center;display:{{nomore?'':'none'}}" hidden="{{!nomore}}">没有更多了
+  </view>
 
+</view>
