@@ -88,9 +88,10 @@
 
 
 <van-divider dashed />
+<!-- 扫码接收框 -->
 <view style="opacity:0.5">
   <van-cell-group>
     <van-field value="{{ value }}" placeholder="等待扫码" border="{{ false }}" bind:confirm="inputConfirm" focus="{{focus}}"
-      bind:blur="getFocu1s" input-align="center" auto-focus="{{true}}"  adjust-position="{{ false }}" />
+       input-align="center" auto-focus="{{true}}"  adjust-position="{{ false }}" />
   </van-cell-group>
 </view>

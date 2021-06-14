@@ -56,7 +56,6 @@ Page({
         that.setData({
           src: res.filename
         })
-
         const innerAudioContext = wx.createInnerAudioContext();
         innerAudioContext.onError(function (res) {
           wx.showToast({
@@ -67,10 +66,14 @@ Page({
         innerAudioContext.autoplay = true
         innerAudioContext.src = that.data.src
         innerAudioContext.onPlay(() => {})
-
+        that.setData({
+          value:'',
+          focus: true,
+        });
       },
       fail: function (res) {}
     })
+
   },
   check(orderSn) {
     var that = this;
@@ -80,6 +83,9 @@ Page({
     var data = {
       orderSn: orderSn,
     }
+    this.setData({
+      focus: false,
+    });
     //先查询订单状态
     util.request(api.CanteenOrderByOrderSn, data).then(res => {
       if (res.errno == 0) {
@@ -87,7 +93,6 @@ Page({
         var status = canteenOrder.orderStatus; //取出订单状态
         if (status == 107) { // 规定107是已经核销的订单，直接结束
           var param = [canteenOrder.userId];
-
           util.request(api.GetBcUserHashMapByUserId, param, "POST").then((res) => {
             that.setData({
               bcUserVo: res.data.bcUserVoHashMap[canteenOrder.userId],
@@ -103,14 +108,13 @@ Page({
           })
           that.setData({
             canteenOrder: res.data.canteenOrder,
-            show: true,
           })
           if (that.data.checked) {
 
             that.speak("该订单已核销");
             wx.showToast({
               title: '该订单已核销',
-              icon:"error"
+              icon: "error"
             })
           }
           wx.hideLoading({
@@ -124,10 +128,8 @@ Page({
                 canteenOrder: res.data.canteenOrder,
                 mealOrders: res.data.mealOrders,
                 bcUserVo: res.data.bcUserVo,
-                show: true,
               })
               if (that.data.checked) {
-
                 var content = "";
                 if (that.data.nameChecked) {
                   content += that.data.bcUserVo.name;
@@ -144,15 +146,13 @@ Page({
               wx.hideLoading({
                 success: (res) => {},
               })
+              
             } else {
               that.speak("网络出现了一点问题~");
               util.showErrorModal(res.errmsg);
             }
           })
-          this.setData({
-            value: '',
-            focus: true,
-          });
+
         }
       } else {
         wx.hideLoading({
@@ -161,7 +161,7 @@ Page({
         if (that.data.checked) {
           wx.showToast({
             title: '二维码有误',
-            icon:"error"
+            icon: "error"
           })
           that.speak("二维码有误");
         }
@@ -169,6 +169,10 @@ Page({
 
       }
     })
+    this.setData({
+      value:'',
+      focus: true,
+    });
   },
   inputConfirm: function (e) {
     var that = this;
@@ -176,10 +180,7 @@ Page({
     //   title: e.detail,
     // });
     this.check(e.detail);
-    this.setData({
-      focus: true,
-      value: '',
-    })
+   
   },
   goStatistics: function () {
     wx.navigateTo({
