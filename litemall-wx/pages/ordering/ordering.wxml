@@ -123,20 +123,13 @@
 
     <van-submit-bar price="{{sum * 100}}"
       button-text="{{currentTiming.hasOrder?currentTiming.orderStatus==107?'已取餐':'待取餐':'报餐'}}"
-      bind:submit="onSubmitOrder" custom-class="van-submit-bar" button-class="van-submit-button"
-      disabled="{{currentTiming.hasOrder}}" tip="{{ true }}" safe-area-inset-bottom="{{ false }} ">
+      bind:submit="{{ban? '':'onSubmitOrder'}}" custom-class="van-submit-bar" button-class="van-submit-button"
+      disabled="{{currentTiming.hasOrder || ban}}" tip="{{ true }}" safe-area-inset-bottom="{{ false }} ">
 
       <view slot="{{(tip == ''|| tip == null) ? '':'tip'}}">
         <view style="font-size:12px">
           {{tip}}
         </view>
-        <!-- <view hidden="{{(sum == 0 || currentTiming.name =='早餐') || currentTiming.hasOrder}}">
-          <van-checkbox value="{{ haveToOrder }}" bind:change="haveToOrderChange">
-            <view style="height:45px;line-height:45px;font-size:12px">
-              {{tip}}
-            </view>
-          </van-checkbox>
-        </view> -->
       </view>
 
     </van-submit-bar>

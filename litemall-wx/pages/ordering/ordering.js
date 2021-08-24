@@ -12,15 +12,16 @@ Page({
   data: {
     iconUrl: ['/static/images/breakfast.png', '/static/images/lunch.png', '/static/images/dinner.png'],
     banner: [{
-        url: "https://www.yllt.icu/upload/banner1.jpg"
+        url: api.UploadRoot + "upload/banner1.jpg"
       },
       {
-        url: "https://www.yllt.icu/upload/banner2.jpg"
+        url: api.UploadRoot + "upload/banner2.jpg"
       },
       {
-        url: "https://www.yllt.icu/upload/banner3.jpg"
+        url: api.UploadRoot + "upload/banner3.jpg"
       }
     ],
+    ban: false,
     price: 0,
     sum: 0,
     cartList: [], //购物车列表
@@ -64,7 +65,7 @@ Page({
     haveToOrder: true,
     showTip: false,
     haveToOrderDish: {},
-    dishesListIndex:[]
+    dishesListIndex: []
   },
 
   /**
@@ -237,10 +238,13 @@ Page({
       var timingList = result[0];
       var dailyMenu = result[1];
       var data = {};
+      console.log(timingList, dailyMenu, data);
       for (var i = 0; i < timingList.length; i++) {
         data[timingList[i].id] = [];
       }
+      console.log(data);
       for (var i = 0; i < dailyMenu.length; i++) {
+
         data[dailyMenu[i].timingId].push(dailyMenu[i]);
       }
       that.setData({
@@ -448,6 +452,15 @@ Page({
   //提交报餐
   onSubmitOrder: function () {
     let that = this;
+    that.setData({
+      ban: true
+    })
+    setTimeout(function () {
+      that.setData({
+        ban: false
+      })
+    }, 1000); //一秒内不能重复点击
+
     let order = [];
     var stopTime = null;
     var date = null;
@@ -508,6 +521,7 @@ Page({
                   data.push(dataTemp);
 
                 }));
+
                 // 加必选
                 if (!((that.data.sum == 0 || that.data.currentTiming.name == '早餐') || that.data.currentTiming.hasOrder) && that.data.haveToOrder) {
                   var essential = {
@@ -672,13 +686,6 @@ Page({
     wx.stopPullDownRefresh({
       success: (res) => {},
     })
-
-  },
-  haveToOrderChange(e) {
-    this.setData({
-      haveToOrder: e.detail
-    });
-    this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
 
   },
 

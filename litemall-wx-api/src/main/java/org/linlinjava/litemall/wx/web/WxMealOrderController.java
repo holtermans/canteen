@@ -1,6 +1,8 @@
 package org.linlinjava.litemall.wx.web;
 
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.CanteenOrderService;
@@ -23,6 +25,8 @@ import java.util.List;
 @RequestMapping("/wx/mealOrder")
 @Validated
 public class WxMealOrderController {
+    private final Log logger = LogFactory.getLog(WxMealOrderController.class);
+
 
     @Autowired
     private LitemallMealOrderService mealOrderService;
@@ -37,7 +41,12 @@ public class WxMealOrderController {
 
     @RequestMapping("add")
     public Object save(@LoginUser Integer userId, @RequestBody List<LitemallMealOrder> mealOrder) {
-        System.out.println(mealOrder);
+        logger.info(mealOrder);
+        try {
+            Thread.sleep(1*100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Object response = userInfoService.checkUserId(userId);
         if (response != null) {
             return response;

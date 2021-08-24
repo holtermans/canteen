@@ -313,7 +313,7 @@ public class WxAuthController {
             }
             bcUserService.add(bcUser);//添加用户
 
-            LitemallBcUser bcuser1 = bcUserService.queryByMbAndUn(mobile, username);
+            LitemallBcUser bcuser1 = bcUserService.queryByMbAndUn(mobile, username);//通过姓名、电话查找报餐用户，不太科学 TODO
 
             Integer id = bcuser1.getId();
             user.setBcUserId(id);
