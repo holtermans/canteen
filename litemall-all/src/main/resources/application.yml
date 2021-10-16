@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dbdev, coredev, admin, wx, redisdev
+    active: db, core, admin, wx, redis
   messages:
     encoding: UTF-8
   servlet:
@@ -18,4 +18,4 @@ logging:
   config: classpath:logback-spring.xml
 
 swagger:
-  production: false
+  production: true
