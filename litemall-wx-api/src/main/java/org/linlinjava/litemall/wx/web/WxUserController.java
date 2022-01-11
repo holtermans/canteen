@@ -53,7 +53,6 @@ public class WxUserController {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
-
         Map<Object, Object> data = new HashMap<Object, Object>();
         data.put("order", orderService.orderInfo(userId));
         return ResponseUtil.ok(data);

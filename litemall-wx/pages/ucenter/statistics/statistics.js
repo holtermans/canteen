@@ -16,17 +16,17 @@ Page({
     orderGroup: null, //食堂一日订单都在这；
     queue: 0,
     activeNames: ['1'],
-    tabs: [{
-        id: "checked",
-        name: "已核销"
-      },
-      {
-        id: "not_checked",
-        name: "未核销"
-      }
-    ],
+    // tabs: [{
+    //     id: "checked",
+    //     name: "已核销"
+    //   },
+    //   {
+    //     id: "not_checked",
+    //     name: "未核销"
+    //   }
+    // ],
     result: null,
-    checkTimingId: null,
+    // checkTimingId: null,
     checkTimingName: null,
     timingList: [],
     dishesList: [],
@@ -73,7 +73,7 @@ Page({
     },
     showConfirm: false,
     confirmText: '确定',
-    defaultDate: Date.now(),
+    // defaultDate: Date.now(),
     option1: [],
     option2: [{
         text: '全部',
@@ -186,7 +186,7 @@ Page({
       this.setData({
         "chart.data": list,
       });
-      console.log(list);
+      // console.log(list);
       // that.setOption(chart);
     });
     // this.ecComponent.init((canvas, width, height, dpr) => {
@@ -339,7 +339,7 @@ Page({
     //   checkTimingName: e.currentTarget.dataset.timingName
     // })
     // this.getBcUserInfoByUserId(this.data.userList[e.currentTarget.dataset.id]);
-    console.log(e);
+    // console.log(e);
     wx.navigateTo({
       url: '/pages/ucenter/statistics/detail?orderSn=' + e.currentTarget.dataset.orderSn + '&orderId=' + e.currentTarget.dataset.orderId + '&name=' + e.currentTarget.dataset.name + '&mobile=' + e.currentTarget.dataset.mobile + '&avatar=' + e.currentTarget.dataset.avatar,
     })

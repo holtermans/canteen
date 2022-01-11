@@ -464,7 +464,7 @@ Page({
     let order = [];
     var stopTime = null;
     var date = null;
-    if (!app.globalData.hasLogin) {
+    if (!app.globalData.hasLogin) {   //检测登录状态
       wx.navigateTo({
         url: '/pages/auth/login/login',
       })

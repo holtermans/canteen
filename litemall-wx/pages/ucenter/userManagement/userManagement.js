@@ -10,12 +10,11 @@ Page({
    */
   data: {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 20,
     pages: 0,
     filter1: 'actived',
     filter2: "a",
     option1: [
-
       {
         text: '已激活',
         value: 'actived'
@@ -50,7 +49,7 @@ Page({
     this.setData({
       filter1: value.detail,
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 20,
       pages: 0,
     });
     this.getBcUserList().then(res => {
@@ -103,7 +102,10 @@ Page({
   onReachBottom: function () {
     var that = this;
     if (this.data.pageNum < this.data.pages) {
-      this.data.pageNum++;
+      var pageNum = this.data.pageNum + 1;
+      that.setData({
+        pageNum: pageNum
+      })
       this.getBcUserList().then(res => {
         res.data.bcUserList.list.forEach(item => {
           that.data.bcUserList.list.push(item);
@@ -117,8 +119,8 @@ Page({
         this.data.pageNum--;
       })
     }
-
   },
+ 
 
   /**
    * 用户点击右上角分享

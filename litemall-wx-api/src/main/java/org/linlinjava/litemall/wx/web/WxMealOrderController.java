@@ -41,6 +41,7 @@ public class WxMealOrderController {
 
     @RequestMapping("add")
     public Object save(@LoginUser Integer userId, @RequestBody List<LitemallMealOrder> mealOrder) {
+        logger.info(userId);
         logger.info(mealOrder);
         try {
             Thread.sleep(1*100);
