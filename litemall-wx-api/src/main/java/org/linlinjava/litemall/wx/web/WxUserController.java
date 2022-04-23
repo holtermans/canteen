@@ -101,6 +101,7 @@ public class WxUserController {
 
         return ResponseUtil.ok(bcUserVos);
     }
+
     /**
      * 根据微信用户表中的id找到自定义的报餐用户信息
      * 查找一组用户信息
@@ -137,14 +138,15 @@ public class WxUserController {
                     bcUserVo.setNickname(nickName);
                     bcUserVo.setName(bcUser.getName());
                     bcUserVo.setMobile(bcUser.getMobile());
-                    bcUserVoHashMap.put(userId,bcUserVo);
+                    bcUserVoHashMap.put(userId, bcUserVo);
                 }
             }
         }
         HashMap<Object, Object> resHashMap = new HashMap<>();
-        resHashMap.put("bcUserVoHashMap",bcUserVoHashMap);
+        resHashMap.put("bcUserVoHashMap", bcUserVoHashMap);
         return ResponseUtil.ok(resHashMap);
     }
+
     /**
      * 取得当前用户的身份信息
      *
@@ -155,8 +157,8 @@ public class WxUserController {
     @RequestMapping("getSingleBcUserByUserId")
     public Object getBcUserByUserId(@LoginUser Integer userId) {
 
-        Map response = (Map)userInfoService.checkUserId(userId);
-        if (response != null &&  (Integer)response.get("errno") != 507) {
+        Map response = (Map) userInfoService.checkUserId(userId);
+        if (response != null && (Integer) response.get("errno") != 507) {
             return response;
         } else {
             LitemallUser user = userService.findById(userId);
@@ -180,6 +182,28 @@ public class WxUserController {
             result.put("bcUserInfo", bcUserVo);
             return ResponseUtil.ok(result);
         }
+    }
+
+    /**
+     * 更新指定用户的身份信息
+     */
+
+    @RequestMapping("updateSingleBcUserByUserId")
+    public Object updateBcUserByUserId(@LoginUser Integer userId ,@RequestBody LitemallUser litemallUser) {
+        Map response = (Map) userInfoService.checkUserId(userId);
+        if (response != null && (Integer) response.get("errno") != 507) {
+            return response;
+        } else {
+            litemallUser.setId(userId);
+            System.out.println(litemallUser);
+            int i = userService.updateById(litemallUser);
+            if (i != 0) {
+                return ResponseUtil.ok();
+            }else{
+                return ResponseUtil.fail();
+            }
+        }
+
     }
 
 }

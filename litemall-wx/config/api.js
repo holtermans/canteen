@@ -1,16 +1,19 @@
 // 以下是业务服务器API地址
 // 本机开发时使用
 // var WxApiRoot = 'http://localhost:8080/wx/';
+// var UploadRoot = 'http://localhost:8080/';  //给banner的图片src用
+
 // var UploadRoot = 'https://www.joyfey.xyz:4423/';  //给banner的图片src用
 //局域网
-// var WxApiRoot = 'http://192.168.1.2:8080/wx/';
+// var WxApiRoot = 'http://192.168.1.9:8080/wx/';
+// var UploadRoot = 'http://192.168.1.9:8080/';  //给banner的图片src用
 
 // 云平台上线时使用
 // var WxApiRoot = 'https://www.joyfey.xyz:4423/wx/'; 
 // var UploadRoot = 'https://www.joyfey.xyz:4423/';
-//公司内部服务器
-var WxApiRoot = 'https://www.yllt.icu:4413/wx/';
-var UploadRoot = 'https://www.yllt.icu:4413/';  //给banner的图片src用
+// 公司内部服务器
+// var WxApiRoot = 'https://www.yllt.icu:4413/wx/';
+// var UploadRoot = 'https://www.yllt.icu:4413/';  //给banner的图片src用
 
 
 
@@ -99,7 +102,7 @@ module.exports = {
   OrderCheckByOrderSn: WxApiRoot + 'canteenOrder/checkByOrderSn', //订单核销,
   QueryByFilterThenGroup: WxApiRoot + 'canteenOrder/queryByFilterThenGroup', //查询并分组
   
-
+  updateUser: WxApiRoot + 'user/updateSingleBcUserByUserId', //更新用户信息
   GetBcUserInfoByUserId: WxApiRoot + 'user/getBcUserInfoByUserId', //传入ID数组，返回用户,
   GetSingleBcUserByUserId: WxApiRoot + 'user/getSingleBcUserByUserId', //查询当前用户的bc用户信息
   GetBcUserHashMapByUserId: WxApiRoot + 'user/getBcUserHashMapByUserId', //传入ID数组，返回用户,

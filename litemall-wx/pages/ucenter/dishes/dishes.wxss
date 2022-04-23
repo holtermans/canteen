@@ -7,6 +7,7 @@ page{
 .container{
   background-color: #fff;
   height: 100%;
+
 }
 .custom-card{
   height: 100px;

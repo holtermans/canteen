@@ -2,8 +2,8 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallDishesMapper;
-import org.linlinjava.litemall.db.dao.LitemallTimingMapper;
-import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.domain.LitemallDishes;
+import org.linlinjava.litemall.db.domain.LitemallDishesExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +70,7 @@ public class LitemallDishesService {
         LitemallDishesExample.Criteria criteria = example.createCriteria();
         criteria.andCategoryIdEqualTo(cateId);
         criteria.andDeletedEqualTo(false);
-        example.setOrderByClause("name desc");
+        example.setOrderByClause("id desc");
         PageHelper.startPage(pageNum,pageSize);
         return dishesMapper.selectByExample(example);
     }

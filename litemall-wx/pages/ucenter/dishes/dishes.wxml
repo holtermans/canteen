@@ -1,27 +1,32 @@
 <!--pages/ucenter/dishes/dished.wxml-->
 <view class="container">
-  <van-search value="{{ value }}" label="菜品名" placeholder="请输入搜索关键词 菜名" use-action-slot bind:change="onChange"
-    bind:search="onSearch">
-  </van-search>
+    <van-search value="{{ value }}" label="菜品名" placeholder="请输入搜索关键词 菜名" use-action-slot bind:change="onChange" bind:search="onSearch">
+    </van-search>
+
 
 
   <!-- 侧边栏 -->
   <view style="float:left;width:20%">
     <van-sidebar active-key="{{ activeKey }}" bind:change="cateChange">
-      <van-sidebar-item wx:for="{{dishesCategory}}" wx:for-item="cate" title="{{cate.name}}" bindlongtap="longtap" data-id="{{cate.id}}" data-name="{{cate.name}}"/>
+      <van-sidebar-item wx:for="{{dishesCategory}}" wx:for-item="cate" title="{{cate.name}}" bindlongtap="longtap" data-id="{{cate.id}}" data-name="{{cate.name}}" />
       <!-- badge="{{cateCount[index]}}" /> -->
 
       <view style="height:50px;text-align:center;padding-top:20px">
         <van-button plain icon="plus" round type="primary" size="mini" bind:click="addCate" />
       </view>
       <view style="text-align:center;font-size:25rpx">
-      提示：长按删除分类
+        提示：长按删除分类
       </view>
     </van-sidebar>
   </view>
   <!-- 右侧详情 -->
 
-  <scroll-view scroll-y="{{true}}" style="float:left;width:80%;height:100%" bindscrolltolower="scrollToBottom">
+  <scroll-view
+   scroll-y="{{true}}" 
+   style="float:left;width:80%;height:80%" 
+   bindscrolltolower="scrollToBottom" 
+   lower-threshold="{{200}}"
+   scroll-top="{{scrollTop}}">
     <view wx:key="id" wx:for="{{dishesList}}" wx:for-item="dish">
       <view class="item" bindtap="goDetail" data-id="{{dish.id}}">
         <view style="flex:1;height:79px;width:auto;padding:15rpx">
@@ -44,15 +49,15 @@
         <!-- <van-button size="small" custom-style="position:absolute;bottom:0px;right:0px;border:none" custom-class="button"
           bindtap="delete" data-id="{{dish.id}}">
         </van-button> -->
-        <view style="position:absolute;bottom:0px;right:20px;border:none" 
-          bindtap="delete" data-id="{{dish.id}}">删除</view>
+        <view style="position:absolute;bottom:0px;right:20px;border:none" bindtap="delete" data-id="{{dish.id}}">删除</view>
       </view>
     </view>
+    <view style="color:#c8c8c8;text-align:center;display:{{!nomore?'':'none'}};">上拉加载更多</view>
     <view style="display:{{showloading?'':'none'}};text-align:center">
       <van-loading color="#1989fa" />
     </view>
-
-    <view style="margin-top:20px;color:#c8c8c8;text-align:center;display:{{!showloading?'':'none'}};">没有更多了</view>
+   
+    <view style="margin-top:20px;color:#c8c8c8;text-align:center;display:{{nomore?'':'none'}};">没有更多了</view>
   </scroll-view>
 
   <!-- <view class="publish-button" bindtap="navigateToPublish">
@@ -64,20 +69,13 @@
 <tui-fab bind:click="navigateToPublish"></tui-fab>
 
 <van-popup show="{{ showAddCate }}" bind:close="closeAddCate">
-<view style="width:500rpx;height:auto">
-<form catchsubmit="saveCate">
-  <van-field
-    name="cateName"
-    value="{{ input.cateName }}"
-    required
-    clearable
-    label="分类名称"
-    placeholder="请输入分类名称"
-  />
-  <view style="text-align:center">
-    <van-button type="default" form-type="submit">添加</van-button>
-  </view>
-</form>
+  <view style="width:500rpx;height:auto">
+    <form catchsubmit="saveCate">
+      <van-field name="cateName" value="{{ input.cateName }}" required clearable label="分类名称" placeholder="请输入分类名称" />
+      <view style="text-align:center">
+        <van-button type="default" form-type="submit">添加</van-button>
+      </view>
+    </form>
 
-</view>
+  </view>
 </van-popup>

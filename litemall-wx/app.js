@@ -32,7 +32,6 @@ App({
     });
   },
   onShow: function (options) {
-
     var that = this;
     // console.log((wx.getStorageSync('userInfo')));
     // console.log(wx.getStorageSync('token'))

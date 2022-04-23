@@ -17,7 +17,7 @@ Page({
       uncomment: 0
     },
     hasLogin: false,
-    isAdmin:false,
+    isAdmin: false,
   },
   onLoad: function (options) {
     let that = this;
@@ -27,11 +27,10 @@ Page({
       if (res.errno == 0) {
         this.setData({
           bcUserInfo: res.data.bcUserInfo,
-          isAdmin:res.data.bcUserInfo.admin,
+          isAdmin: res.data.bcUserInfo.admin,
         })
       }
-    }).catch(() => {
-    })
+    }).catch(() => {})
   },
   onShow: function () {
     let that = this;
@@ -63,6 +62,10 @@ Page({
     }
   },
   updateInfo() {
+    var that = this;
+    wx.showLoading({
+      title: '加载中',
+    })
     wx.getUserProfile({
       desc: '更新账号信息',
       success: (res) => {
@@ -72,11 +75,32 @@ Page({
           userInfo: userInfo,
           hasLogin: true
         });
-        wx.showToast({
-          title: '已更新',
-        })
+        util.request(api.updateUser, {
+          avatar: userInfo.avatarUrl
+        }, 'POST').then(function (res) {
+          if (res.errno === 0) {
+            wx.hideLoading();
+            wx.showToast({
+              title: '已更新',
+            })
+
+          } else {
+            wx.hideLoading();
+            wx.showToast({
+              icon: 'error',
+              title: 'Oops!',
+            })
+          }
+        }).catch(function (e) {
+          wx.hideLoading();
+          wx.showToast({
+            title: '网络有点问题~',
+            icon: 'error'
+          })
+        });
       },
       fail: (res) => {
+        wx.hideLoading();
         wx.showToast({
           title: '更新时出错',
           content: res
@@ -126,7 +150,7 @@ Page({
       title: '暂未开放',
     })
   },
-  goSystemConfig:function(){
+  goSystemConfig: function () {
     if (this.data.hasLogin) {
       wx.navigateTo({
         url: "/pages/ucenter/systemConfig/systemConfig"

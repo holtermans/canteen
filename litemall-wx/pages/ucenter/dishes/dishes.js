@@ -27,7 +27,9 @@ Page({
     showAddCate: false,
     input: {
       cateName: '',
-    }
+    },
+    //滚动
+    scrollTop: 0,
   },
 
   /**
@@ -43,10 +45,7 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-
-
-  },
+  onReady: function () {},
   getDishCate() {
     var that = this;
     return new Promise((resovle, reject) => {
@@ -73,7 +72,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.refresh();
+    // this.refresh();
   },
 
 
@@ -101,12 +100,16 @@ Page({
           nomore: res.data.length < that.data.pageSize ? true : false,
         })
       }
+
     })
   },
 
   cateChange(event) {
     var that = this;
     var index = event.detail;
+    this.setData({
+      scrollTop: 0
+    })
     var cateId = this.data.dishesCategory[index].id //得到菜品分类ID
     this.setData({
       activeKey: index
@@ -200,15 +203,15 @@ Page({
   },
   scrollToBottom() {
     var that = this;
-    console.log(that.data.value)
-    if (that.data.value == '') {
+    if (that.data.value == '') { //无关键词搜索
       if (this.data.nomore) return;
       this.setData({
         showloading: true,
       });
       this.getDishesList();
- 
+
     } else {
+      if (this.data.nomore) return;
       var query = {
         cateId: that.data.dishesCategory[that.data.activeKey].id,
         keyword: that.data.value,
@@ -218,24 +221,15 @@ Page({
       util.request(api.SearchByCateAndKeyword, query).then((res) => {
         that.setData({
           dishesList: [...that.data.dishesList, ...res.data.dishesList],
-          pageNum: res.data.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
+          pageNum: res.data.dishesList.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
           showloading: false,
-          nomore: res.data.length < that.data.pageSize ? true : false,
+          nomore: res.data.dishesList.length < that.data.pageSize ? true : false,
         });
-        console.log(res.data.dishesList);
       })
+
     }
-
   },
-  refresh() {
-    var that = this;
-    this.setData({
-      pageNum:1,
-      dishesList:[]
-    })
 
-    that.onLoad();
-  },
   onChange(e) {
     var that = this;
     this.setData({
@@ -251,11 +245,10 @@ Page({
     util.request(api.SearchByCateAndKeyword, query).then((res) => {
       that.setData({
         dishesList: [...that.data.dishesList, ...res.data.dishesList],
-        pageNum: res.data.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
+        pageNum: res.data.dishesList.length < that.data.pageSize ? that.data.pageNum : that.data.pageNum + 1,
         showloading: false,
-        nomore: res.data.length < that.data.pageSize ? true : false,
+        nomore: res.data.dishesList.length < that.data.pageSize ? true : false,
       });
-      console.log(res.data.dishesList);
     })
   },
   addCate() {
@@ -272,38 +265,48 @@ Page({
     var that = this;
     this.setData({
       showAddCate: false,
-      'input.cateName':''
+      'input.cateName': ''
     });
-    
-    if(e.detail.value.cateName == ''){return}
-    var query={
-      name:e.detail.value.cateName
+
+    if (e.detail.value.cateName == '') {
+      return
     }
-    util.request(api.CanteenDishCateAdd, query,"POST").then((res) => {
+    var query = {
+      name: e.detail.value.cateName
+    }
+    util.request(api.CanteenDishCateAdd, query, "POST").then((res) => {
       console.log(res.data);
       that.onLoad();
     })
   },
-  longtap(e){
+  longtap(e) {
     var that = this;
     wx.showModal({
       title: '删除',
       content: e.currentTarget.dataset.name,
-      success (res) {
+      success(res) {
         if (res.confirm) {
-          var query={
-            id:e.currentTarget.dataset.id
+          var query = {
+            id: e.currentTarget.dataset.id
           }
           util.request(api.CanteenDishCateDel, query).then((res) => {
-            res.errno == 0 ? that.onLoad():wx.showToast({
+            res.errno == 0 ? that.onLoad() : wx.showToast({
               title: '不能删除',
             })
           })
         } else if (res.cancel) {
-          
+
         }
       }
     })
+  },
+  refresh() {
+    var that = this;
+    this.setData({
+      pageNum: 1,
+      dishesList: []
+    })
+    that.onLoad();
   }
 
 })

@@ -1,0 +1,2 @@
+2021-10-14 05:00:00.012  INFO 3536 --- [scheduling-1] org.linlinjava.litemall.admin.job.DbJob  : 系统开启定时任务数据库备份
+2021-10-14 05:00:00.770  INFO 3536 --- [scheduling-1] org.linlinjava.litemall.admin.job.DbJob  : 系统结束定时任务数据库备份

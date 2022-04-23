@@ -5,8 +5,6 @@ import com.github.pagehelper.PageInfo;
 import org.linlinjava.litemall.db.dao.LitemallBcUserMapper;
 import org.linlinjava.litemall.db.domain.LitemallBcUser;
 import org.linlinjava.litemall.db.domain.LitemallBcUserExample;
-import org.linlinjava.litemall.db.domain.LitemallUser;
-import org.linlinjava.litemall.db.domain.LitemallUserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
