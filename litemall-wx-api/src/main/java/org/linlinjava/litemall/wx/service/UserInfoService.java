@@ -26,6 +26,11 @@ public class UserInfoService {
         return userInfo;
     }
 
+    /**
+     * 正常返回null
+     * @param userId
+     * @return
+     */
     public Object checkUserId(Integer userId) {
 
         if (userId != null) { //token过期，提示一下

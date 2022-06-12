@@ -1,10 +1,10 @@
 // 以下是业务服务器API地址
 // 本机开发时使用
-// var WxApiRoot = 'http://localhost:8080/wx/';
-// var UploadRoot = 'http://localhost:8080/';  //给banner的图片src用
+var WxApiRoot = 'http://localhost:8080/wx/';
+var UploadRoot = 'http://localhost:8080/';  //给banner的图片src用
 
 // var UploadRoot = 'https://www.joyfey.xyz:4423/';  //给banner的图片src用
-//局域网
+// 局域网
 // var WxApiRoot = 'http://192.168.1.9:8080/wx/';
 // var UploadRoot = 'http://192.168.1.9:8080/';  //给banner的图片src用
 
@@ -108,6 +108,7 @@ module.exports = {
   GetBcUserHashMapByUserId: WxApiRoot + 'user/getBcUserHashMapByUserId', //传入ID数组，返回用户,
   GetBcUserList: WxApiRoot + 'bcuser/queryAll', //查询当前用户的bc用户信息
   UpdateBcUser: WxApiRoot + 'bcuser/updateBcUser', //更新用户信息
+  GetBcUserListByKeyword:WxApiRoot + 'bcuser/getBcUserListByKeyword', //根据关键词查询用户
   Socket: "wss://www.joyfey.xyz/" + 'websocket/12',
   QueueQuery: WxApiRoot + 'myredis/hAll',
   QueueDel: WxApiRoot + 'myredis/hDel',

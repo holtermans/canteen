@@ -19,7 +19,8 @@
     "pages/ucenter/userManagement/userManagement",
     "pages/ucenter/systemConfig/systemConfig",
     "pages/ucenter/check/checkCode/checkCode",
-    "pages/ucenter/statistics/detail"
+    "pages/ucenter/statistics/detail",    
+    "pages/score/score"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
@@ -122,5 +123,4 @@
       "provider": "wx069ba97219f66d99"
     }
   }
-  
 }

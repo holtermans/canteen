@@ -1,10 +1,11 @@
 package org.linlinjava.litemall.wx.web;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
-import io.swagger.models.auth.In;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.domain.BcUserVo;
+import org.linlinjava.litemall.db.domain.CanteenOrder;
+import org.linlinjava.litemall.db.domain.Config;
+import org.linlinjava.litemall.db.domain.LitemallMealOrder;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.UserInfoService;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController
@@ -268,6 +268,23 @@ public class CanteenOrderController {
         List<CanteenOrder> canteenOrders = canteenOrderService.queryByUidAndPage(userId, pageNum, pageSize,status);
 
         return ResponseUtil.ok(canteenOrders);
+
+    }
+
+    //判断该用户这个月内是否订餐，即查询是否有订餐记录。
+    @RequestMapping("findByUidInAMonth")
+    public Object findByUidInAMonth( Integer userId) {
+        System.out.println(userId);
+//        Object response = userInfoService.checkUserId(userId); //检查ID
+        Object response = null;
+        if (response != null) {
+            return response;
+        } else {
+            List<CanteenOrder> canteenOrders = canteenOrderService.findByUidInAMonth(userId);
+            HashMap<Object, Object> result = new HashMap<>();
+            result.put("Canteen", canteenOrders);
+            return ResponseUtil.ok(result);
+        }
 
     }
 

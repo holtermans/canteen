@@ -1,7 +1,5 @@
 package org.linlinjava.litemall.db.service;
 
-import com.alibaba.druid.support.json.JSONUtils;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.linlinjava.litemall.db.dao.CanteenOrderMapper;
@@ -9,13 +7,11 @@ import org.linlinjava.litemall.db.domain.CanteenOrder;
 import org.linlinjava.litemall.db.domain.CanteenOrderExample;
 import org.linlinjava.litemall.db.util.CanteenOrderConstant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -215,5 +211,14 @@ public class CanteenOrderService {
         PageHelper.startPage(pageNum,pageSize);
         return canteenOrderMapper.selectByExample(example);
 
+    }
+
+    public List<CanteenOrder> findByUidInAMonth(Integer userId) {
+        LocalDate now = LocalDate.now();
+        LocalDate firstday = LocalDate.of(now.getYear(), now.getMonth(), 1);//当月首日
+        CanteenOrderExample example = new CanteenOrderExample();
+        example.or().andUserIdEqualTo(userId).andDateGreaterThanOrEqualTo(firstday).andDeletedEqualTo(false);
+        List<CanteenOrder> canteenOrders = canteenOrderMapper.selectByExampleSelective(example);
+        return canteenOrders;
     }
 }

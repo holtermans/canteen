@@ -86,4 +86,26 @@ public class LitemallBcUserService {
         List<LitemallBcUser> litemallBcUsers = bcUserMapper.selectByExample(example);
         return litemallBcUsers;
     }
+
+    /**
+     * 根据关键词和激活状态查找
+     * @param bcUser
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public  PageInfo<LitemallBcUser> queryByKeywordAndStatus(LitemallBcUser bcUser,Integer pageNum, Integer pageSize ) {
+        LitemallBcUserExample example = new LitemallBcUserExample();
+        LitemallBcUserExample.Criteria criteria = example.createCriteria();
+        if(bcUser.getStatus() != null && bcUser.getName() != null){
+            criteria.andStatusEqualTo(bcUser.getStatus()).andIsAdminEqualTo(true);
+            criteria.andNameLike("%"+bcUser.getName()+"%");
+        }
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<LitemallBcUser> litemallBcUsers = bcUserMapper.selectByExample(example);
+        PageInfo<LitemallBcUser> pageInfo = new PageInfo<>(litemallBcUsers);
+        return pageInfo;
+    }
+
 }

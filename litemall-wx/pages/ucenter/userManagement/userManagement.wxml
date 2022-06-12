@@ -1,28 +1,30 @@
 <!--pages/ucenter/userManagement/userManagement.wxml-->
 
 <van-sticky>
-	<van-dropdown-menu>
-		<van-dropdown-item value="{{ filter1 }}" options="{{ option1 }}" bind:change="onChange" />
-		<van-dropdown-item value="{{ filter2 }}" options="{{ option2 }}" change="onChange" />
-	</van-dropdown-menu>
+  <van-dropdown-menu>
+    <van-dropdown-item value="{{ filter1 }}" options="{{ option1 }}" bind:change="onChange" />
+    <van-dropdown-item value="{{ filter2 }}" options="{{ option2 }}" change="onChange" />
+  </van-dropdown-menu>
+  <van-search value="{{ value }}" label="姓名" placeholder="请输入搜索关键词 姓名" use-action-slot bind:change="onSearchChange" bind:search="onSearch">
+  </van-search>
 </van-sticky>
 人数：{{bcUserList.total}}
-	<view wx:if="{{bcUserList.total != 0}}">
-		<view class="cell" wx:for="{{bcUserList.list}}">
-			<view class="info">
-				<view class="name">姓名：{{item.name}}</view>
-				<view class="mobile">电话：{{item.mobile}} </view>
-				<view class="addtime">申请时间：{{item.addtime}} </view>
-			</view>
-			<view class="operation">
-				<view wx:if="{{item.status == 0}}" class="activate">
-					<van-button square type="primary" data-id="{{item.id}}" bind:click="pass">激活</van-button>
-				</view>
-				<view wx:else class="activate">
-					<van-button square type="warning" data-id="{{item.id}}" bind:click="unpass">取消激活</van-button>
-				</view>
-			</view>
-		</view>
-	</view>
-<view  wx:if = "{{pageNum >= pages}}" style="color:#c8c8c8;text-align:center">没有更多了</view>
+<view wx:if="{{bcUserList.total != 0}}">
+  <view class="cell" wx:for="{{bcUserList.list}}">
+    <view class="info">
+      <view class="name">姓名：{{item.name}}</view>
+      <view class="mobile">电话：{{item.mobile}} </view>
+      <view class="addtime">申请时间：{{item.addtime}} </view>
+    </view>
+    <view class="operation">
+      <view wx:if="{{item.status == 0}}" class="activate">
+        <van-button square type="primary" data-id="{{item.id}}" bind:click="pass">激活</van-button>
+      </view>
+      <view wx:else class="activate">
+        <van-button square type="warning" data-id="{{item.id}}" bind:click="unpass">取消激活</van-button>
+      </view>
+    </view>
+  </view>
+</view>
+<view wx:if="{{pageNum >= pages}}" style="color:#c8c8c8;text-align:center">没有更多了</view>
 <view wx:else style="color:#c8c8c8;text-align:center">上拉加载</view>

@@ -99,5 +99,42 @@ public class WxBcUserController {
         }
         return ResponseUtil.ok();
     }
+    /**
+     * 查询用户列表没有通过审核的名单
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("getBcUserListByKeyword")
+    public Object getBcUserListByKeyword(@RequestParam("type") String type,
+                                         @RequestParam(value = "pageNum", required = false) Integer pageNum,
+                                         @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                         @RequestParam(value = "keyword", required = false) String keyword
+                                         ) {
+        //设置默认的页码
+        pageNum =  pageNum == null ? 1 : pageNum;
+        pageSize =  pageSize == null ? 10 : pageSize;
+
+        LitemallBcUser bcUser = new LitemallBcUser();
+        bcUser.setName(keyword);
+        switch (type){
+            case "actived":
+                bcUser.setStatus(BcUserConstant.ACTIVE);
+                break;
+            case "notActived":
+                bcUser.setStatus(BcUserConstant.NOT_ACTIVE);
+                break;
+            default:
+                bcUser.setStatus(BcUserConstant.ACTIVE);
+                break;
+        }
+
+        //
+        PageInfo<LitemallBcUser> bcUsersList = bcUserService.queryByKeywordAndStatus(bcUser,pageNum,pageSize);
+
+        HashMap<Object, Object> result = new HashMap<>();
+        result.put("bcUserList", bcUsersList);
+        return ResponseUtil.ok(result);
+    }
 
 }

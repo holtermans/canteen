@@ -18,4 +18,4 @@ logging:
   config: classpath:logback-spring.xml
 
 swagger:
-  production: true
+  production: false

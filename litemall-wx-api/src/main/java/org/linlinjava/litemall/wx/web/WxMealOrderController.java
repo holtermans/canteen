@@ -4,11 +4,11 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.domain.LitemallMealOrder;
 import org.linlinjava.litemall.db.service.CanteenOrderService;
+import org.linlinjava.litemall.db.service.LitemallBcUserService;
 import org.linlinjava.litemall.db.service.LitemallMealOrderService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.service.LitemallBcUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,4 +164,8 @@ public class WxMealOrderController {
         result.put("mealOrders", mealOrders);
         return ResponseUtil.ok(result);
     }
+
+
+
+
 }

@@ -14,8 +14,7 @@ Page({
     pages: 0,
     filter1: 'actived',
     filter2: "a",
-    option1: [
-      {
+    option1: [{
         text: '已激活',
         value: 'actived'
       },
@@ -29,6 +28,8 @@ Page({
       value: "a"
     }, ],
     bcUserList: {},
+    //搜索框
+    value: '',
   },
 
   /**
@@ -61,41 +62,37 @@ Page({
       util.showErrorModal("数据请求出错");
     });
   },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onSearchChange: function (e) {
+    let that = this;
+    this.setData({
+      pageNum: 1,
+      pageSize: 20,
+      bcUserList: [],
+      value: e.detail
+    })
+     (that.data.value)
   },
+  searchBcUserListByKeyword: function (keyword) {
+    let that = this;
+    var data = {
+      type: that.data.filter1,
+      keyword: keyword, //获取关键词
+      pageNum: that.data.pageNum,
+      pageSize: that.data.pageSize,
+    }
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+    util.request(api.GetBcUserListByKeyword, data).then((res) => {
+      if (res.errno == 0) {
+        that.setData({
+          bcUserList: res.data.bcUserList
+        })
+      } else {
+        wx.showToast({
+          title: '出错了~',
+        })
+      }
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
   /**
    * 页面上拉触底事件的处理函数
    */
@@ -120,17 +117,13 @@ Page({
       })
     }
   },
- 
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-
-  },
+  onShareAppMessage: function () {},
   getBcUserList: function () {
     var that = this;
-
     wx.showLoading({
       title: '加载中',
     });
@@ -152,7 +145,7 @@ Page({
       })
     })
   },
-  pass: function(e){
+  pass: function (e) {
     var that = this;
     wx.showLoading({
       title: '加载中',
@@ -162,7 +155,7 @@ Page({
       "id": e.currentTarget.dataset.id,
       "status": 1
     }
-    util.request(api.UpdateBcUser, data,"POST").then((res) => {
+    util.request(api.UpdateBcUser, data, "POST").then((res) => {
       if (res.errno == 0) {
         that.setData({
           pageNum: 1,
@@ -183,7 +176,7 @@ Page({
       })
     })
   },
-  unpass: function(e){
+  unpass: function (e) {
     var that = this;
     wx.showLoading({
       title: '加载中',
@@ -193,7 +186,7 @@ Page({
       "id": e.currentTarget.dataset.id,
       "status": 0
     }
-    util.request(api.UpdateBcUser, data,"POST").then((res) => {
+    util.request(api.UpdateBcUser, data, "POST").then((res) => {
       if (res.errno == 0) {
         that.setData({
           pageNum: 1,
@@ -208,8 +201,7 @@ Page({
         }).catch(() => {
           util.showErrorModal("数据请求出错");
         });
-      } else {  
-      }
+      } else {}
       wx.hideLoading({
         success: (res) => {},
       })
