@@ -11,15 +11,19 @@ Page({
    */
   data: {
     iconUrl: ['/static/images/breakfast.png', '/static/images/lunch.png', '/static/images/dinner.png'],
-    banner: [{
-        url: api.UploadRoot + "upload/banner1.jpg"
-      },
-      {
-        url: api.UploadRoot + "upload/banner2.jpg"
-      },
-      {
-        url: api.UploadRoot + "upload/banner3.jpg"
-      }
+    banner: [
+      // {
+      //   url: api.UploadRoot + "upload/banner0.jpg"
+      // },
+      // {
+      //   url: api.UploadRoot + "upload/banner1.jpg"
+      // },
+      // {
+      //   url: api.UploadRoot + "upload/banner2.jpg"
+      // },
+      // {
+      //   url: api.UploadRoot + "upload/banner3.jpg"
+      // }
     ],
     ban: false,
     price: 0,
@@ -101,7 +105,7 @@ Page({
     });
     //获取提示
     this.getTip();
-
+    this.getBanner();
   },
 
   getTip() {
@@ -110,9 +114,36 @@ Page({
       name: "tip"
     }
     util.request(api.GetConfig, query).then((res) => {
+      if(res.errno == 0){
+        that.setData({
+          tip: res.data.config.value
+        })
+      }else{
+        that.setData({
+          tip: "加载出错"
+        })
+      }
+      
+    })
+  },
+
+  getBanner(){
+    var that = this;
+    var query = {
+      name: "banner"
+    }
+    util.request(api.GetConfig, query).then((res) => {
+      var banner_list = JSON.parse(res.data.config.value);
+      banner_list.map(
+        x =>{
+        x.url = api.UploadRoot + x.url
+        return x
+      }
+      )
       that.setData({
-        tip: res.data.config.value
+        banner:banner_list
       })
+      console.log(banner_list);
     })
   },
 
@@ -710,5 +741,11 @@ Page({
       }
       this.calculateSum(this.data.currentTiming.id, this.data.dailyMenuList, this.data.dishesList);
     });
+  },
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
   }
 })

@@ -114,9 +114,13 @@ public class WxBcUserController {
         //设置默认的页码
         pageNum =  pageNum == null ? 1 : pageNum;
         pageSize =  pageSize == null ? 10 : pageSize;
-
         LitemallBcUser bcUser = new LitemallBcUser();
         bcUser.setName(keyword);
+
+        System.out.println(type);
+        System.out.println(pageNum);
+        System.out.println(pageSize);
+        System.out.println(keyword);
         switch (type){
             case "actived":
                 bcUser.setStatus(BcUserConstant.ACTIVE);
@@ -128,10 +132,7 @@ public class WxBcUserController {
                 bcUser.setStatus(BcUserConstant.ACTIVE);
                 break;
         }
-
-        //
         PageInfo<LitemallBcUser> bcUsersList = bcUserService.queryByKeywordAndStatus(bcUser,pageNum,pageSize);
-
         HashMap<Object, Object> result = new HashMap<>();
         result.put("bcUserList", bcUsersList);
         return ResponseUtil.ok(result);

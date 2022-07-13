@@ -1,0 +1,42 @@
+<!--pages/score/score.wxml-->
+<wxs src="../../wxs/index.wxs" module="computed"></wxs>
+<view class="main">
+  <view style="flex: 1;">
+    <text style="font-size:100px;color: #ff6633;">{{datetime}}</text>
+    <text>月</text>
+  </view>
+  <view style="flex: 1;padding-top: 10px;">
+    {{tips}}
+  </view>
+  <view style="flex: 1;padding-top: 10px;">
+    <van-rate size="{{30}}" value="{{ value }}" allow-half void-icon="star" void-color="#eee" bind:change="valueChange" count="{{ 5 }}" />
+  </view>
+  <!-- <view style="flex: 1;padding-top: 50px;font-size: 30px;">
+    你的打分:
+  </view> -->
+  <view style="flex: 1;font-size:40px;color: #ff6633;">{{score}}</view>
+
+  <view style="flex: 1;padding-top: 10px;">
+    <van-button type="primary" bind:click="submit">提交</van-button>
+  </view>
+
+  <view>
+    <van-collapse border="{{false}}" value="{{ activeNames }}" bind:change="onChange">
+      <van-collapse-item title="评价记录(10次)" name="1">
+        <view style="width: 100%;" wx:if="{{scoreList.length != 0}}">
+          <view style="text-align: center;" wx:for="{{scoreList}}">
+            {{ computed.formatFullDate(item.addTime) }}
+            {{item.score}}分
+          </view>
+        </view>
+        <view  wx:else>
+        <view style="text-align: center;">
+        空空如也
+        </view>
+          
+        </view>
+      </van-collapse-item>
+    </van-collapse>
+
+  </view>
+</view>

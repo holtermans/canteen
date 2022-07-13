@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.linlinjava.litemall.db.dao.LitemallBcUserMapper;
 import org.linlinjava.litemall.db.domain.LitemallBcUser;
 import org.linlinjava.litemall.db.domain.LitemallBcUserExample;
+import org.linlinjava.litemall.db.util.BcUserConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,11 +98,11 @@ public class LitemallBcUserService {
     public  PageInfo<LitemallBcUser> queryByKeywordAndStatus(LitemallBcUser bcUser,Integer pageNum, Integer pageSize ) {
         LitemallBcUserExample example = new LitemallBcUserExample();
         LitemallBcUserExample.Criteria criteria = example.createCriteria();
-        if(bcUser.getStatus() != null && bcUser.getName() != null){
-            criteria.andStatusEqualTo(bcUser.getStatus()).andIsAdminEqualTo(true);
-            criteria.andNameLike("%"+bcUser.getName()+"%");
-        }
+        String name = bcUser.getName() == null ? "": bcUser.getName();
+        Integer status = bcUser.getStatus() == null ? BcUserConstant.ACTIVE : bcUser.getStatus();
 
+        criteria.andStatusEqualTo(status).andIsAdminEqualTo(false);
+        criteria.andNameLike("%"+name+"%");
         PageHelper.startPage(pageNum, pageSize);
         List<LitemallBcUser> litemallBcUsers = bcUserMapper.selectByExample(example);
         PageInfo<LitemallBcUser> pageInfo = new PageInfo<>(litemallBcUsers);

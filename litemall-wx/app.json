@@ -19,8 +19,9 @@
     "pages/ucenter/userManagement/userManagement",
     "pages/ucenter/systemConfig/systemConfig",
     "pages/ucenter/check/checkCode/checkCode",
-    "pages/ucenter/statistics/detail",    
-    "pages/score/score"
+    "pages/ucenter/statistics/detail",
+    "pages/score/score",
+    "pages/score/done"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

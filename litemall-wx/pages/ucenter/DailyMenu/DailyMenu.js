@@ -45,8 +45,9 @@ Page({
     activeKey: 0, //侧边栏激活标签,
     //分页查询
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 20,
     showloading: false,
+    nomore: false,
   },
 
 
@@ -192,7 +193,7 @@ Page({
     var that = this;
     this.setData({
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 20,
       dishesList: [],
       keyword: e.detail,
       result: [],

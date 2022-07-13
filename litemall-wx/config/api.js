@@ -1,7 +1,7 @@
 // 以下是业务服务器API地址
-// 本机开发时使用
-var WxApiRoot = 'http://localhost:8080/wx/';
-var UploadRoot = 'http://localhost:8080/';  //给banner的图片src用
+// // 本机开发时使用
+// var WxApiRoot = 'http://localhost:8080/wx/';
+// var UploadRoot = 'http://localhost:8080/';  //给banner的图片src用
 
 // var UploadRoot = 'https://www.joyfey.xyz:4423/';  //给banner的图片src用
 // 局域网
@@ -12,8 +12,8 @@ var UploadRoot = 'http://localhost:8080/';  //给banner的图片src用
 // var WxApiRoot = 'https://www.joyfey.xyz:4423/wx/'; 
 // var UploadRoot = 'https://www.joyfey.xyz:4423/';
 // 公司内部服务器
-// var WxApiRoot = 'https://www.yllt.icu:4413/wx/';
-// var UploadRoot = 'https://www.yllt.icu:4413/';  //给banner的图片src用
+var WxApiRoot = 'https://www.yllt.icu:4413/wx/';
+var UploadRoot = 'https://www.yllt.icu:4413/';  //给banner的图片src用
 
 
 
@@ -113,6 +113,8 @@ module.exports = {
   QueueQuery: WxApiRoot + 'myredis/hAll',
   QueueDel: WxApiRoot + 'myredis/hDel',
 
+  AddScore:WxApiRoot + 'score/add',  //评分
+  FindByUserId:WxApiRoot + 'score/findByUserId', //通过id查询评分记录
   UserIndex: WxApiRoot + 'user/index', //个人页面用户相关信息
   IssueList: WxApiRoot + 'issue/list', //帮助信息
 

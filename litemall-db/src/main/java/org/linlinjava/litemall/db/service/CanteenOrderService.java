@@ -213,6 +213,11 @@ public class CanteenOrderService {
 
     }
 
+    /**
+     * 基于现在时间，查询当月报餐记录
+     * @param userId
+     * @return
+     */
     public List<CanteenOrder> findByUidInAMonth(Integer userId) {
         LocalDate now = LocalDate.now();
         LocalDate firstday = LocalDate.of(now.getYear(), now.getMonth(), 1);//当月首日

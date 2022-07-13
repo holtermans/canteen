@@ -34,10 +34,10 @@
         <view class='user_column_item_text'>用餐核销</view>
       </view> -->
 
-      <view class='user_column_item' bindtap='goComment' data-index='3' data-route='/pages/ucenter/order/order'>
+      <view class='user_column_item' bindtap='goComment' data-index='3' data-route='/pages/score/score'>
         <text class="user_column_item_badge" wx:if="{{order.unship != 0}}">{{order.unship}}</text>
         <image class='user_column_item_image' src='/static/images/vote.png'></image>
-        <view class='user_column_item_text'>菜品评价</view>
+        <view class='user_column_item_text'>食堂评价</view>
       </view>
 
     </view>

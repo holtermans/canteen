@@ -72,8 +72,9 @@
             </van-cell>
           </van-cell-group>
         </van-checkbox-group>
+        <view wx:if="{{!nomore}}" style="padding-top:5px;color:#888888;text-align:center;">上拉加载更多</view>
         <view style="display:{{showloading?'':'none'}};text-align:center"><van-loading color="#1989fa" /></view>
-        <view style="padding-top:50px;color:#888888;text-align:center;display:{{!showloading?'':'none'}};">没有更多了</view>
+        <view style="padding-top:10px;color:#888888;text-align:center;display:{{nomore?'':'none'}};">没有更多了</view>
       </scroll-view>
     </view>
 

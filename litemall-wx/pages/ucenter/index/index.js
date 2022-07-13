@@ -144,11 +144,51 @@ Page({
       });
     };
   },
-
-  goComment: function () {
-    wx.showToast({
-      title: '暂未开放',
+  getSwitch() {
+    var that = this;
+    var query = {
+      name: "switch1"
+    }
+    return new Promise((resolve, reject) => {
+      util.request(api.GetConfig, query).then((res) => {
+        if (res.errno == 0) {
+          resolve(res.data.config.value);
+        } else {
+          reject();
+        }
+      })
     })
+
+  },
+  goComment: function (e) {
+    this.getSwitch().then(res => {
+      console.log(JSON.parse(res))
+      if (!JSON.parse(res)) {
+        wx.showToast({
+          title: '未开放',
+        })
+        return;
+      }
+      if (this.data.hasLogin) {
+        let tab = e.currentTarget.dataset.index
+        let route = e.currentTarget.dataset.route
+        try {
+          wx.setStorageSync('tab', tab);
+        } catch (e) {}
+        wx.navigateTo({
+          url: route,
+          success: function (res) {},
+          fail: function (res) {},
+          complete: function (res) {},
+        })
+      } else {
+        wx.navigateTo({
+          url: "/pages/auth/login/login"
+        });
+      };
+    })
+
+
   },
   goSystemConfig: function () {
     if (this.data.hasLogin) {
